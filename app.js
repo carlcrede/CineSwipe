@@ -1,24 +1,33 @@
 require('dotenv').config();
-const helmet = require('helmet');
-app.use(helmet());
 
 const express = require('express');
 const app = express();
+
+// const helmet = require('helmet');
+// app.use(helmet());
+
 const server = require('http').createServer(app);
-const { Server } = require("socket.io");
+const { Server } = require('socket.io');
 const io = new Server(server);
 const PORT = process.env.PORT || 8080;
 
-app.get('/', (req, res, next) => {
-    io.on('connection', (socket) => {
-        io.to(socket.id).emit()
+io.on('connection', socket => {
+    socket.on('newroom', () => {
+        console.log('new room started: ' + socket.id);
     });
+    socket.on('joinroom', (data) => {
+        socket.join(data);
+        socket.to(data).emit('joined', "new socket joined room: " + data + " with id: " + socket.id)
+        console.log(io.sockets.adapter.rooms.get(data).size);
+    })
+});
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
 });
 
 app.get('/:id', (req, res) => {
-    io.on('connection', socket => {
-        socket.join(req.params.id);
-    });
+    res.sendFile(__dirname + '/index.html');
 });
 
 // error page
