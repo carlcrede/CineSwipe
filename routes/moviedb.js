@@ -5,14 +5,23 @@ const router = require('express').Router();
 
 const popularMovies = async () => {
     const popularMovies = await moviedb.moviePopular({ region: 'DK' });
-    const dkMovies = await Promise.all(popularMovies.results.filter(async (result) => {
+    const dkMovies = await Promise.all(popularMovies.results.map(async (result) => {
         const providers = await moviedb.movieWatchProviders(result.id);
-        return 'DK' in providers.results;
+        if ('DK' in providers.results) {
+            result['Providers'] = providers;
+            return result;
+        } else {
+            return undefined;
+        }
+        //return 'DK' in providers.results ? result: undefined;
     }));
-    console.log(dkMovies);
+    const filtered = dkMovies.filter((val, index) => {
+        return val;
+    });
+    return filtered;
 }
 
-popularMovies();
+popularMovies().then(res => console.log(res));
 
 module.exports = {
     router
