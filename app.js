@@ -10,7 +10,10 @@ const helmet = require('helmet');
 app.use(helmet({ 
     contentSecurityPolicy: { 
         useDefaults: true, 
-        directives: { 'script-src': ["'self'", 'code.jquery.com'], 'style-src': ['cdnjs.cloudflare.com']}
+        directives: { 
+            'script-src': ["'self'", 'code.jquery.com'], 
+            'style-src': ["'self'", 'cdnjs.cloudflare.com']
+        }
     }
 }));
 
