@@ -11,7 +11,7 @@ app.use(helmet({
     contentSecurityPolicy: { 
         useDefaults: true, 
         directives: { 
-            'script-src': ["'self'", 'code.jquery.com'], 
+            'script-src': ["'self'", 'code.jquery.com', 'cdnjs.cloudflare.com'], 
             'style-src': ["'self'", 'cdnjs.cloudflare.com']
         }
     }
