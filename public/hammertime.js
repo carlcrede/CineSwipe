@@ -34,16 +34,19 @@ const initHammer = elem => {
         elem.style.transform = elem.style.transform.replace('scale(1.05)', 'scale(1)');
     });
 
-    hammertime.on('swiperight', () => {
-        elem.remove();
-
-    });
-
-    hammertime.on('swipeleft', () => {
+    hammertime.on('swipe', () => {
         elem.remove();
         const newElem = $('<div></div>').addClass('child');
         wrapper.prepend(newElem[0]);
         initHammer(newElem[0]);
+    });
+
+    hammertime.on('swiperight', () => {
+        
+    });
+
+    hammertime.on('swipeleft', () => {
+        
     });
 }
 

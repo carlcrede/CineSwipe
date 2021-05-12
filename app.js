@@ -33,6 +33,9 @@ require('./socketHandler')(io);
 const fs = require('fs');
 const index = fs.readFileSync(__dirname + '/public/index.html', 'utf-8');
 
+// routing
+const moviedbRoute = require('./routes/moviedb');
+app.use(moviedbRoute.router);
 
 app.get('/', (req, res) => {
     res.send(index);
