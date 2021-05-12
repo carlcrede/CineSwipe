@@ -12,7 +12,7 @@ app.use(helmet({
         useDefaults: true, 
         directives: { 
             'script-src': ["'self'", 'code.jquery.com', 'cdnjs.cloudflare.com'], 
-            'style-src': ["'self'", 'cdnjs.cloudflare.com']
+            'style-src': ["'self'", 'cdnjs.cloudflare.com', 'unsafe-inline']
         }
     }
 }));
