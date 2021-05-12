@@ -10,7 +10,10 @@ const helmet = require('helmet');
 app.use(helmet({ 
     contentSecurityPolicy: { 
         useDefaults: true, 
-        directives: { 'script-src': ["'self'", 'code.jquery.com', 'cdnjs.cloudflare.com']}
+        directives: { 
+            'script-src': ["'self'", 'code.jquery.com'], 
+            'style-src': ["'self'", 'cdnjs.cloudflare.com']
+        }
     }
 }));
 
@@ -36,7 +39,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/:id', (req, res, next) => {
-    if (io.sockets.adapter.rooms.get(req.params.id)) {
+    if(io.sockets.adapter.rooms.has(req.params.id)){
         res.send(index);
     } else {
         next();
