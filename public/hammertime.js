@@ -35,9 +35,7 @@ const initHammer = elem => {
 
     hammertime.on('swipe', () => {
         elem.remove();
-        const newElem = $('<div></div>').addClass('child');
-        wrapper.prepend(newElem[0]);
-        initHammer(newElem[0]);
+        addCard();
     });
 
     hammertime.on('swiperight', () => {
@@ -47,14 +45,4 @@ const initHammer = elem => {
     hammertime.on('swipeleft', () => {
         
     });
-}
-
-const insertCards = () => {
-    let elements = $('.wrapper').children();
-    $.map(elements, (elem, index) => {
-        initHammer(elem);
-    });
-    /* elements.forEach((elem, index) => {
-        initHammer(elem);
-    }); */
 }
