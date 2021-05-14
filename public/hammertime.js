@@ -23,7 +23,6 @@ const initHammer = elem => {
     });
 
     hammertime.on('press', () => {
-        console.log('pressed');
         elem.style.transition = '.2s ease-in-out';
         //elem.style.transform = elem.style.transform.replace('scale(1)', 'scale(1.05)');
         elem.style.transform = 'scale(1.05)';
@@ -39,7 +38,8 @@ const initHammer = elem => {
     });
 
     hammertime.on('swiperight', () => {
-        
+        console.log('Liked movie id:', elem.id);
+        clientLikedMovie(elem.id);
     });
 
     hammertime.on('swipeleft', () => {

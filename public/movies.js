@@ -16,6 +16,14 @@ const initialCards = async () => {
     }
 }
 
+// backdrop
+// title, overview
+// avg vote, imdb?
+// hidden id
+// genres maybe
+// release date / year
+// provider logos
+// playtime
 const addCard = async () => {
     let movie = movielist[movielist.length-1];
     if (!movie) {
@@ -23,7 +31,7 @@ const addCard = async () => {
         await fetchmovies(page);
         movie = movielist[movielist.length-1];
     }
-    let child = $('<div class="child"></div>');
+    let child = $(`<div id="${movie.id}" class="child"></div>`);
     child.append(`<h1>${movie.title}</h1>`);
     $('.wrapper').prepend(child);
     child.css('background-image', `url('https://www.themoviedb.org/t/p/w500${movie.backdrop_path}')`);
@@ -36,14 +44,6 @@ initialCards().then(() => console.log(movielist));
 
 
 /* const buildCards = async (cards) => {
-    // backdrop
-    // title, overview
-    // avg vote, imdb?
-    // hidden id
-    // genres maybe
-    // release date / year
-    // provider logos
-    // playtime
     const data = await cards;
     data.forEach((movie, index) => {
         let child = $('<div class="child"></div>');
