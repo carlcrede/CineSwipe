@@ -8,7 +8,7 @@
     left: 20%;;
     right: 20%;;
     width: 500px;
-    height: 500px;
+    height: 250px;
     position: relative;
 }
 .child {
@@ -16,5 +16,5 @@
     width: 100%;
     height: 200px;
     transform: scale(1);
-    background: red;
+    /* background: red; */
 }

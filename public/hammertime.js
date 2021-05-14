@@ -1,4 +1,3 @@
-let elements = $('.wrapper').children();
 let wrapper = $('.wrapper');
 
 const initHammer = elem => {
@@ -50,6 +49,12 @@ const initHammer = elem => {
     });
 }
 
-$.map(elements, (elem, index) => {
-    initHammer(elem);
-});
+const insertCards = () => {
+    let elements = $('.wrapper').children();
+    $.map(elements, (elem, index) => {
+        initHammer(elem);
+    });
+    /* elements.forEach((elem, index) => {
+        initHammer(elem);
+    }); */
+}

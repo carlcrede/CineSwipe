@@ -12,9 +12,10 @@ app.use(helmet({
         useDefaults: true, 
         directives: { 
             'script-src': ["'self'", 'code.jquery.com', 'cdnjs.cloudflare.com'], 
-            'style-src': ["'self'", 'cdnjs.cloudflare.com', 'unsafe-inline']
-        }
-    }
+            'style-src': ["'self'", 'cdnjs.cloudflare.com', 'unsafe-inline'],
+            'img-src': ['self', 'www.themoviedb.org'],
+        },
+    },
 }));
 
 // serve static files from /public folder
