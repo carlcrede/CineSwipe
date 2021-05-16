@@ -34,24 +34,12 @@ const addCard = async () => {
     let child = $(`<div id="${movie.id}" class="child"></div>`);
     child.append(`<h1>${movie.title}</h1>`);
     $('.wrapper').prepend(child);
-    child.css('background-image', `url('https://www.themoviedb.org/t/p/w500${movie.backdrop_path}')`);
+
+    //TODO: CSS should be made into classes that can be added, removed and toggled
+    child.css('background-image', `linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(10,10,10,1)), url('https://www.themoviedb.org/t/p/w500${movie.backdrop_path}')`);
     // jQuery element is always an array, so destructuring to get html element - hammer cant use jQuery object
     initHammer(...child);
     movielist.pop();
 }
 
 initialCards().then(() => console.log(movielist));
-
-
-/* const buildCards = async (cards) => {
-    const data = await cards;
-    data.forEach((movie, index) => {
-        let child = $('<div class="child"></div>');
-        child.append(`<h1>${movie.title}</h1>`);
-        $('.wrapper').append(child);
-        child.css('background-image', `url('https://www.themoviedb.org/t/p/w500${movie.backdrop_path}')`);
-    });
-    insertCards();
-} */
-
-//buildCards(fetchmovies(page));

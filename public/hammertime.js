@@ -37,7 +37,7 @@ const initHammer = elem => {
         addCard();
     });
 
-    hammertime.on('swiperight', () => {
+    hammertime.on('swiperight', (ev) => {
         console.log('Liked movie id:', elem.id);
         clientLikedMovie(elem.id);
     });
