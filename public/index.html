@@ -11,11 +11,29 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <div class="grid">
-        <div class="wrapper"></div>
-    </div>
-    <button id="copy-session"></button>
-    <div id="match"></div>
+    <header>
+        <nav class="navbar"><p>navbar</p></nav>
+    </header>
+    <main>
+        <div class="grid">
+            <div class="grid-row">
+                <button id="copy-session"></button>
+            </div>
+            <div class="grid-row">
+                <div class="cardwrapper">
+                    <div class="tab">
+                        <a id="cardTab" class="tablinks">Swipe</a>
+                        <a id="matchTab" class="tablinks">Results</a>
+                    </div>
+                    <div>
+                        <div id="cards" class="wrapper tabcontent"></div>
+                        <div id="match" class="tabcontent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="/client.js"></script>
     <script src="/hammertime.js"></script>
