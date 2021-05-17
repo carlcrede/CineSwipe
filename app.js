@@ -13,7 +13,7 @@ app.use(helmet({
         directives: { 
             'script-src': ["'self'", 'code.jquery.com', 'cdnjs.cloudflare.com'], 
             'style-src': ["'self'", 'cdnjs.cloudflare.com', 'unsafe-inline'],
-            'img-src': ['self', 'www.themoviedb.org'],
+            'img-src': ['self', 'www.themoviedb.org', 'image.tmdb.org'],
         },
     },
 }));
