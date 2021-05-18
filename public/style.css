@@ -24,7 +24,6 @@ h1,h2,h3,h4,h5,p,a,label,textarea {
 
 .grid {
     display: grid;
-    /* grid-template-columns: 20% 60% 20%; */
     grid-template-rows: auto;
     justify-content: center;
 }
@@ -66,25 +65,27 @@ h1,h2,h3,h4,h5,p,a,label,textarea {
     margin-top: .5rem;
     padding: 1rem;
     border: .1rem solid rgb(10, 16, 22);
-    /* box-shadow:
-        0 2.8px 2.2px rgba(10, 16, 22, 0.034),
-        0 6.7px 5.3px rgba(10, 16, 22, 0.048),
-        0 12.5px 10px rgba(10, 16, 22, 0.06),
-        0 22.3px 17.9px rgba(10, 16, 22, 0.072),
-        0 41.8px 33.4px rgba(10, 16, 22, 0.086),
-        0 100px 80px rgba(10, 16, 22, 0.12); */
+    outline: 1px solid transparent;
     background-clip: border-box;
     background-color: linear-gradient(1deg, rgba(62,54,54,0.9419117988992471) 31%, rgba(255,255,255,0) 80%);
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
+}
+
+.child.moving {
+    box-shadow: rgba(0, 0, 0, 0.77) 0px 2px 14px 0px;
+}
+
+.child:hover {
+    transition: filter 250ms;
+    filter: brightness(110%);
 }
 
 .tab {
     overflow: hidden;
-    /* border: 1px solid #ccc; */
-    /* background-color: #f1f1f1; */
 }
 
 .tab a {
-    /* background-color: black; */
     float: left;
     border: none;
     outline: none;
@@ -104,7 +105,5 @@ h1,h2,h3,h4,h5,p,a,label,textarea {
 
 .tabcontent {
     display: none;
-    /* padding: 6px 12px; */
-    /* border: 1px solid #ccc; */
     border-top: none;
 }
