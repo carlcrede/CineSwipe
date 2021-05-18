@@ -4,9 +4,9 @@ const swipedElements = [];
 const initHammer = elem => {
     const hammertime = new Hammer(elem);
 
-    hammertime.get('press').set({ time: 100 });
+    hammertime.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 5 });
 
-    hammertime.get('swipe').set({ velocity: 1.1 });
+    hammertime.get('press').set({ time: 100 });
 
     hammertime.on('pan', (ev) => {
         elem.style.transition = '';
@@ -53,7 +53,7 @@ const initHammer = elem => {
         $(elem).toggleClass('moving');
         elem.style.transform = elem.style.transform.replace('scale(1.05)', 'scale(1)');
     });
-    
+
     setTimeout(() => {
         swipedElements.forEach(element => element.remove());
     }, 1000);
