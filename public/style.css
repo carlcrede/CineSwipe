@@ -1,7 +1,17 @@
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
 body {
     background: rgb(10, 16, 22);
     font-family: Arial, Helvetica, sans-serif;
-    overflow-y: hidden;
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-y: scroll; 
+}
+
+body::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
 }
 
 h1,h2,h3,h4,h5,p,a,label,textarea {
@@ -20,7 +30,7 @@ h1,h2,h3,h4,h5,p,a,label,textarea {
 }
 
 .grid-row {
-    width: 35vw;
+    width: 45vw;
 }
 
 .child-card-info {
@@ -41,24 +51,30 @@ h1,h2,h3,h4,h5,p,a,label,textarea {
     width: 100%;
     position: relative;
 }
+
+.child-wrapper {
+    border-radius: 1rem;
+}
+
 .child {
     position: absolute;
     width: 100%;
-    height: 281px;
+    height: 350px;
     transform: scale(1);
     background-size: cover;
-    border-radius: 0.5rem;
-    /* margin: 5px; */
+    border-radius: 1rem;
     margin-top: .5rem;
     padding: 1rem;
-    box-shadow:
-        0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-        0 6.7px 5.3px rgba(0, 0, 0, 0.048),
-        0 12.5px 10px rgba(0, 0, 0, 0.06),
-        0 22.3px 17.9px rgba(0, 0, 0, 0.072),
-        0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-        0 100px 80px rgba(0, 0, 0, 0.12);
-    /* background: red; */
+    border: .1rem solid rgb(10, 16, 22);
+    /* box-shadow:
+        0 2.8px 2.2px rgba(10, 16, 22, 0.034),
+        0 6.7px 5.3px rgba(10, 16, 22, 0.048),
+        0 12.5px 10px rgba(10, 16, 22, 0.06),
+        0 22.3px 17.9px rgba(10, 16, 22, 0.072),
+        0 41.8px 33.4px rgba(10, 16, 22, 0.086),
+        0 100px 80px rgba(10, 16, 22, 0.12); */
+    background-clip: border-box;
+    background-color: linear-gradient(1deg, rgba(62,54,54,0.9419117988992471) 31%, rgba(255,255,255,0) 80%);
 }
 
 .tab {

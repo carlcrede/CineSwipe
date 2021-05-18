@@ -31,7 +31,10 @@ const addCard = async () => {
         await fetchmovies(page);
         movie = movielist[movielist.length-1];
     }
-    let child = $(`<div id="${movie.id}" class="child grid"></div>`);
+
+    let child = $(
+        `<div id="${movie.id}" class="child grid"></div>`);
+    
     let top = $(
         `<div class="child-card-top">
             <a>Trailer</a>
@@ -41,7 +44,7 @@ const addCard = async () => {
         let dkProviders = movie.Providers.results.DK.flatrate;
         let providers = $('<div class="child-card-info"></div>');
         dkProviders.forEach((value, index) => {
-            providers.append(`<img width="30px" src="https://image.tmdb.org/t/p/w500${value.logo_path}">`);
+            providers.append(`<img width="30px" src="https://image.tmdb.org/t/p/original${value.logo_path}">`);
         });
         top.append(providers);
     };
@@ -61,7 +64,7 @@ const addCard = async () => {
     $('.wrapper').prepend(child);
 
     //TODO: CSS should be made into classes that can be added, removed and toggled
-    child.css('background-image', `linear-gradient(1deg, rgba(62,54,54,0.9419117988992471) 31%, rgba(255,255,255,0) 80%), url('https://www.themoviedb.org/t/p/w500${movie.backdrop_path}')`);
+    child.css('background-image', `linear-gradient(1deg, rgba(62,54,54,0.9419117988992471) 31%, rgba(255,255,255,0) 80%), url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')`);
     // jQuery element is always an array, so destructuring to get html element - hammer cant use jQuery object
     initHammer(...child);
     movielist.pop();
