@@ -1,11 +1,11 @@
-body {
+/* body {
     display: grid;
     background-color: rgb(10, 16, 33);
     justify-items: center;
     margin: 0;
     column-gap: 0.5rem;
     row-gap: 0.5rem;
-}
+} */
 
 .session-link {
     background-color: rgb(255, 255, 255, 0.12);
@@ -17,36 +17,28 @@ body {
     color: rgb(255, 255, 255);
     justify-content: center;
     align-items: center;
-    width: calc(40vw);
     transition: .1s ease-in-out;
-    
 }
 
 .session-link:hover {
     background-color: rgb(255, 255, 255, 0.24);
 }
 
+/* .session-url {
+    
+} */
+
 .session-link i {
     font-size: 1.25rem;
     transform: rotate(180deg);
 }
 
-nav {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: max-content;
-    width: calc(100vw)
-}
-
-.nav-item {
-    background-color: rgb(255, 255, 255, 0.12);
-    padding: 0 1rem;
-    display: inline;
+#copy-modal {
+    display: none;
+    border-radius: 16%;
+    position: absolute;
+    top: 0vh;
+    left: calc(100vw - 10rem);
+    background-color: rgb(201, 47, 47);
     color: rgb(255, 255, 255);
-    
-}
-
-.nav-item:hover {
-    background-color: rgb(255, 255, 255, 0.24);
-    
 }

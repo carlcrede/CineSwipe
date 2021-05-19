@@ -10,9 +10,10 @@ if(location.pathname === '/'){
 }
 
 socket.on('session', (roomId) => {
-    const session = $("#copy-session");
-    session.text(location.host + '/' + roomId + ' ');
-    session.append('<i class="far fa-clone"></i>');
+    const session = $("#session-url");
+    // session.text(location.host + '/' + roomId + ' ');
+    // console.log(session);
+    session.text(location.host + '/' + roomId + '');
 });
 
 socket.on('match', (movieId) => {
@@ -26,12 +27,18 @@ const clientLikedMovie = (movieId) => {
 }
 
 $("#copy-session").click(() => {
-    const texttocopy = $('#copy-session').text();
-    navigator.clipboard.writeText(texttocopy).then(function() {
+    const texttocopy = $('#session-url').text();
+    navigator.clipboard.writeText(texttocopy).then(() => {
         console.log('Async: Copying to clipboard was successful!');
-      }, function(err) {
+      }, (err) => {
         console.error('Async: Could not copy text: ', err);
     });
+    const copymodal = $('#copy-modal');
+    if(copymodal.is(':visible')) { return; }
+    copymodal.show();
+    setTimeout(() => {
+        copymodal.hide();
+    }, 5000);
 });
 
 $('#cardTab').click((event) => {
