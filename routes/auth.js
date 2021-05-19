@@ -1,4 +1,7 @@
 const router = require('express').Router();
+
+const { body, validationResult } = require('express-validator');
+
 const User = require('../db/model/user.js');
 
 const bcrypt = require('bcrypt');
@@ -20,14 +23,24 @@ router.post('/register', async (req, res) => {
     }
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', 
+    body('username').escape(),
+    body('password').escape(),
+    async (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(errors);
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     try {
         const user = await User.findOne({ user: req.body.username });
         if (user) {
             const cmp = await bcrypt.compare(req.body.password, user.pass);
             if (cmp) {
                 // further code to maintain authentication like jwt or sessions
-                res.send("Auth Successful");
+                res.redirect('/');
             } else {
                 res.send("Wrong username or password.");
             } 
