@@ -4,6 +4,9 @@ require('dotenv').config();
 // create express app
 const express = require('express');
 const app = express();
+app.use(express.json())
+
+const db = require('./db/db');
 
 // include helmet for some security
 const helmet = require('helmet');
@@ -36,7 +39,11 @@ const index = fs.readFileSync(__dirname + '/public/index.html', 'utf-8');
 
 // routing
 const moviedbRoute = require('./routes/moviedb');
+const { Double } = require('bson');
 app.use(moviedbRoute.router);
+const authRoute = require('./routes/auth');
+app.use(authRoute.router);
+
 
 app.get('/', (req, res) => {
     res.send(index);
