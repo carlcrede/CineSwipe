@@ -3,7 +3,7 @@ const moviedb = new MovieDb(process.env.MOVIEDB_API_KEY);
 
 const router = require('express').Router();
 
-const popularMovies = async (pageNumber) => {
+/* const popularMovies = async (pageNumber) => {
     const popularMovies = await moviedb.moviePopular({ region: 'DK', page: pageNumber });
     const dkMovies = await Promise.all(popularMovies.results.map(async (result) => {
         const providers = await moviedb.movieWatchProviders(result.id);
@@ -19,9 +19,43 @@ const popularMovies = async (pageNumber) => {
         return val;
     });
     return filtered;
+} */
+
+const popularMovies = async (page) => {
+    const popularMovies = await moviedb.moviePopular({ page: page });
+    const movies = await Promise.all(popularMovies.results.map(async (result) => {
+        const providers = await moviedb.movieWatchProviders(result.id);
+        result['watch_providers'] = providers;
+        result['media_type'] = 'movie';
+        return result;
+    }));
+    return movies;
 }
 
-router.get("/movie/popular/:page", (req, res, next) => {
+const popularTv = async (page) => {
+    const popularTv = await moviedb.tvPopular({ page: page });
+    const tv = await Promise.all(popularTv.results.map(async (result) => {
+        const providers = await moviedb.tvWatchProviders(result.id);
+        result['watch_providers'] = providers;
+        result['media_type'] = 'tv';
+        return result;
+    }));
+    return tv;
+}
+
+router.get('/movie/popular/:page', async (req, res, next) => {
+    const page = Number(req.params.page);
+    const movies = await popularMovies(page);
+    res.send(movies);
+});
+
+router.get('/tv/popular/:page', async (req, res, next) => {
+    const page = Number(req.params.page);
+    const tv = await popularTv(page);
+    res.send(tv);
+});
+
+/* router.get("/movie/popular/:page", (req, res, next) => {
     const page = Number(req.params.page);
     console.log('/movie/popular/:page called');
     if(Number.isInteger(page)){
@@ -31,7 +65,7 @@ router.get("/movie/popular/:page", (req, res, next) => {
         console.log('"/movie/popular/" parameter is not valid');
         next();
     }
-});
+}); */
 
 // popularMovies(1).then(res => console.log(res.length));
 
