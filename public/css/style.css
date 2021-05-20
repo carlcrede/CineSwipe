@@ -30,6 +30,7 @@ h1,h2,h3,h4,h5,p,a,label,textarea {
     display: grid;
     grid-template-rows: auto;
     justify-content: center;
+    row-gap: 1rem;
 }
 
 .grid-row {

@@ -21,6 +21,7 @@
     "bcrypt": "^5.0.1",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
+    "express-validator": "^6.11.1",
     "helmet": "^4.6.0",
     "mongodb": "^3.6.7",
     "mongoose": "^5.12.10",
