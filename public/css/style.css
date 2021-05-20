@@ -7,8 +7,11 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */
-    overflow-y: scroll; 
+    /* overflow-y: scroll;  */
+    overflow: hidden;
     margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body::-webkit-scrollbar {
@@ -30,7 +33,7 @@ h1,h2,h3,h4,h5,p,a,label,textarea {
 }
 
 .grid-row {
-    width: 45vw;
+    width: 40vw;
 }
 
 .child-card-info {
@@ -53,7 +56,12 @@ h1,h2,h3,h4,h5,p,a,label,textarea {
 }
 
 .child-wrapper {
-    border-radius: 1rem;
+    display: grid;
+    /* grid-template-areas: 
+        "trailer providers" 
+        "title" 
+        "rating genres release" 
+        "overview"; */
 }
 
 .child {
@@ -64,13 +72,12 @@ h1,h2,h3,h4,h5,p,a,label,textarea {
     background-size: cover;
     border-radius: 1rem;
     margin-top: .5rem;
-    padding: 1rem;
+    padding: 2rem;
     border: .1rem solid rgb(10, 16, 22);
     outline: 1px solid transparent;
     background-clip: border-box;
     background-color: linear-gradient(1deg, rgba(62,54,54,0.9419117988992471) 31%, rgba(255,255,255,0) 80%);
     backface-visibility: hidden;
-    -webkit-font-smoothing: subpixel-antialiased;
 }
 
 .child.moving {
@@ -107,4 +114,12 @@ h1,h2,h3,h4,h5,p,a,label,textarea {
 .tabcontent {
     display: none;
     border-top: none;
+}
+
+.fas.fa-star {
+    color: yellow;
+} 
+
+.child-card-info > img {
+    width: 1.8vw;
 }

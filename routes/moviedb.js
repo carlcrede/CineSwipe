@@ -20,14 +20,14 @@ const router = require('express').Router();
     });
     return filtered;
 } */
-
 const popularMovies = async (page) => {
     const popularMovies = await moviedb.moviePopular({ page: page });
     const movies = await Promise.all(popularMovies.results.map(async (result) => {
-        const providers = await moviedb.movieWatchProviders(result.id);
-        result['watch_providers'] = providers;
-        result['media_type'] = 'movie';
-        return result;
+        const details = await moviedb.movieInfo({ id: result.id, append_to_response: 'watch/providers,videos' });
+        //const providers = await moviedb.movieWatchProviders(result.id);
+        //result['watch_providers'] = providers;
+        details['media_type'] = 'movie';
+        return details;
     }));
     return movies;
 }
@@ -35,13 +35,25 @@ const popularMovies = async (page) => {
 const popularTv = async (page) => {
     const popularTv = await moviedb.tvPopular({ page: page });
     const tv = await Promise.all(popularTv.results.map(async (result) => {
-        const providers = await moviedb.tvWatchProviders(result.id);
-        result['watch_providers'] = providers;
-        result['media_type'] = 'tv';
-        return result;
+        const details = await moviedb.tvInfo({ id: result.id, append_to_response: 'watch/providers,videos' });
+        //const providers = await moviedb.tvWatchProviders(result.id);
+        //result['watch_providers'] = providers;
+        details['media_type'] = 'tv';
+        return details;
     }));
     return tv;
 }
+
+// TODO: could just make the details call when getting popular movies
+// and tv, and use 
+const movieDetails = async (movieId) => {
+    const details = await moviedb.movieInfo(movieId);
+    return details;
+}
+
+router.get('/movie/:id/details', async (req, res, next) => {
+
+})
 
 router.get('/movie/popular/:page', async (req, res, next) => {
     const page = Number(req.params.page);
