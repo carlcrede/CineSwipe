@@ -2,6 +2,22 @@
     box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+    width: 10px;
+  }
+
+::-webkit-scrollbar-track {
+    background:rgb(255, 255, 255, 0.12);
+}
+
+::-webkit-scrollbar-thumb {
+    background:rgb(255, 255, 255, 0.24);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background:rgb(255, 255, 255, 0.36);
+}
+
 body {
     background: rgb(10, 16, 22);
     font-family: Arial, Helvetica, sans-serif;
