@@ -136,6 +136,9 @@ temp/
 !.vscode/extensions.json
 *.code-workspace
 
+# Nodemon config json
+nodemon.json
+
 # End of https://www.toptal.com/developers/gitignore/api/node,vscode
 
 

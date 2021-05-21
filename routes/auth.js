@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const pages = require('../util/html-filesync');
+const pages = require('../util/ssr');
 
 const { body, validationResult } = require('express-validator');
 
@@ -8,6 +8,10 @@ const User = require('../db/model/user.js');
 
 const bcrypt = require('bcrypt');
 const saltRounds = process.env.BCRYPT_SALTROUNDS;
+
+router.get('/register', (req, res) => {
+    res.send(pages.register);
+});
 
 router.post('/register', async (req, res) => {
     try {
@@ -25,9 +29,12 @@ router.post('/register', async (req, res) => {
     }
 });
 
-
 router.get('/login', (req, res) => {
-    res.send(pages.login);
+    if(req.session.userId){
+        res.redirect('/');
+    } else {
+        res.send(pages.login);
+    }
 });
 
 router.post('/login', 
@@ -47,6 +54,7 @@ router.post('/login',
             const cmp = await bcrypt.compare(req.body.password, user.pass);
             if (cmp) {
                 // further code to maintain authentication like jwt or sessions
+                req.session.userId = req.body.username;
                 res.redirect('/');
             } else {
                 res.send("Wrong username or password.");
@@ -58,6 +66,10 @@ router.post('/login',
         console.log(error);
         res.status(500).send("Internal Server error occured");
     }
+});
+
+router.get('/logout', (req, res) => {
+    res.redirect('/');
 });
 
 module.exports = {
