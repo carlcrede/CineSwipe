@@ -7,11 +7,10 @@
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
     <title>Document</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g==" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/session-link.css">
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
     <header>
@@ -52,30 +51,27 @@
     </header>
     <main>
         <div class="grid">
-            <div id="copy-modal">Copied to clipboard!</div>
-            <button class="session-link" id="copy-session">
-                <h2 id="session-url"></h2>
-                <i class="far fa-clone"></i>
-            </button>
-            <div class="grid-row">
-                <div class="cardwrapper">
-                    <div class="tab">
-                        <a id="cardTab" class="tablinks">Swipe</a>
-                        <a id="matchTab" class="tablinks">Results</a>
+            <div class="form-container">
+                <h1>Login</h1>
+                <form class="form" method="POST" action="/register">
+                    <div class="form-group">
+                        <label for="email">Enter Email</label>
+                        <input type="text" name="email" id="email">                        
                     </div>
-                    <div>
-                        <div id="cards" class="wrapper tabcontent">
-                        </div>
-                        <div id="match" class="tabcontent"></div>
+                    <div class="form-group">
+                        <label for="username">Enter Username</label>
+                        <input type="text" name="username" id="username">                        
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="password">Enter Password</label>
+                        <input type="password" name="password" id="password">
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="login">
+                    </div>
+                </form>
             </div>
         </div>
     </main>
-
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/client.js"></script>
-    <script src="/hammertime.js"></script>
-    <script src="/movies.js"></script>
 </body>
 </html>
