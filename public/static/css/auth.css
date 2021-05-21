@@ -1,0 +1,24 @@
+.form-container {
+    display: grid;
+    text-align: center;
+    justify-content: center;
+}
+
+.form-group {
+    display: grid;
+    text-align: center;
+    padding: 1rem 5rem 0 5rem;
+    width: 40rem;
+    /* justify-items: center; */
+}
+
+.error-label {
+    text-align: left;
+    color: rgb(255, 80, 80);
+    font-size: .8rem;
+}
+
+.submit-button {
+    justify-self: center;
+    width: 15rem;
+}

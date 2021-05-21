@@ -25,7 +25,6 @@ app.use(helmet({
 // serve static files from /public folder
 app.use(express.static(__dirname + '/public/static'));
 
-const pages = require('./util/html-filesync');
 
 // create http server
 const http = require('http').createServer(app);
@@ -34,18 +33,32 @@ const PORT = process.env.PORT || 8080;
 
 // mount socket.io to server
 const io = new Server(http);
-require('./socketHandler')(io);
+require('./util/socketHandler')(io);
+
+// use express-session with specified settings
+const session = require('express-session');
+app.use(session({
+    name: 'sid',
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { 
+        sameSite: 'strict',
+        secure: false
+    }
+}));
 
 // fs module for server-side rendering
-
-
+const pages = require('./util/ssr');
 
 // routing
 const moviedbRoute = require('./routes/moviedb');
 const { Double } = require('bson');
 app.use(moviedbRoute.router);
-const authRoute = require('./routes/auth');
+const authRoute = require('./routes/auth/auth');
 app.use(authRoute.router);
+const sessionRoute = require('./routes/session');
+app.use(sessionRoute.router);
 
 
 app.get('/', (req, res) => {
