@@ -1,0 +1,29 @@
+<body>
+    <main>
+        <div class="grid">
+            <div id="copy-modal">Copied to clipboard!</div>
+            <button class="session-link" id="copy-session">
+                <h2 id="session-url"></h2>
+                <i class="far fa-clone"></i>
+            </button>
+            <div class="grid-row">
+                <div class="cardwrapper">
+                    <div class="tab">
+                        <a id="cardTab" class="tablinks">Swipe</a>
+                        <a id="matchTab" class="tablinks">Results</a>
+                    </div>
+                    <div>
+                        <div id="cards" class="wrapper tabcontent">
+                        </div>
+                        <div id="match" class="tabcontent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/client.js"></script>
+    <script src="/js/hammertime.js"></script>
+    <script src="/js/movies.js"></script>
+</body>
+</html>

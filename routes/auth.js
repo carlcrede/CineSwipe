@@ -1,11 +1,17 @@
 const router = require('express').Router();
 
+const pages = require('../util/html-filesync');
+
 const { body, validationResult } = require('express-validator');
 
 const User = require('../db/model/user.js');
 
 const bcrypt = require('bcrypt');
 const saltRounds = 12;
+
+router.get('/login', (req, res) => {
+    res.send(pages.login);
+});
 
 router.post('/register', async (req, res) => {
     try {

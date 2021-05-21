@@ -23,7 +23,9 @@ app.use(helmet({
 }));
 
 // serve static files from /public folder
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public/static'));
+
+const pages = require('./util/html-filesync');
 
 // create http server
 const http = require('http').createServer(app);
@@ -35,8 +37,8 @@ const io = new Server(http);
 require('./socketHandler')(io);
 
 // fs module for server-side rendering
-const fs = require('fs');
-const index = fs.readFileSync(__dirname + '/public/index.html', 'utf-8');
+
+
 
 // routing
 const moviedbRoute = require('./routes/moviedb');
@@ -47,12 +49,12 @@ app.use(authRoute.router);
 
 
 app.get('/', (req, res) => {
-    res.send(index);
+    res.send(pages.index);
 });
 
 app.get('/:id', (req, res, next) => {
     if(io.sockets.adapter.rooms.has(req.params.id)){
-        res.send(index);
+        res.send(pages.index);
     } else {
         next();
     }
