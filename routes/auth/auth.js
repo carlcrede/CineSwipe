@@ -29,9 +29,6 @@ router.post('/register', checkSchema(schema.register), async (req, res) => {
     if (!errors.isEmpty()) {
         req.session.errors = errors;
         return res.redirect('/register');
-        // return res.status(400).json({
-        //     errors: errors.array()
-        // });
     }
     try {
         const email = req.body.email;
@@ -58,17 +55,7 @@ router.get('/login', (req, res) => {
     }
 });
 
-router.post('/login', 
-    body('username').escape(),
-    body('password').escape(),
-    async (req, res) => {
-
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        console.log(errors);
-      return res.status(400).json({ errors: errors.array() });
-    }
-
+router.post('/login', async (req, res) => {
     try {
         const user = await User.findOne({ user: req.body.username });
         if (user) {
@@ -78,10 +65,12 @@ router.post('/login',
                 req.session.userId = req.body.username;
                 res.redirect('/');
             } else {
-                res.send("Wrong username or password.");
+                req.session.loginfailed = 'Wrong username or password';
+                return res.redirect('/login');
             } 
         } else {
-            res.send("Wrong username or password.");
+            req.session.loginfailed = 'Wrong username or password';
+            return res.redirect('/login');
         }
     } catch (error) {
         console.log(error);

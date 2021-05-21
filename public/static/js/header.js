@@ -26,7 +26,7 @@ const setupLeftNav = async() => {
                         ${userId}
                     </h3>
                 </a>
-            </div>')`
+            </div>`
         );
         const logoutForm = $('#logout-form');
         const logoutButton = $('#logout');
@@ -48,9 +48,9 @@ const setupLeftNav = async() => {
                         Login
                     </h3>
                 </a>
-            </div>')`
+            </div>`
         );
     }
 }
 
-setupLeftNav().then(console.log('leftnav was set up'));
+setupLeftNav();
