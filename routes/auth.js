@@ -7,11 +7,7 @@ const { body, validationResult } = require('express-validator');
 const User = require('../db/model/user.js');
 
 const bcrypt = require('bcrypt');
-const saltRounds = 12;
-
-router.get('/login', (req, res) => {
-    res.send(pages.login);
-});
+const saltRounds = process.env.BCRYPT_SALTROUNDS;
 
 router.post('/register', async (req, res) => {
     try {
@@ -27,6 +23,11 @@ router.post('/register', async (req, res) => {
         console.log(error);
         res.status(500).send("Internal Server error occured");
     }
+});
+
+
+router.get('/login', (req, res) => {
+    res.send(pages.login);
 });
 
 router.post('/login', 
