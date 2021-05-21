@@ -1,24 +1,46 @@
 const router = require('express').Router();
 
-const pages = require('../util/ssr');
+//server side rendering
+const pages = require('../../util/ssr');
 
-const { body, validationResult } = require('express-validator');
+//express-validator for form validation
+const { body, check, checkSchema, validationResult } = require('express-validator');
 
-const User = require('../db/model/user.js');
+//javascript objects/schemas to be used with express-validator
+const schema = require('./validation-schema');
 
+//mongoose User model
+const User = require('../../db/model/user.js');
+
+//password hashing
 const bcrypt = require('bcrypt');
-const saltRounds = process.env.BCRYPT_SALTROUNDS;
+const saltRounds = Number(process.env.BCRYPT_SALTROUNDS);
 
+/* ______________________________________________________________________________ */
+//routes
 router.get('/register', (req, res) => {
+    console.log(req.session.errors);
     res.send(pages.register);
 });
 
-router.post('/register', async (req, res) => {
+router.post('/register', checkSchema(schema.register), async (req, res) => {
+    //if express-validator validationResult contains any errors then form data is invalid
+    //see -> validation-schema for details
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        req.session.errors = errors;
+        return res.redirect('/register');
+        // return res.status(400).json({
+        //     errors: errors.array()
+        // });
+    }
     try {
+        const email = req.body.email;
         const username = req.body.username;
         const plainTextPassword = req.body.password;
         const hashedPwd = await bcrypt.hash(plainTextPassword, saltRounds);
         const insertResult = await User.create({
+            email: email,
             user: username,
             pass: hashedPwd
         });

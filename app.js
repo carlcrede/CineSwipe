@@ -55,7 +55,7 @@ const pages = require('./util/ssr');
 const moviedbRoute = require('./routes/moviedb');
 const { Double } = require('bson');
 app.use(moviedbRoute.router);
-const authRoute = require('./routes/auth');
+const authRoute = require('./routes/auth/auth');
 app.use(authRoute.router);
 const sessionRoute = require('./routes/session');
 app.use(sessionRoute.router);
