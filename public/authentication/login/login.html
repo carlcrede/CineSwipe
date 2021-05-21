@@ -5,13 +5,15 @@
                 <h1>Login</h1>
                 <form class="form" method="POST" action="/login">
                     <div class="form-group">
+                        <label class="error-label" id="email-error-label" for="email">&nbsp;</label>
                         <input type="text" name="username" id="username" placeholder="Enter Username or Email">                        
                     </div>
                     <div class="form-group">
+                        <label class="error-label" id="password-error-label" for="username">&nbsp;</label>
                         <input type="password" name="password" id="password" placeholder="Enter Password">
                     </div>
-                    <div class="form-group">
-                        <input type="submit" value="login">
+                    <div class="error-label" class="form-group">
+                        <input class="submit-button" type="submit" value="Login">
                     </div>
                 </form>
             </div>

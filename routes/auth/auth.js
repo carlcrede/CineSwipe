@@ -19,7 +19,6 @@ const saltRounds = Number(process.env.BCRYPT_SALTROUNDS);
 /* ______________________________________________________________________________ */
 //routes
 router.get('/register', (req, res) => {
-    console.log(req.session.errors);
     res.send(pages.register);
 });
 
