@@ -55,7 +55,9 @@ const initHammer = elem => {
     });
 
     setTimeout(() => {
-        swipedElements.forEach(element => element.remove());
+        if (swipedElements.length > 3) {
+            swipedElements.forEach(element => element.remove());
+        }
     }, 1000);
 }
 
