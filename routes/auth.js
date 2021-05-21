@@ -68,8 +68,15 @@ router.post('/login',
     }
 });
 
-router.get('/logout', (req, res) => {
-    res.redirect('/');
+router.post('/logout', (req, res) => {
+    if(!req.session.userId){
+        res.redirect('/');
+    } else {
+        req.session.destroy(() => {
+            res.clearCookie('sid');
+            res.redirect('/');
+        });
+    }
 });
 
 module.exports = {

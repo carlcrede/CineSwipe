@@ -12,11 +12,13 @@ const setupLeftNav = async() => {
     if (userId){
         leftNav.append(
             `<div class="nav-item" id="logout">
-                <a href="/logout">
-                    <h3>
-                        Logout
-                    </h3>
-                </a>
+                <form method="POST" action="/logout" id="logout-form">
+                    <a id=logout>
+                        <h3>
+                            Logout
+                        </h3>
+                    </a>
+                </form>
             </div>
             <div class="nav-item" id="user-tab">
                 <a href="/user/${userId}">
@@ -26,6 +28,11 @@ const setupLeftNav = async() => {
                 </a>
             </div>')`
         );
+        const logoutForm = $('#logout-form');
+        const logoutButton = $('#logout');
+        logoutButton.click(() => {
+            logoutForm.submit();
+        });
     } else {
         leftNav.append(
             `<div class="nav-item" id="register">
