@@ -44,16 +44,24 @@ const popularTv = async (page) => {
     return tv;
 }
 
-// TODO: could just make the details call when getting popular movies
-// and tv, and use 
-const movieDetails = async (movieId) => {
-    const details = await moviedb.movieInfo(movieId);
+const itemDetails = async (id, media_type) => {
+    let details;
+    if (media_type == 'movie') {
+        details = await moviedb.movieInfo({ id: id, append_to_response: 'watch/providers,videos' });
+        details['media_type'] = 'movie';
+    } else {
+        details = await moviedb.tvInfo({ id: id, append_to_response: 'watch/providers,videos' });
+        details['media_type'] = 'tv';
+    }
     return details;
 }
 
-router.get('/movie/:id/details', async (req, res, next) => {
-
-})
+router.get('/:media_type/:id/details', async (req, res, next) => {
+    const id = req.params.id;
+    const media_type = req.params.media_type;
+    const item = await itemDetails(id, media_type);
+    res.send(item);
+});
 
 router.get('/movie/popular/:page', async (req, res, next) => {
     const page = Number(req.params.page);

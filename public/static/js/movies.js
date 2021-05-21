@@ -26,6 +26,21 @@ const combinePopularMoviesAndTv = () => {
     return result;
 }
 
+const fetchDetails = async (item) => {
+    const response = await fetch(`/${item.media_type}/${item.id}/details`);
+    const result = await response.json();
+    return result;
+}
+
+const addCardToMatches = async (item) => {
+    const element = await fetchDetails(item);
+    let card = (element.media_type == 'movie') ? buildMovieCard(element) : buildTvCard(element);
+    card.css('position', 'relative');
+    card.attr('id', `match-${item.id}`);
+    console.log('Match card:', card);
+    $('#match').prepend(card);
+}
+
 // card is built and added to card container div
 const addCard = async () => {
     if (popularMoviesAndTv.length == 0) {
@@ -38,57 +53,42 @@ const addCard = async () => {
     let element = popularMoviesAndTv[0];
     let card = (element.media_type == 'movie') ? buildMovieCard(element) : buildTvCard(element);
     
-    $('.wrapper').prepend(card);
+    $('#cards').prepend(card);
 
     // destructuring jQuery element, since Hammer dont work with them by default.
     initHammer(...card);
     popularMoviesAndTv.shift();
-    console.log(element);
 }
 
 // building movie card div with jQuery
 const buildMovieCard = (movie) => {
-    let child = $(`<div id="${movie.id}" class="child-wrapper child"></div>`);
-    
+    let child = $(`<div id="${movie.id}" data-type="movie" class="child-wrapper child"></div>`);
     let top = $(`<div class="child-card-top"></div>`);
-    const trailer = buildTrailer(movie);
-    top.append(trailer);
-
-    const logopaths = getDistrinctProviders(movie);
-    let providers = buildProviderLogos(logopaths);
-    top.append(providers);
-    child.append(top);
-
-    // adding title
-    child.append(
-        `<div>
-            <h2>${movie.title}</h2>
-        </div>`);
-
-    // release date
-    const release = movie.release_date.split('-')[0];
-
-    // genres
-    const genres = buildGenres(movie.genres);
-
-    // runtime
-    const runtime = convertTime(movie.runtime);
-
     let middleDiv = $(`<div class="child-card-info"></div>`);
     
+    const trailer = buildTrailer(movie);
+    const providers = buildProviderLogos(movie);
+    const release = movie.release_date.split('-')[0];
+    const genres = buildGenres(movie.genres);
+    const runtime = convertTime(movie.runtime);
+    
+    top.append(trailer);
+    top.append(providers);
+
     middleDiv.append(
         `<img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aaebeb75dc7ae79426ddd9be3b2be1e342510f8202baf6bffa71d7f5c4.svg"/>
         <a><i class="fas fa-star"></i> ${movie.vote_average} <small>/ 10</small></a>
         <a>${release}</a>
         <a>${runtime}</a>`);
-    
     middleDiv.append(genres);
     
+    child.append(top);
+    child.append(`<div><h2>${movie.title}</h2></div>`);
     child.append(middleDiv);
-
     child.append(`<div class="child-card-overview"><p>${movie.overview}</p></div>`);
 
     child.css('background-image', `linear-gradient(1deg, rgba(62,54,54,0.9419117988992471) 31%, rgba(255,255,255,0) 80%), url('${img_url}original${movie.backdrop_path}')`);
+    
     return child;
 }
 
@@ -106,7 +106,7 @@ const buildTrailer = (item) => {
             return item.site == 'YouTube' && item.type == 'Trailer';
         });
         if (trailer) {
-            trailerLink.html('<i class="fas fa-play"></i>Trailer');
+            trailerLink.html('<i class="fas fa-play"></i> Trailer');
             trailerLink.attr('href', `https://youtu.be/${trailer.key}`);
         }
     }
@@ -124,57 +124,45 @@ const buildGenres = (genres) => {
 
 // building tv card div with jQuery 
 const buildTvCard = (tv) => {
-    let child = $(`<div id="${tv.id}" class="child grid"></div>`);
-
+    let child = $(`<div id="${tv.id}" data-type="tv" class="child grid"></div>`);
     let top = $(`<div class="child-card-top"></div>`);
-    const trailer = buildTrailer(tv);
-    top.append(trailer);
-
-    const logopaths = getDistrinctProviders(tv);
-    let providers = buildProviderLogos(logopaths);
-    top.append(providers);
-    child.append(top);
-
-    // adding name
-    child.append(
-        `<div>
-            <h2>${tv.name}</h2>
-        </div>`);
-
     let middleDiv = $(`<div class="child-card-info"></div>`);
-
-    // airdate
+    
+    const trailer = buildTrailer(tv);
+    const providers = buildProviderLogos(tv);
     let first_aired = `${tv.first_air_date.split('-')[0]}`;
     if (tv.status == 'Ended') { 
         first_aired += ` - ${tv.last_air_date.split('-')[0]}`; 
     } else {
         first_aired += ' - Present';
     }
+    const genres = buildGenres(tv.genres);
+    const seasons = tv.number_of_seasons;
+    const episodes = tv.number_of_episodes;
+    const episodesOrSeasons = seasons > 1 ? seasons + ' Seasons' : episodes + ' Episodes';
 
+    top.append(trailer);
+    top.append(providers);
+    
     middleDiv.append(
         `<img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aaebeb75dc7ae79426ddd9be3b2be1e342510f8202baf6bffa71d7f5c4.svg"/>
         <a><i class="fas fa-star"></i> ${tv.vote_average} <small>/ 10</small></a>
         <a>${first_aired}</a>`);
-    
-    // adding genres
-    const genres = buildGenres(tv.genres);
     middleDiv.append(genres);
-
-    let seasons = tv.number_of_seasons;
-    let episodes = tv.number_of_episodes;
-    const episodesOrSeasons = seasons > 1 ? seasons + ' Seasons' : episodes + ' Episodes';
     middleDiv.append(`<a>${episodesOrSeasons}</a>`)
-    
+        
+    child.append(top);
+    child.append(`<div><h2>${tv.name}</h2></div>`);
     child.append(middleDiv);
-
     child.append(`<div class="child-card-overview"><p>${tv.overview}</p></div>`);
 
     child.css('background-image', `linear-gradient(1deg, rgba(62,54,54,0.9419117988992471) 31%, rgba(255,255,255,0) 80%), url('${img_url}original${tv.backdrop_path}')`);
+    
     return child;
 }
 
-const getDistrinctProviders = (object, country = 'DK') => {
-    const watchProviders = object['watch/providers'].results[country];
+const getDistrinctProviders = (item, country = 'DK') => {
+    const watchProviders = item['watch/providers'].results[country];
     if (watchProviders) {
         delete watchProviders.link;
         let list = Object.values(watchProviders);
@@ -188,8 +176,9 @@ const getDistrinctProviders = (object, country = 'DK') => {
     };
 }
 
-const buildProviderLogos = (logopaths) => {
+const buildProviderLogos = (item) => {
     let providers = $('<div class="child-card-info"></div>');
+    const logopaths = getDistrinctProviders(item);
     if (logopaths) {
         logopaths.forEach((value, index) => {
             providers.append(`<img width="30px" src="${img_url}original${value}">`);

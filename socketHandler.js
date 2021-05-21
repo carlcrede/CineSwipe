@@ -14,11 +14,11 @@ module.exports = io => {
             // console.log(io.sockets.adapter.rooms);
         });
 
-        socket.on('clientLikedMovie', (movieId) => {
-            if (likedMovies[getRoom(socket)][movieId]) {
-                io.in(getRoom(socket)).emit('match', movieId);
+        socket.on('clientLikedItem', (item) => {
+            if (likedMovies[getRoom(socket)][item.id]) {
+                io.in(getRoom(socket)).emit('match', item);
             } else {
-                likedMovies[getRoom(socket)][movieId] = true;
+                likedMovies[getRoom(socket)][item.id] = true;
             }
         });
     });

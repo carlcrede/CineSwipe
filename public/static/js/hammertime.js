@@ -1,4 +1,5 @@
 let wrapper = $('.wrapper');
+
 const swipedElements = [];
 
 const initHammer = elem => {
@@ -30,12 +31,14 @@ const initHammer = elem => {
             elem.style.transition = 'all .7s ease-in-out';
             elem.style.transform = `translate3d(${toX}px, ${toY + ev.deltaY}px, 0)`;
             swipedElements.push(elem);
-            addCard();
-            if (toX > 0) {
-                console.log('Liked movie id:', elem.id);
-                clientLikedMovie(elem.id);
-            } else {
-                console.log('Disliked movie id:', elem.id);
+            if (!elem.classList.contains('first')) {
+                addCard();
+                if (toX > 0) {
+                    console.log('Liked movie id:', elem.id);
+                    clientLikedItem(elem.id, elem.dataset.type);
+                } else {
+                    console.log('Disliked movie id:', elem.id);
+                }
             }
         } else {
             elem.style.transition = 'all .2s ease-in-out';
@@ -61,3 +64,32 @@ const initHammer = elem => {
     }, 1000);
 }
 
+let matches = 0;
+$('#matchesCount').text(matches);
+
+const insertFirstCard = () => {
+    const firstCard = $('<div class="child-wrapper child first"></div>');
+    initHammer(...firstCard);
+    wrapper.append(firstCard);
+}
+insertFirstCard();
+
+const changeTab = (tabId) => {
+    const tab = $(`#${tabId}`);
+    if (tab.hasClass('active')) {
+        return;
+    }
+    tabs.toggleClass('active');
+    tabcontent.children().toggleClass('tabcontent');
+};
+
+const tabs = $('.tablinks');
+const tabcontent = $('#tabcontent');
+
+tabs.map((index, value) => {
+    const hammertime = new Hammer(value);
+
+    hammertime.on('tap', (ev) => {
+        changeTab(value.id);
+    });
+});
