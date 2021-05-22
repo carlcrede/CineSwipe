@@ -48,6 +48,7 @@ router.post('/register', checkSchema(schema.register), async (req, res) => {
 });
 
 router.get('/login', (req, res) => {
+    console.log(res.cookies);
     if(req.session.userId){
         res.redirect('/');
     } else {
@@ -65,10 +66,12 @@ router.post('/login', async (req, res) => {
                 req.session.userId = req.body.username;
                 res.redirect('/');
             } else {
+                res.cookie('msg', 'Wrong username or password', { maxAge: 10000, httpOnly: false, secure: false});
                 req.session.loginfailed = 'Wrong username or password';
                 return res.redirect('/login');
             } 
         } else {
+            res.cookie('msg', 'Wrong username or password', { maxAge: 10000, httpOnly: false, secure: false});
             req.session.loginfailed = 'Wrong username or password';
             return res.redirect('/login');
         }

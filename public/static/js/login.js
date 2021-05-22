@@ -1,3 +1,12 @@
+$( document ).ready(function() {
+    console.log(document.cookie);
+});
+
+function displayFailedAttempt() {
+
+}
+
+displayFailedAttempt();
 const fetchFailedLoginAttempt = async () => {
     const response = await fetch('/session/loginfailed');
     const result = await response.json();
@@ -11,4 +20,5 @@ const displayFailedLoginAttempt = async () => {
     }
 }
 
+console.log(document.cookie);
 displayFailedLoginAttempt();
