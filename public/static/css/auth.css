@@ -14,11 +14,15 @@
 
 .error-label {
     text-align: left;
-    color: rgb(255, 80, 80);
+    color: rgb(215, 35, 35);
     font-size: .8rem;
 }
 
 .submit-button {
     justify-self: center;
     width: 15rem;
+}
+
+#failed-attempt {
+    color: rgb(215, 35, 35);
 }

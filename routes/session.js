@@ -14,6 +14,14 @@ router.get('/session/errors', (req, res) => {
     }
 });
 
+router.get('/session/loginfailed', (req, res) => {
+    if(req.session.loginfailed){
+        res.send({ msg: req.session.loginfailed});
+    } else {
+        res.send({});
+    }
+});
+
 module.exports = {
     router
 }

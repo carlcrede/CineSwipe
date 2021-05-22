@@ -94,6 +94,10 @@
     filter: brightness(110%);
 }
 
+.child-card-overview {
+    overflow-y: auto;
+}
+
 .tab {
     overflow: hidden;
 }
