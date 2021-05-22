@@ -11,7 +11,7 @@ const db = require('./db/db');
 
 // include helmet for some security
 const helmet = require('helmet');
-app.use(helmet({ 
+/* app.use(helmet({ 
     contentSecurityPolicy: { 
         useDefaults: true, 
         directives: { 
@@ -20,7 +20,7 @@ app.use(helmet({
             'img-src': ["'self'", 'www.themoviedb.org', 'image.tmdb.org'],
         },
     },
-}));
+})); */
 
 // serve static files from /public folder
 app.use(express.static(__dirname + '/public/static'));
@@ -71,6 +71,10 @@ app.get('/:id', (req, res, next) => {
     } else {
         next();
     }
+});
+
+app.get('/readmore.min.js', (req, res) => {
+    res.sendFile(__dirname + '/node_modules/readmore-js/readmore.min.js');
 });
 
 // error page

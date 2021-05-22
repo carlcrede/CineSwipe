@@ -28,16 +28,13 @@ const initHammer = elem => {
             const toX = ev.deltaX > 0 ? endX : -endX;
             const endY = Math.abs(ev.velocityY) * moveOutWidth;
             const toY = ev.deltaY > 0 ? endY : -endY;
-            elem.style.transition = 'all .7s ease-in-out';
+            elem.style.transition = 'all .4s ease-in-out';
             elem.style.transform = `translate3d(${toX}px, ${toY + ev.deltaY}px, 0)`;
             swipedElements.push(elem);
             if (!elem.classList.contains('first')) {
                 addCard();
                 if (toX > 0) {
-                    console.log('Liked movie id:', elem.id);
                     clientLikedItem(elem.id, elem.dataset.type);
-                } else {
-                    console.log('Disliked movie id:', elem.id);
                 }
             }
         } else {

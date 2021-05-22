@@ -17,7 +17,38 @@
 
 .child-card-top a {
     text-decoration: none;
-    padding-top: .5rem;
+    padding: .5rem;
+    background-color: grey;
+    border-radius: .5rem;
+    background-color: rgba(255, 255, 255, 0.28);
+    height: 2em;
+}
+
+.child-card-top a:hover {
+    background-color: rgba(255, 255, 255, 0.48);
+}
+
+.child-card-overview {
+    overflow-y: auto;
+}
+
+.child-card-buttons a {
+    background-color: rgba(255, 255, 255, 0.12);
+    padding: 10px 24px;
+    float: left;
+    text-align: center;
+    border-radius: 0px 8px 8px 0px;
+    width: calc(50% - 6px);
+    cursor: pointer;
+}
+
+.child-card-buttons a:first-of-type {
+    border-radius: 8px 0px 0px 8px;
+    margin-right: 12px;
+}
+
+.child-card-buttons a:hover {
+    background-color: rgba(255, 255, 255, 0.28);
 }
 
 .wrapper {
@@ -47,7 +78,7 @@
     border: .1rem solid rgb(10, 16, 22);
     outline: 1px solid transparent;
     background-clip: border-box;
-    background-color: linear-gradient(1deg, rgba(62,54,54,0.9419117988992471) 31%, rgba(255,255,255,0) 80%);
+    background-color: linear-gradient(1deg, rgba(62,54,54,0.98) 31%, rgba(255,255,255,0) 80%);
     backface-visibility: hidden;
 }
 

@@ -4,6 +4,7 @@ let movielist = new Array();
 let tvList = new Array();
 let popularMoviesAndTv = new Array();
 const img_url = 'https://image.tmdb.org/t/p/';
+let cards = $('#cards');
 
 const fetchPopularMovies = async(page) => {
     const response = await fetch(`/movie/popular/${page}`);
@@ -52,9 +53,11 @@ const addCard = async () => {
     }
     let element = popularMoviesAndTv[0];
     let card = (element.media_type == 'movie') ? buildMovieCard(element) : buildTvCard(element);
-    
-    $('#cards').prepend(card);
+    const buttons = buildButtons(element.id);
 
+    card.append(buttons);
+    cards.prepend(card);
+    
     // destructuring jQuery element, since Hammer dont work with them by default.
     initHammer(...card);
     popularMoviesAndTv.shift();
@@ -71,7 +74,8 @@ const buildMovieCard = (movie) => {
     const release = movie.release_date.split('-')[0];
     const genres = buildGenres(movie.genres);
     const runtime = convertTime(movie.runtime);
-    
+    const overview = $(`<div class="child-card-overview">${movie.overview}</div>`);
+
     top.append(trailer);
     top.append(providers);
 
@@ -85,9 +89,9 @@ const buildMovieCard = (movie) => {
     child.append(top);
     child.append(`<div><h2>${movie.title}</h2></div>`);
     child.append(middleDiv);
-    child.append(`<div class="child-card-overview"><p>${movie.overview}</p></div>`);
+    child.append(overview);
 
-    child.css('background-image', `linear-gradient(1deg, rgba(62,54,54,0.9419117988992471) 31%, rgba(255,255,255,0) 80%), url('${img_url}original${movie.backdrop_path}')`);
+    child.css('background-image', `linear-gradient(1deg, rgba(62,54,54,0.98) 31%, rgba(255,255,255,0) 80%), url('${img_url}original${movie.backdrop_path}')`);
     
     return child;
 }
@@ -140,6 +144,7 @@ const buildTvCard = (tv) => {
     const seasons = tv.number_of_seasons;
     const episodes = tv.number_of_episodes;
     const episodesOrSeasons = seasons > 1 ? seasons + ' Seasons' : episodes + ' Episodes';
+    const overview = $(`<div class="child-card-overview">${tv.overview}</div>`);
 
     top.append(trailer);
     top.append(providers);
@@ -154,11 +159,38 @@ const buildTvCard = (tv) => {
     child.append(top);
     child.append(`<div><h2>${tv.name}</h2></div>`);
     child.append(middleDiv);
-    child.append(`<div class="child-card-overview"><p>${tv.overview}</p></div>`);
+    child.append(overview);
 
-    child.css('background-image', `linear-gradient(1deg, rgba(62,54,54,0.9419117988992471) 31%, rgba(255,255,255,0) 80%), url('${img_url}original${tv.backdrop_path}')`);
+    child.css('background-image', `linear-gradient(1deg, rgba(62,54,54,0.98) 31%, rgba(255,255,255,0) 80%), url('${img_url}original${tv.backdrop_path}')`);
     
     return child;
+}
+
+const buildButtons = (id) => {
+    let btnDiv = $(`<div class="child-card-buttons"></div>`);
+    const dislikebtn = $(`<a id="dislikeBtn">👎</a>`);
+    btnDiv.append(dislikebtn);
+    const likebtn = $(`<a id="likeBtn">👍</a>`);
+    btnDiv.append(likebtn);
+
+    btnDiv.map((index, element) => {
+        const btnHammer = new Hammer(element);
+        btnHammer.on('tap pressup', (ev) => {
+            const parent = $(`#${id}`);
+            if (ev.target.id == 'dislikeBtn') {
+                parent.css('transition', 'all .4s ease-in-out');
+                parent.css('transform', 'translate3d(-2000px, 0, 0)');
+            } else {
+                parent.css('transition', 'all .4s ease-in-out');
+                parent.css('transform', 'translate3d(2000px, 0, 0)');
+                clientLikedItem(parent.attr('id'), parent.attr('data-type'));
+            }
+            swipedElements.push(parent);
+            addCard();
+        });
+    });
+
+    return btnDiv;
 }
 
 const getDistrinctProviders = (item, country = 'DK') => {
