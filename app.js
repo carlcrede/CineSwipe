@@ -7,11 +7,15 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({extended: true}));
 
+// tring gzip compression for performance
+const compression = require('compression');
+app.use(compression());
+
 const db = require('./db/db');
 
 // include helmet for some security
 const helmet = require('helmet');
-/* app.use(helmet({ 
+app.use(helmet({ 
     contentSecurityPolicy: { 
         useDefaults: true, 
         directives: { 
@@ -20,10 +24,11 @@ const helmet = require('helmet');
             'img-src': ["'self'", 'www.themoviedb.org', 'image.tmdb.org'],
         },
     },
-})); */
+}));
 
 // serve static files from /public folder
-app.use(express.static(__dirname + '/public/static'));
+// trying cahce-control for performance
+app.use(express.static(__dirname + '/public/static', { maxAge: 31557600 }));
 
 
 // create http server

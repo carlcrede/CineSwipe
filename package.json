@@ -19,6 +19,7 @@
   "homepage": "https://github.com/carlcrede/node_exam_project#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "compression": "^1.7.4",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "express-session": "^1.17.2",

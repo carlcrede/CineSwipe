@@ -52,6 +52,10 @@ const addCard = async () => {
         combinePopularMoviesAndTv();
     }
     let element = popularMoviesAndTv[0];
+    if (element.status == 'Planned') {
+        popularMoviesAndTv.shift();
+        element = popularMoviesAndTv[0];
+    }
     let card = (element.media_type == 'movie') ? buildMovieCard(element) : buildTvCard(element);
     const buttons = buildButtons(element.id);
 
@@ -71,6 +75,7 @@ const buildMovieCard = (movie) => {
     
     const trailer = buildTrailer(movie);
     const providers = buildProviderLogos(movie);
+    const title = movie.title || 'No title';
     const release = movie.release_date.split('-')[0];
     const genres = buildGenres(movie.genres);
     const runtime = convertTime(movie.runtime);
@@ -79,19 +84,30 @@ const buildMovieCard = (movie) => {
     top.append(trailer);
     top.append(providers);
 
-    middleDiv.append(
-        `<img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aaebeb75dc7ae79426ddd9be3b2be1e342510f8202baf6bffa71d7f5c4.svg"/>
-        <a><i class="fas fa-star"></i> ${movie.vote_average} <small>/ 10</small></a>
-        <a>${release}</a>
-        <a>${runtime}</a>`);
+    middleDiv.append(`<img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aaebeb75dc7ae79426ddd9be3b2be1e342510f8202baf6bffa71d7f5c4.svg"/>`);
+    
+    if (movie.vote_average) {
+        middleDiv.append(`<a><i class="fas fa-star"></i> ${movie.vote_average} <small>/ 10</small></a>`);
+    }
+    if (release) {
+        middleDiv.append(`<a>${release}</a>`);
+    }
+    if (runtime) {
+        middleDiv.append(`<a>${runtime}</a>`);
+    }
+        
     middleDiv.append(genres);
     
     child.append(top);
-    child.append(`<div><h2>${movie.title}</h2></div>`);
+    child.append(`<div><h2>${title}</h2></div>`);
     child.append(middleDiv);
     child.append(overview);
 
-    child.css('background-image', `linear-gradient(1deg, rgba(62,54,54,0.98) 31%, rgba(255,255,255,0) 80%), url('${img_url}original${movie.backdrop_path}')`);
+    if (!movie.backdrop_path) { console.log('nobackdrop', movie); }
+
+    if (movie.backdrop_path) {
+        child.css({'background-image': `linear-gradient(1deg, rgba(62,54,54,0.98) 31%, rgba(255,255,255,0) 80%), url('${img_url}original${movie.backdrop_path}')`, 'background-size': 'cover'});
+    }
     
     return child;
 }
@@ -119,7 +135,9 @@ const buildTrailer = (item) => {
 
 const buildGenres = (genres) => {
     let genresDiv = $(`<div></div>`);
-    genresDiv.append(`<a>${genres[0].name}</a>`);
+    if (genres) {
+        genresDiv.append(`<a>${genres[0].name}</a>`);
+    }
     if (genres.length > 1) {
         genresDiv.append(`<a>, ${genres[1].name}</a>`);
     }
@@ -134,6 +152,7 @@ const buildTvCard = (tv) => {
     
     const trailer = buildTrailer(tv);
     const providers = buildProviderLogos(tv);
+    const name = tv.name || 'No name';
     let first_aired = `${tv.first_air_date.split('-')[0]}`;
     if (tv.status == 'Ended') { 
         first_aired += ` - ${tv.last_air_date.split('-')[0]}`; 
@@ -149,19 +168,29 @@ const buildTvCard = (tv) => {
     top.append(trailer);
     top.append(providers);
     
-    middleDiv.append(
-        `<img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aaebeb75dc7ae79426ddd9be3b2be1e342510f8202baf6bffa71d7f5c4.svg"/>
-        <a><i class="fas fa-star"></i> ${tv.vote_average} <small>/ 10</small></a>
-        <a>${first_aired}</a>`);
+    middleDiv.append(`<img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aaebeb75dc7ae79426ddd9be3b2be1e342510f8202baf6bffa71d7f5c4.svg"/>`);
+    
+    if (tv.vote_average) {
+        middleDiv.append(`<a><i class="fas fa-star"></i> ${tv.vote_average} <small>/ 10</small></a>`);
+    }
+    if (first_aired) {
+        middleDiv.append(`<a>${first_aired}</a>`);
+    }
+
     middleDiv.append(genres);
+
     middleDiv.append(`<a>${episodesOrSeasons}</a>`)
         
     child.append(top);
-    child.append(`<div><h2>${tv.name}</h2></div>`);
+    child.append(`<div><h2>${name}</h2></div>`);
     child.append(middleDiv);
     child.append(overview);
 
-    child.css('background-image', `linear-gradient(1deg, rgba(62,54,54,0.98) 31%, rgba(255,255,255,0) 80%), url('${img_url}original${tv.backdrop_path}')`);
+    if (!tv.backdrop_path) { console.log('nobackdrop', tv); }
+
+    if (tv.backdrop_path) {
+        child.css({'background-image': `linear-gradient(1deg, rgba(62,54,54,0.98) 31%, rgba(255,255,255,0) 80%), url('${img_url}original${tv.backdrop_path}')`, 'background-size': 'cover'});
+    }
     
     return child;
 }

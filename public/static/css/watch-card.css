@@ -71,14 +71,14 @@
     width: 100%;
     height: 350px;
     transform: scale(1);
-    background-size: cover;
+    /* background-size: cover; */
     border-radius: 1rem;
     margin-top: .5rem;
     padding: 2rem;
     border: .1rem solid rgb(10, 16, 22);
     outline: 1px solid transparent;
     background-clip: border-box;
-    background-color: linear-gradient(1deg, rgba(62,54,54,0.98) 31%, rgba(255,255,255,0) 80%);
+    background: linear-gradient(5deg, rgba(0,0,0,1) 8%, rgba(215,35,35,1) 43%, rgba(243,223,223,1) 90%);
     backface-visibility: hidden;
 }
 
