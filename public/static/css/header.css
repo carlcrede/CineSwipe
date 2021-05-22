@@ -23,13 +23,24 @@ nav {
 }
 
 .nav-item {
-    padding: 0 1rem;
+    padding: 0 1.5rem;
     color: rgb(255, 255, 255);
     transition: .1s ease-in-out;
 }
 
+.nav-item.logo {
+    display: grid;
+    align-content: center;
+}
+
 .nav-item a {
     text-decoration: none;
+    display: grid;
+    align-content: center;
+}
+
+#logo-small {
+    width: calc(2.5em + 1vh);
 }
 
 .nav-item:hover {
