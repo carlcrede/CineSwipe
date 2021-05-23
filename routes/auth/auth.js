@@ -58,16 +58,15 @@ router.get('/login', (req, res) => {
 
 router.post('/login', async (req, res) => {
     try {
-        const user = await User.findOne({ user: req.body.username });
-        if (user) {
-            const cmp = await bcrypt.compare(req.body.password, user.pass);
-            if (cmp) {
-                // further code to maintain authentication like jwt or sessions
-                const expiry = new Date(Date.now() + 10000);
-                // req.cookie.maxAge = 10000;
-                res.cookie('login_success', 'true', { expires: new Date(Date.now() + 5000), httpOnly: false, secure: false});
+        const foundByUsername = await User.findOne({ username: req.body.user}); //search database for a 
+        const foundByEmail = await User.findOne({ email: req.body.user});
+        const foundUser = (foundByUsername) ? foundByUsername : foundByEmail; //ternary operation to find user by email if not found by username;
+        if (foundUser) { 
+            const compared = await bcrypt.compare(req.body.password, foundUser.password);
+            if (compared) {
+                res.cookie('login_success', 'true', { expires: new Date(Date.now() + 2000), httpOnly: false, secure: false});
                 req.session.loggedIn = true;
-                req.session.userId = req.body.username;
+                req.session.userId = req.body.user;
                 res.status(200);
                 res.send({msg: 'Authorized'});
             } else {

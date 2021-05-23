@@ -21,7 +21,7 @@ $('form').submit( async(event) => {
     console.log('form submitted');
     const array = $('form').serializeArray();
     const data = {
-        username: array[0].value,
+        user: array[0].value,
         password: array[1].value
     }
     const response = await fetch('/login', {
