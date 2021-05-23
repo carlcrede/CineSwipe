@@ -27,7 +27,7 @@ app.use(helmet({
 }));
 
 // serve static files from /public folder
-// trying cahce-control for performance
+// trying cache-control for performance
 app.use(express.static(__dirname + '/public/static', { maxAge: 31557600 }));
 
 
