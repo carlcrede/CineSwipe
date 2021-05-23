@@ -6,6 +6,12 @@ let popularMoviesAndTv = new Array();
 const img_url = 'https://image.tmdb.org/t/p/';
 let cards = $('#cards');
 
+const fetchInitialItems = async() => {
+    const response = await fetch(`/items/initial`);
+    const result = await response.json();
+    return result;
+}
+
 const fetchPopularMovies = async(page) => {
     const response = await fetch(`/movie/popular/${page}`);
     const result = await response.json();
@@ -44,7 +50,9 @@ const addCardToMatches = async (item) => {
 
 // card is built and added to card container div
 const addCard = async () => {
+    console.log(popularMoviesAndTv.length);
     if (popularMoviesAndTv.length == 0) {
+        console.log('list is empty', popularMoviesAndTv.length);
         moviePage++;
         await fetchPopularMovies(moviePage);
         tvPage++;
@@ -248,17 +256,15 @@ const buildProviderLogos = (item) => {
     return providers;
 }
 
-const initialCards = async () => {
-    await fetchPopularMovies(moviePage);
-    await fetchPopularTv(tvPage);
-    combinePopularMoviesAndTv();
-
+const initCards = async () => {
+    const initialItems = await fetchInitialItems();
+    popularMoviesAndTv = [...initialItems];
     for (let i = 0; i < 10; i++) {
         await addCard();
     }
 }
 
-initialCards().then(() => console.log('cards initialized'));
+initCards().then(() => console.log('cards initialized'));
 
 
 // code from earlier, may be needed later

@@ -3,45 +3,41 @@ const moviedb = new MovieDb(process.env.MOVIEDB_API_KEY);
 
 const router = require('express').Router();
 
-/* const popularMovies = async (pageNumber) => {
-    const popularMovies = await moviedb.moviePopular({ region: 'DK', page: pageNumber });
-    const dkMovies = await Promise.all(popularMovies.results.map(async (result) => {
-        const providers = await moviedb.movieWatchProviders(result.id);
-        if ('DK' in providers.results) {
-            result['Providers'] = providers;
-            return result;
-        } else {
-            return undefined;
-        }
-        //return 'DK' in providers.results ? result: undefined;
-    }));
-    const filtered = dkMovies.filter((val, index) => {
-        return val;
-    });
-    return filtered;
-} */
+let initalItems = new Array();
+
+const fetchInitialItems = async(page) => {
+    const movies = await popularMovies(page);
+    const tv = await popularTv(page);
+    const combined = [...movies, ...tv].sort((a, b) => b.popularity - a.popularity);
+    return combined;
+};
+
 const popularMovies = async (page) => {
-    const popularMovies = await moviedb.moviePopular({ page: page });
-    const movies = await Promise.all(popularMovies.results.map(async (result) => {
-        const details = await moviedb.movieInfo({ id: result.id, append_to_response: 'watch/providers,videos' });
-        //const providers = await moviedb.movieWatchProviders(result.id);
-        //result['watch_providers'] = providers;
-        details['media_type'] = 'movie';
-        return details;
-    }));
-    return movies;
+    try {
+        const popularMovies = await moviedb.moviePopular({ page: page });
+        const movies = await Promise.all(popularMovies.results.map(async (result) => {
+            const details = await moviedb.movieInfo({ id: result.id, append_to_response: 'watch/providers,videos' });
+            details['media_type'] = 'movie';
+            return details;
+        })); 
+        return movies;
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 const popularTv = async (page) => {
-    const popularTv = await moviedb.tvPopular({ page: page });
-    const tv = await Promise.all(popularTv.results.map(async (result) => {
-        const details = await moviedb.tvInfo({ id: result.id, append_to_response: 'watch/providers,videos' });
-        //const providers = await moviedb.tvWatchProviders(result.id);
-        //result['watch_providers'] = providers;
-        details['media_type'] = 'tv';
-        return details;
-    }));
-    return tv;
+    try {
+        const popularTv = await moviedb.tvPopular({ page: page });
+        const tv = await Promise.all(popularTv.results.map(async (result) => {
+            const details = await moviedb.tvInfo({ id: result.id, append_to_response: 'watch/providers,videos' });
+            details['media_type'] = 'tv';
+            return details;
+        }));
+        return tv;
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 const itemDetails = async (id, media_type) => {
@@ -55,6 +51,10 @@ const itemDetails = async (id, media_type) => {
     }
     return details;
 }
+
+router.get('/items/initial', (req, res, next) => {
+    res.send(initalItems);
+});
 
 router.get('/:media_type/:id/details', async (req, res, next) => {
     const id = req.params.id;
@@ -75,19 +75,9 @@ router.get('/tv/popular/:page', async (req, res, next) => {
     res.send(tv);
 });
 
-/* router.get("/movie/popular/:page", (req, res, next) => {
-    const page = Number(req.params.page);
-    console.log('/movie/popular/:page called');
-    if(Number.isInteger(page)){
-        console.log('"/movie/popular/" parameter is valid');
-        popularMovies(page).then(result => res.send(result));
-    } else {
-        console.log('"/movie/popular/" parameter is not valid');
-        next();
-    }
-}); */
-
-// popularMovies(1).then(res => console.log(res.length));
+fetchInitialItems(1).then(result => {
+    initalItems = [...result];
+});
 
 module.exports = {
     router
