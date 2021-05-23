@@ -21,14 +21,15 @@ app.use(helmet({
         directives: { 
             'script-src': ["'self'", 'code.jquery.com', 'cdnjs.cloudflare.com'], 
             'style-src': ["'self'", 'cdnjs.cloudflare.com', 'unsafe-inline', 'code.jquery.com'],
-            'img-src': ["'self'", 'www.themoviedb.org', 'image.tmdb.org'],
+            'img-src': ["'self'", 'data:', 'www.themoviedb.org', 'image.tmdb.org'],
         },
     },
 }));
 
 // serve static files from /public folder
 // trying cache-control for performance
-app.use(express.static(__dirname + '/public/static', { maxAge: 31557600 }));
+app.use(express.static(__dirname + '/public/static'));
+// app.use(express.static(__dirname + '/public/static', { maxAge: 31557600 }));
 
 
 // create http server
@@ -65,6 +66,8 @@ app.use(authRoute.router);
 const sessionRoute = require('./routes/session');
 app.use(sessionRoute.router);
 
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 
 app.get('/', (req, res) => {
     res.send(pages.index);

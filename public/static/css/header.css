@@ -33,6 +33,11 @@ nav {
     align-content: center;
 }
 
+.nav-item.toast {
+    display: grid;
+    align-content: center;
+}
+
 .nav-item a {
     text-decoration: none;
     display: grid;

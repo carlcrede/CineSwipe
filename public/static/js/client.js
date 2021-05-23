@@ -42,3 +42,25 @@ $("#copy-session").click(() => {
         copymodal.hide();
     }, 5000);
 });
+
+//login success toaster display
+$( document ).ready( async() => {
+    if(document.cookie){
+        const splitCookies = document.cookie.split(';');
+        const findCookie = splitCookies.find(cookie => {
+            return cookie === 'login_success=true';
+        });
+        if(findCookie){
+            const response = await fetch('/session/id');
+            const result = await response.json();
+            toastr.options = {
+                showDuration: 300, 
+                hideDuration: 1000,
+                positionClass: 'toast-top-center',
+                preventDuplicates: true,
+                extendedTimeOut: 1000,
+            }
+            toastr.success(`Successfully logged in: Welcome ${result.userId}`);
+        }
+    }
+});

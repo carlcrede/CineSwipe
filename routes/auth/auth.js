@@ -40,7 +40,8 @@ router.post('/register', checkSchema(schema.register), async (req, res) => {
             user: username,
             pass: hashedPwd
         });
-        res.send({insertResult});
+        res.cookie('registration_success', 'true', { expires: new Date(Date.now() + 5000), httpOnly: false, secure: false});
+        res.redirect('/login');
     } catch (error) {
         console.log(error);
         res.status(500).send("Internal Server error occured");
@@ -62,31 +63,32 @@ router.post('/login', async (req, res) => {
             const cmp = await bcrypt.compare(req.body.password, user.pass);
             if (cmp) {
                 // further code to maintain authentication like jwt or sessions
+                const expiry = new Date(Date.now() + 10000);
+                // req.cookie.maxAge = 10000;
+                res.cookie('login_success', 'true', { expires: new Date(Date.now() + 5000), httpOnly: false, secure: false});
+                req.session.loggedIn = true;
                 req.session.userId = req.body.username;
-                res.redirect('/');
+                res.status(200);
+                res.send({msg: 'Authorized'});
             } else {
-                req.session.loginfailed = 'Wrong username or password';
-                return res.redirect('/login');
-            } 
+                res.status(401);
+                res.send({msg: 'Invalid password or username'});
+            }
         } else {
-            req.session.loginfailed = 'Wrong username or password';
-            return res.redirect('/login');
+            res.status(401);
+            res.send({msg: 'Invalid password or username'});
         }
     } catch (error) {
         console.log(error);
-        res.status(500).send("Internal Server error occured");
+        res.status(500).send('Internal Server error occured');
     }
 });
 
 router.post('/logout', (req, res) => {
-    if(!req.session.userId){
-        res.redirect('/');
-    } else {
-        req.session.destroy(() => {
-            res.clearCookie('sid');
-            res.redirect('/');
-        });
+    if(req.session.userId){
+        req.session.destroy();
     }
+    res.redirect('/');
 });
 
 module.exports = {
