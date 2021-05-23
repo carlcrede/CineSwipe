@@ -78,10 +78,6 @@ app.get('/:id', (req, res, next) => {
     }
 });
 
-app.get('/readmore.min.js', (req, res) => {
-    res.sendFile(__dirname + '/node_modules/readmore-js/readmore.min.js');
-});
-
 // error page
 app.get('/*', (req, res) => {
     res.status(404).send(`<h1>The page you were looking for was not found.</h1>`);
