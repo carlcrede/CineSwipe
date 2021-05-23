@@ -7,7 +7,7 @@
 
 .child-card-top {
     display: grid;
-    grid-auto-flow: column;
+    /* grid-auto-flow: column; */
     justify-content: space-between;
 }
 

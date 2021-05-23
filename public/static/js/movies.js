@@ -4,7 +4,9 @@ let movielist = new Array();
 let tvList = new Array();
 let popularMoviesAndTv = new Array();
 const img_url = 'https://image.tmdb.org/t/p/';
+const tmdb_logo = 'https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aaebeb75dc7ae79426ddd9be3b2be1e342510f8202baf6bffa71d7f5c4.svg';
 let cards = $('#cards');
+const invalidItemStatuses = ['Rumored', 'Planned', 'In Production', 'Post Production', 'Canceled'];
 
 const fetchInitialItems = async() => {
     const response = await fetch(`/items/initial`);
@@ -40,90 +42,138 @@ const fetchDetails = async (item) => {
 }
 
 const addCardToMatches = async (item) => {
-    const element = await fetchDetails(item);
-    let card = (element.media_type == 'movie') ? buildMovieCard(element) : buildTvCard(element);
+    const details = await fetchDetails(item);
+    let card = buildItemCard(details, false);
     card.css('position', 'relative');
     card.attr('id', `match-${item.id}`);
-    console.log('Match card:', card);
     $('#match').prepend(card);
 }
 
-// card is built and added to card container div
 const addCard = async () => {
-    console.log(popularMoviesAndTv.length);
     if (popularMoviesAndTv.length == 0) {
-        console.log('list is empty', popularMoviesAndTv.length);
         moviePage++;
         await fetchPopularMovies(moviePage);
         tvPage++;
         await fetchPopularTv(tvPage);
         combinePopularMoviesAndTv();
     }
-    let element = popularMoviesAndTv[0];
-    if (element.status == 'Planned') {
+    // make check for valid status and also if there is a title or name
+    let item = popularMoviesAndTv[0];
+    if (isValidItem(item)) {
         popularMoviesAndTv.shift();
-        element = popularMoviesAndTv[0];
+        item = popularMoviesAndTv[0];
     }
-    let card = (element.media_type == 'movie') ? buildMovieCard(element) : buildTvCard(element);
-    const buttons = buildButtons(element.id);
-
-    card.append(buttons);
-    cards.prepend(card);
-    
-    // destructuring jQuery element, since Hammer dont work with them by default.
+    let card = buildItemCard(item);
     initHammer(...card);
+    cards.prepend(card);
     popularMoviesAndTv.shift();
 }
 
-// building movie card div with jQuery
-const buildMovieCard = (movie) => {
-    let child = $(`<div id="${movie.id}" data-type="movie" class="child-wrapper child"></div>`);
-    let top = $(`<div class="child-card-top"></div>`);
-    let middleDiv = $(`<div class="child-card-info"></div>`);
-    
-    const trailer = buildTrailer(movie);
-    const providers = buildProviderLogos(movie);
-    const title = movie.title || 'No title';
-    const release = movie.release_date.split('-')[0];
-    const genres = buildGenres(movie.genres);
-    const runtime = convertTime(movie.runtime);
-    const overview = $(`<div class="child-card-overview">${movie.overview}</div>`);
-
-    top.append(trailer);
-    top.append(providers);
-
-    middleDiv.append(`<img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aaebeb75dc7ae79426ddd9be3b2be1e342510f8202baf6bffa71d7f5c4.svg"/>`);
-    
-    if (movie.vote_average) {
-        middleDiv.append(`<a><i class="fas fa-star"></i> ${movie.vote_average} <small>/ 10</small></a>`);
-    }
-    if (release) {
-        middleDiv.append(`<a>${release}</a>`);
-    }
-    if (runtime) {
-        middleDiv.append(`<a>${runtime}</a>`);
-    }
-        
-    middleDiv.append(genres);
-    
-    child.append(top);
-    child.append(`<div><h2>${title}</h2></div>`);
-    child.append(middleDiv);
-    child.append(overview);
-
-    if (!movie.backdrop_path) { console.log('nobackdrop', movie); }
-
-    if (movie.backdrop_path) {
-        child.css({'background-image': `linear-gradient(1deg, rgba(62,54,54,0.98) 31%, rgba(255,255,255,0) 80%), url('${img_url}original${movie.backdrop_path}')`, 'background-size': 'cover'});
-    }
-    
-    return child;
+const isValidItem = (item) => {
+    if (item.status in invalidItemStatuses) { 
+        return false;
+    } else if (item.media_type == 'movie' && !item.title) {
+        return false;
+    } else if (item.media_type == 'tv' && !item.name) {
+        return false;
+    } 
+    return true;
 }
 
-const convertTime = time => {
+const buildItemCard = (item, swipecard = true) => {
+    const itemData = buildItemData(item);
+    
+    let card = $(`<div id="${item.id}" data-type="movie" class="child-wrapper child">`);
+    let top = $(`<div class="child-card-top"></div>`);
+    let middle = $(`<div class="child-card-info">`);
+
+    top.append(itemData.trailer, itemData.providers);
+    middle.append(itemData.vote_avg, itemData.release, itemData.genres, itemData.episodesOrSeasons, itemData.runtime);
+    card.append(top);
+    card.append(itemData.title);
+    card.append(middle);
+    card.append(itemData.overview);
+    if (swipecard) { card.append(itemData.buttons); }
+
+    if (item.backdrop_path) {
+        card.css({'background-image': `linear-gradient(1deg, rgba(62,54,54,0.98) 31%, rgba(255,255,255,0) 80%), url('${img_url}original${item.backdrop_path}')`, 'background-size': 'cover'});
+    }
+    return card;
+}
+
+const buildItemData = (item) => {
+    const data = {
+        trailer: buildTrailer(item),
+        providers: buildProviderLogos(item),
+        title: buildTitle(item),
+        vote_avg: buildVoteAvg(item),
+        release: buildRelease(item),
+        genres: buildGenres(item),
+        episodesOrSeasons: buildEpisodesOrSeasons(item),
+        runtime: buildRuntime(item),
+        overview: buildOverview(item),
+        buttons: buildButtons(item.id),
+    };
+    return data;
+}
+
+const buildTitle = (item) => {
+    const title = (item.media_type == 'movie') ? item.title : item.name;
+    return `<div><h2>${title}</h2></div>`;
+}
+
+const buildRuntime = (item) => {
+    if (!item.runtime) {
+        return '';
+    }
+    const runtime = convertTime(item.runtime);
+    return `<a>${runtime}</a>`;
+}
+
+const buildEpisodesOrSeasons = (item) => {
+    if (!item.number_of_episodes && !item.number_of_episodes) {
+        return '';
+    }
+    const seasons = item.number_of_seasons;
+    const episodes = item.number_of_episodes;
+    const episodesOrSeasons = seasons > 1 ? seasons + ' Seasons' : episodes + ' Episodes';
+    return `<a>${episodesOrSeasons}</a>`;
+}
+
+const buildRelease = (item) => {
+    if (item.media_type == 'movie' && item.release_date) {
+        return `<a>${item.release_date.split('-')[0]}</a>`;
+    } else if (item.first_air_date) {
+        let first_aired = `${item.first_air_date.split('-')[0]}`;
+        if (item.status == 'Ended') { 
+            first_aired += ` - ${item.last_air_date.split('-')[0]}`; 
+        } else {
+            first_aired += ' - Present';
+        }
+        return `<a>${first_aired}</a>`;
+    }
+    return '';
+}
+
+const buildOverview = (item) => {
+    if (!item.overview) {
+        return '<div class="child-card-overview"></div>';
+    }
+    return `<div class="child-card-overview">${item.overview}</div>`;
+}
+
+const buildVoteAvg = (item) => {
+    if (item.vote_average) {
+        return `<img src="${tmdb_logo}"/><a><i class="fas fa-star"></i> ${item.vote_average} <small>/ 10</small></a>`;
+    }
+    return '';
+}
+
+const convertTime = (time) => {
     const hours = Math.floor(time / 60);
     const minutes = time % 60;
-    return `${hours} h ${minutes} min`;
+    const runtime = (hours) ? `${hours} h ${minutes} min` : `${minutes} min`;
+    return runtime;
 }
 
 const buildTrailer = (item) => {
@@ -141,66 +191,16 @@ const buildTrailer = (item) => {
     return trailerLink;
 }
 
-const buildGenres = (genres) => {
-    let genresDiv = $(`<div></div>`);
-    if (genres) {
-        genresDiv.append(`<a>${genres[0].name}</a>`);
+const buildGenres = (item) => {
+    if (!item.genres) {
+        return '';
     }
-    if (genres.length > 1) {
-        genresDiv.append(`<a>, ${genres[1].name}</a>`);
+    let genresDiv = $(`<div></div>`);
+    genresDiv.append(`<a>${item.genres[0].name}</a>`);
+    if (item.genres.length > 1) {
+        genresDiv.append(`<a>, ${item.genres[1].name}</a>`);
     }
     return genresDiv;
-}
-
-// building tv card div with jQuery 
-const buildTvCard = (tv) => {
-    let child = $(`<div id="${tv.id}" data-type="tv" class="child grid"></div>`);
-    let top = $(`<div class="child-card-top"></div>`);
-    let middleDiv = $(`<div class="child-card-info"></div>`);
-    
-    const trailer = buildTrailer(tv);
-    const providers = buildProviderLogos(tv);
-    const name = tv.name || 'No name';
-    let first_aired = `${tv.first_air_date.split('-')[0]}`;
-    if (tv.status == 'Ended') { 
-        first_aired += ` - ${tv.last_air_date.split('-')[0]}`; 
-    } else {
-        first_aired += ' - Present';
-    }
-    const genres = buildGenres(tv.genres);
-    const seasons = tv.number_of_seasons;
-    const episodes = tv.number_of_episodes;
-    const episodesOrSeasons = seasons > 1 ? seasons + ' Seasons' : episodes + ' Episodes';
-    const overview = $(`<div class="child-card-overview">${tv.overview}</div>`);
-
-    top.append(trailer);
-    top.append(providers);
-    
-    middleDiv.append(`<img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aaebeb75dc7ae79426ddd9be3b2be1e342510f8202baf6bffa71d7f5c4.svg"/>`);
-    
-    if (tv.vote_average) {
-        middleDiv.append(`<a><i class="fas fa-star"></i> ${tv.vote_average} <small>/ 10</small></a>`);
-    }
-    if (first_aired) {
-        middleDiv.append(`<a>${first_aired}</a>`);
-    }
-
-    middleDiv.append(genres);
-
-    middleDiv.append(`<a>${episodesOrSeasons}</a>`)
-        
-    child.append(top);
-    child.append(`<div><h2>${name}</h2></div>`);
-    child.append(middleDiv);
-    child.append(overview);
-
-    if (!tv.backdrop_path) { console.log('nobackdrop', tv); }
-
-    if (tv.backdrop_path) {
-        child.css({'background-image': `linear-gradient(1deg, rgba(62,54,54,0.98) 31%, rgba(255,255,255,0) 80%), url('${img_url}original${tv.backdrop_path}')`, 'background-size': 'cover'});
-    }
-    
-    return child;
 }
 
 const buildButtons = (id) => {
@@ -226,7 +226,6 @@ const buildButtons = (id) => {
             addCard();
         });
     });
-
     return btnDiv;
 }
 
@@ -264,49 +263,4 @@ const initCards = async () => {
     }
 }
 
-initCards().then(() => console.log('cards initialized'));
-
-
-// code from earlier, may be needed later
-/* let movie = movielist[movielist.length-1];
-    if (!movie) {
-        page++;
-        await fetchPopularMovies(page);
-        movie = movielist[movielist.length-1];
-    }
-
-     let child = $(
-        `<div id="${movie.id}" class="child grid"></div>`);
-    
-    let top = $(
-        `<div class="child-card-top">
-            <a>Trailer</a>
-        </div>`);
-    
-    if (movie.Providers.results.DK.flatrate) {
-        let dkProviders = movie.Providers.results.DK.flatrate;
-        let providers = $('<div class="child-card-info"></div>');
-        dkProviders.forEach((value, index) => {
-            providers.append(`<img width="30px" src="https://image.tmdb.org/t/p/original${value.logo_path}">`);
-        });
-        top.append(providers);
-    };
-    child.append(top);
-        
-    child.append(
-        `<div>
-            <h2>${movie.title}</h2>
-        </div>`);
-    child.append(
-        `<div class="child-card-info">
-            <a><i class="fas fa-star"></i> ${movie.vote_average} <small>/ 10</small></a>
-            <a>${movie.release_date}</a>
-        </div>`);
-    child.append(
-        `<div class="child-card-overview"><p>${movie.overview}</p></div>`);
-    $('.wrapper').prepend(child);
-    //TODO: CSS should be made into classes that can be added, removed and toggled
-    child.css('background-image', `linear-gradient(1deg, rgba(62,54,54,0.9419117988992471) 31%, rgba(255,255,255,0) 80%), url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')`);
-    // jQuery element is always an array, so destructuring to get html element - hammer cant use jQuery object
-    initHammer(...child);
-    movielist.pop(); */
+initCards().catch(err => console.error(err));
