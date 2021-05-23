@@ -119,7 +119,7 @@ const buildItemData = (item) => {
 
 const buildTitle = (item) => {
     const title = (item.media_type == 'movie') ? item.title : item.name;
-    return `<div><h2>${title}</h2></div>`;
+    return `<div class="child-card-title"><h2>${title}</h2></div>`;
 }
 
 const buildRuntime = (item) => {
