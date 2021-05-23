@@ -65,7 +65,7 @@ let matches = 0;
 $('#matchesCount').text(matches);
 
 const insertFirstCard = () => {
-    const firstCard = $('<div class="child-wrapper child first"></div>');
+    const firstCard = $('<div class="child first"></div>');
     initHammer(...firstCard);
     wrapper.append(firstCard);
 }

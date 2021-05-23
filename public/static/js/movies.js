@@ -83,7 +83,7 @@ const isValidItem = (item) => {
 const buildItemCard = (item, swipecard = true) => {
     const itemData = buildItemData(item);
     
-    let card = $(`<div id="${item.id}" data-type="movie" class="child-wrapper child">`);
+    let card = $(`<div id="${item.id}" data-type="movie" class="child">`);
     let top = $(`<div class="child-card-top"></div>`);
     let middle = $(`<div class="child-card-info">`);
 
@@ -245,7 +245,7 @@ const getDistrinctProviders = (item, country = 'DK') => {
 }
 
 const buildProviderLogos = (item) => {
-    let providers = $('<div class="child-card-info"></div>');
+    let providers = $('<div class="child-card-providers"></div>');
     const logopaths = getDistrinctProviders(item);
     if (logopaths) {
         logopaths.forEach((value, index) => {

@@ -38,17 +38,26 @@ h1,h2,h3,h4,h5,p,a,label,textarea {
     color: #f5eded;
 }
 
-.grid {
+main {
     display: grid;
-    grid-template-rows: auto;
-    justify-content: center;
-    row-gap: 1rem;
+    grid-template-columns: 1fr 650px 1fr;
+    grid-template-rows: max-content;
+    row-gap: 2vh;
 }
 
-.grid-row {
-    width: 650px;
+.main.grid-row {
+    grid-column: 2;
 }
 
-.toast.toast-error {
-    margin-top: 10em;
+/* @media screen and (max-width: 768px){
+    .grid-row {
+        width: calc(100vw - 40px - 40px);
+    } 
 }
+
+@media screen and (max-width: 1025px){
+    .grid-row {
+        width: calc(100vw - 4vw - 4vw);
+    } 
+}
+*/
