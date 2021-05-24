@@ -23,6 +23,9 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', checkSchema(schema.register), async (req, res) => {
+    console.log(req.body.username);
+    console.log(req.body.email);
+    console.log(req.body.password);
     //if express-validator validationResult contains any errors then form data is invalid
     //see -> validation-schema for details
     const errors = validationResult(req);
@@ -37,8 +40,8 @@ router.post('/register', checkSchema(schema.register), async (req, res) => {
         const hashedPwd = await bcrypt.hash(plainTextPassword, saltRounds);
         const insertResult = await User.create({
             email: email,
-            user: username,
-            pass: hashedPwd
+            username: username,
+            password: hashedPwd
         });
         res.cookie('registration_success', 'true', { expires: new Date(Date.now() + 5000), httpOnly: false, secure: false});
         res.redirect('/login');
@@ -49,6 +52,7 @@ router.post('/register', checkSchema(schema.register), async (req, res) => {
 });
 
 router.get('/login', (req, res) => {
+    res.cookie('registration_success', 'true', { expires: new Date(Date.now() + 5000), httpOnly: false, secure: false});
     if(req.session.userId){
         res.redirect('/');
     } else {
@@ -64,7 +68,6 @@ router.post('/login', async (req, res) => {
         if (foundUser) { 
             const compared = await bcrypt.compare(req.body.password, foundUser.password);
             if (compared) {
-                res.cookie('login_success', 'true', { expires: new Date(Date.now() + 2000), httpOnly: false, secure: false});
                 req.session.loggedIn = true;
                 req.session.userId = req.body.user;
                 res.status(200);
@@ -83,10 +86,11 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.post('/logout', (req, res) => {
+router.get('/logout', (req, res) => {
     if(req.session.userId){
         req.session.destroy();
     }
+    console.log(req.cookies);
     res.redirect('/');
 });
 

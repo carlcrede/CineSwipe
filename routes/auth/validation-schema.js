@@ -5,7 +5,7 @@ const register = {
     username: {
         custom: {
             options: async value => {
-                const foundUser = await User.find({ user: value });
+                const foundUser = await User.find({ username: value });
                 if (foundUser.length > 0) {
                     return Promise.reject('Username already in use');
                 }

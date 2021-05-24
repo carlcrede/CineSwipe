@@ -14,21 +14,15 @@
 
 .session-link:hover {
     background-color: rgb(255, 255, 255, 0.24);
+    cursor: url('/img/clone-regular-24x24.png'), auto;
+}
+
+.session-link:active {
+    background-color: rgb(255, 255, 255, 0.12);
+    cursor: url('/img/clone-solid-24x24.png'), auto;
 }
 
 .session-link i {
     font-size: 1.25rem;
     transform: rotate(180deg);
-}
-
-#copy-modal {
-    display: none;
-    border-radius: 2rem;
-    position: absolute;
-    top: 0vh;
-    left: calc(100vw - 10rem);
-    background: linear-gradient(104deg, rgba(35,215,215,0.7) 0%, rgba(125,215,35,0.7) 100%);
-    color: rgb(255, 255, 255);
-    padding: 1rem .55rem;
-    text-align: center;
 }

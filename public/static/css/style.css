@@ -19,7 +19,7 @@
 }
 
 body {
-    background: rgb(10, 16, 22);
+    background: rgb(4, 14, 20);
     font-family: Arial, Helvetica, sans-serif;
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */
@@ -34,18 +34,15 @@ body::-webkit-scrollbar {
     display: none; /* for Chrome, Safari, and Opera */
 }
 
-h1,h2,h3,h4,h5,p,a,label,textarea {
-    color: #f5eded;
-}
-
 main {
     display: grid;
     grid-template-columns: 1fr 700px 1fr;
     grid-template-rows: max-content;
-    row-gap: 2vh;
+    row-gap: 10px;
+    padding-top: 20px;
 }
 
-.main.grid-row {
+.grid-row {
     grid-column: 2;
     
 }

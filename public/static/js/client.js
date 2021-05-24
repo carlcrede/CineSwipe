@@ -11,8 +11,6 @@ if(location.pathname === '/'){
 
 socket.on('session', (roomId) => {
     const session = $("#session-url");
-    // session.text(location.host + '/' + roomId + ' ');
-    // console.log(session);
     session.text(location.host + '/' + roomId + '');
 });
 
@@ -30,37 +28,34 @@ const clientLikedItem = (id, media_type) => {
 
 $("#copy-session").click(() => {
     const texttocopy = $('#session-url').text();
-    navigator.clipboard.writeText(texttocopy).then(() => {
-        console.log('Async: Copying to clipboard was successful!');
-      }, (err) => {
-        console.error('Async: Could not copy text: ', err);
-    });
-    const copymodal = $('#copy-modal');
-    if(copymodal.is(':visible')) { return; }
-    copymodal.show();
-    setTimeout(() => {
-        copymodal.hide();
-    }, 5000);
-});
-
-//login success toaster display
-$( document ).ready( async() => {
-    if(document.cookie){
-        const splitCookies = document.cookie.split(';');
-        const findCookie = splitCookies.find(cookie => {
-            return cookie === 'login_success=true';
-        });
-        if(findCookie){
-            const response = await fetch('/session/id');
-            const result = await response.json();
+    navigator.clipboard.writeText(texttocopy)
+        .then(() => {
             toastr.options = {
-                showDuration: 300, 
-                hideDuration: 1000,
-                positionClass: 'toast-top-center',
+                closeButton: false,
+                debug: false,
+                newestOnTop: false,
+                progressBar: false,
+                positionClass: 'toast-top-right',
                 preventDuplicates: true,
-                extendedTimeOut: 1000,
+                onclick: null,
+                showDuration: 500,
+                hideDuration: 1000,
+                timeOut: 3500,
+                extendedTimeOut: 500,
+                showEasing: 'swing',
+                hideEasing: 'swing',
+                showMethod: 'show',
+                hideMethod: 'fadeOut'
             }
-            toastr.success(`Successfully logged in: Welcome ${result.userId}`);
-        }
-    }
+            toastr.info(
+                `<div class="toast-icon">
+                    <img class="copy-icon"></img>
+                </div>
+                <div class="toast-text">
+                    <div>
+                        Copied to clipboard!
+                    </div>
+                </div>`
+            );
+        });
 });

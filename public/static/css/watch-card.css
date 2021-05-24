@@ -40,6 +40,7 @@
     border-radius: 12px;
     height: 2em;
     display: inline-flex;
+    color: rgb(255, 255, 255);
 }
 
 .child-card-trailer a p{
@@ -110,7 +111,7 @@
 
 
 .child.first {
-    background: linear-gradient(5deg, rgba(0,0,0,1) 8%, rgba(215,35,35,1) 43%, rgba(243,223,223,1) 90%);
+    background: linear-gradient(180deg, rgba(215,100,100,1) 0%, rgba(215,164,100,1) 100%);
 }
 
 .child.moving {

@@ -1,5 +1,5 @@
 //login success toaster display
-$( document ).ready(function() {
+$( document ).ready(() => {
     if(document.cookie){
         const splitCookies = document.cookie.split(';');
         const findCookie = splitCookies.find(cookie => {
@@ -7,11 +7,32 @@ $( document ).ready(function() {
         });
         if(findCookie){
             toastr.options = {
-                closeDuration: 10000,
-                positionClass: 'toast-top-center',
-                preventDuplicates: false
+                closeButton: false,
+                debug: false,
+                newestOnTop: false,
+                progressBar: false,
+                positionClass: 'toast-top-right',
+                preventDuplicates: true,
+                onclick: null,
+                showDuration: 500,
+                hideDuration: 1000,
+                timeOut: 3500,
+                extendedTimeOut: 500000,
+                showEasing: 'swing',
+                hideEasing: 'swing',
+                showMethod: 'show',
+                hideMethod: 'fadeOut'
             }
-            toastr.success('Successfully registered, please log in');
+            toastr.success(
+                `<div class="toast-text">
+                    <div>
+                        Successfully registered
+                    </div>
+                    <div>
+                        Please log in
+                    </div>
+                </div>`
+            );
         }
     }
 });

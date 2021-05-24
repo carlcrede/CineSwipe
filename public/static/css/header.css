@@ -1,51 +1,32 @@
 header {
-    padding-bottom: 1rem;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: .5fr 10fr .5fr;
+    background-color: rgb(255, 255, 255, 0.12);
+    min-height: 3rem;
 }
 
 nav {
-    display: grid;
-    grid-auto-flow: column;
-    width: calc(100vw);
-    background-color: rgb(255, 255, 255, 0.12);
+    grid-column: 2;
+    display: flex;
+    justify-content: space-between;
 }
 
-.right-nav {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: max-content;
-}
-
-.left-nav {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: max-content;
-    direction: rtl;
+.nav-section {
+    display: flex;
 }
 
 .nav-item {
     padding: 0 1.5rem;
     color: rgb(255, 255, 255);
-    transition: .1s ease-in-out;
-}
-
-.nav-item.logo {
-    display: grid;
-    align-content: center;
-}
-
-.nav-item.toast {
-    display: grid;
-    align-content: center;
-}
-
-.nav-item a {
+    transition: .5s ease-in-out;
     text-decoration: none;
-    display: grid;
-    align-content: center;
+    display: flex;
+    align-items: center;
 }
 
 #logo-small {
-    width: calc(2.5em + 1vh);
+    width: 3rem;
 }
 
 .nav-item:hover {

@@ -31,7 +31,6 @@ app.use(helmet({
 /* app.use(express.static(__dirname + '/public/static', { maxAge: 31557600 })); */
 app.use(express.static(__dirname + '/public/static'));
 
-
 // create http server
 const http = require('http').createServer(app);
 const { Server } = require('socket.io');
@@ -54,6 +53,9 @@ app.use(session({
     }
 }));
 
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
 // fs module for server-side rendering
 const pages = require('./util/ssr');
 
@@ -65,9 +67,6 @@ const authRoute = require('./routes/auth/auth');
 app.use(authRoute.router);
 const sessionRoute = require('./routes/session');
 app.use(sessionRoute.router);
-
-const cookieParser = require('cookie-parser');
-app.use(cookieParser());
 
 app.get('/', (req, res) => {
     res.send(pages.index);
