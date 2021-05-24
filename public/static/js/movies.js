@@ -96,7 +96,7 @@ const buildItemCard = (item, swipecard = true) => {
     if (swipecard) { card.append(itemData.buttons); }
 
     if (item.backdrop_path) {
-        card.css({'background-image': `linear-gradient(1deg, rgba(62,54,54,0.98) 31%, rgba(255,255,255,0) 80%), url('${img_url}original${item.backdrop_path}')`, 'background-size': 'cover'});
+        card.css({'background-image': `linear-gradient(1deg, rgba(62,54,54,0.98) 31%, rgba(255,255,255,0) 80%), url('${img_url}original${item.backdrop_path}')`});
     }
     return card;
 }
@@ -177,18 +177,20 @@ const convertTime = (time) => {
 }
 
 const buildTrailer = (item) => {
-    let trailerLink = $(`<a target="_blank"></a>`);
+    let trailerDiv = $(`<div class="child-card-trailer"></div>`);
     let trailer;
     if (item.videos.results.length > 0) {
         trailer = item.videos.results.find((item) => {
             return item.site == 'YouTube' && item.type == 'Trailer';
         });
         if (trailer) {
-            trailerLink.html('<i class="fas fa-play"></i> Trailer');
+            let trailerLink = $(`<a target="_blank"></a>`);
+            trailerLink.html('<i class="fas fa-play"></i><p>Trailer</p>');
             trailerLink.attr('href', `https://youtu.be/${trailer.key}`);
+            trailerDiv.append(trailerLink);
         }
     }
-    return trailerLink;
+    return trailerDiv;
 }
 
 const buildGenres = (item) => {

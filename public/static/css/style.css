@@ -40,13 +40,14 @@ h1,h2,h3,h4,h5,p,a,label,textarea {
 
 main {
     display: grid;
-    grid-template-columns: 1fr 650px 1fr;
+    grid-template-columns: 1fr 700px 1fr;
     grid-template-rows: max-content;
     row-gap: 2vh;
 }
 
 .main.grid-row {
     grid-column: 2;
+    
 }
 
 /* @media screen and (max-width: 768px){
