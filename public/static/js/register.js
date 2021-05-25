@@ -1,6 +1,5 @@
 $('form').submit( async (event) => {
     event.preventDefault();
-    clearLabels();
     $('#email-error-label').text('');
     $('#username-error-label').text('');
     $('#password-error-label').text('');
@@ -25,7 +24,6 @@ $('form').submit( async (event) => {
         referrerPolicy: 'origin',
         body: JSON.stringify(data)
     });
-
     if(response.status === 200){
         $('#loading-spinner').removeClass('enabled');
         displaySignupToast();
@@ -37,15 +35,10 @@ $('form').submit( async (event) => {
             errors.forEach(error => {
                 if(error.param === "email"){
                     $('#email-error-label').text('*' + error.msg);
-                    return;
-                };
-                if(error.param === "username"){
+                } else if (error.param === "username"){
                     $('#username-error-label').text('*' + error.msg);
-                    return;
-                };
-                if(error.param === "password"){
+                } else if (error.param === "password"){
                     $('#password-error-label').text('*' + error.msg);
-                    return;
                 };
             });
         };

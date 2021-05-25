@@ -4,7 +4,7 @@ const fetchUserId = async() => {
     return result;
 }
 
-const setup = async() => {
+const setupHeader = async() => {
     const leftNav = $('#left-nav-section');
     const result = await fetchUserId();
     const userId = result.userId;
@@ -24,7 +24,6 @@ const setup = async() => {
             </a>`
         );
         leftNav.append(userNavItem, logoutNavItem);
-        // displayLoginToast(userId);
     } else {
         const loginNavItem = $(
             `<a class="nav-item login" href="/login">
@@ -45,5 +44,5 @@ const setup = async() => {
 }
 
 $( document ).ready(() => {
-    setup();
+    setupHeader();
 });

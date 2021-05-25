@@ -1,6 +1,6 @@
 const displayCopyToast = () => {
     toastr.options = {
-        tapToDismiss: true,
+        tapToDismiss: false,
         closeButton: false,
         debug: false,
         newestOnTop: false,
@@ -8,13 +8,10 @@ const displayCopyToast = () => {
         positionClass: 'toast-top-right',
         preventDuplicates: true,
         onclick: null,
-        showDuration: 500,
+        showDuration: 100,
         hideDuration: 1000,
-        timeOut: 3500,
+        timeOut: 3000,
         extendedTimeOut: 0,
-        showEasing: 'swing',
-        hideEasing: 'swing',
-        showMethod: 'show',
         hideMethod: 'fadeOut',
         onHidden: undefined,
         newestOnTop: true
@@ -93,10 +90,10 @@ const displayLoginToast = () => {
                 Successfully logged in
             </div>
             <div>
-                Redirecting
+                Redirecting you
             </div>
             <div>
-                to homepage
+                to the homepage
             </div>
         </div>`
     );
