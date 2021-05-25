@@ -28,7 +28,7 @@ const fetchPopularTv = async (page) => {
     return result;
 }
 
-const combinePopularMoviesAndTv = () => { 
+const combinePopularMoviesAndTv =async () => { 
     let result = [...movielist, ...tvList];
     result.sort((a, b) => b.popularity - a.popularity);
     popularMoviesAndTv = [...result];
@@ -48,18 +48,11 @@ const addCardToMatches = async (item) => {
     card.attr('id', `match-${item.id}`);
     $('#match').prepend(card);
 }
-
-const addCard = async () => {
-    if (popularMoviesAndTv.length == 0) {
-        moviePage++;
-        await fetchPopularMovies(moviePage);
-        tvPage++;
-        await fetchPopularTv(tvPage);
-        combinePopularMoviesAndTv();
-    }
-    // make check for valid status and also if there is a title or name
+// TODO: refactor so user can swipe fast and we can avoid making a lot of API calls
+const addCard = async (length = popularMoviesAndTv.length) => {
+    await isListEmpty(length);
     let item = popularMoviesAndTv[0];
-    if (isValidItem(item)) {
+    if (!isValidItem(item)) {
         popularMoviesAndTv.shift();
         item = popularMoviesAndTv[0];
     }
@@ -69,8 +62,22 @@ const addCard = async () => {
     popularMoviesAndTv.shift();
 }
 
+const isListEmpty = async (length) => {
+    if (length < 1) {
+        moviePage++;
+        fetchPopularMovies(moviePage);
+        tvPage++;
+        fetchPopularTv(tvPage);
+        combinePopularMoviesAndTv();
+        return true;
+    }
+    return false;
+}
+
 const isValidItem = (item) => {
-    if (item.status in invalidItemStatuses) { 
+    if (!item) { 
+        return false;
+    } else if (item.status in invalidItemStatuses) { 
         return false;
     } else if (item.media_type == 'movie' && !item.title) {
         return false;
@@ -96,7 +103,7 @@ const buildItemCard = (item, swipecard = true) => {
     if (swipecard) { card.append(itemData.buttons); }
 
     if (item.backdrop_path) {
-        card.css({'background-image': `linear-gradient(1deg, rgba(62,54,54,0.98) 31%, rgba(255,255,255,0) 80%), url('${img_url}original${item.backdrop_path}')`});
+        card.css({'background-image': `linear-gradient(1deg, rgba(62,54,54,0.98) 31%, rgba(255,255,255,0) 80%), url('${img_url}w780${item.backdrop_path}')`});
     }
     return card;
 }
@@ -164,7 +171,7 @@ const buildOverview = (item) => {
 
 const buildVoteAvg = (item) => {
     if (item.vote_average) {
-        return `<img src="${tmdb_logo}"/><a><i class="fas fa-star"></i> ${item.vote_average} <small>/ 10</small></a>`;
+        return `<img loading="lazy" src="${tmdb_logo}"/><a><i class="fas fa-star"></i> ${item.vote_average} <small>/ 10</small></a>`;
     }
     return '';
 }
@@ -178,6 +185,7 @@ const convertTime = (time) => {
 
 const buildTrailer = (item) => {
     let trailerDiv = $(`<div class="child-card-trailer"></div>`);
+    if (!item.videos) { return trailerDiv; }
     let trailer;
     if (item.videos.results.length > 0) {
         trailer = item.videos.results.find((item) => {
@@ -194,7 +202,7 @@ const buildTrailer = (item) => {
 }
 
 const buildGenres = (item) => {
-    if (!item.genres) {
+    if (!item.genres.length) {
         return '';
     }
     let genresDiv = $(`<div></div>`);
@@ -214,7 +222,7 @@ const buildButtons = (id) => {
 
     btnDiv.map((index, element) => {
         const btnHammer = new Hammer(element);
-        btnHammer.on('tap pressup', (ev) => {
+        btnHammer.on('tap pressup', async (ev) => {
             const parent = $(`#${id}`);
             if (ev.target.id == 'dislikeBtn') {
                 parent.css('transition', 'all .4s ease-in-out');
@@ -224,8 +232,10 @@ const buildButtons = (id) => {
                 parent.css('transform', 'translate3d(2000px, 0, 0)');
                 clientLikedItem(parent.attr('id'), parent.attr('data-type'));
             }
-            swipedElements.push(parent);
-            addCard();
+            await addCard();
+            setTimeout(() => {
+                parent.remove();
+            }, 1000);
         });
     });
     return btnDiv;
@@ -251,7 +261,7 @@ const buildProviderLogos = (item) => {
     const logopaths = getDistrinctProviders(item);
     if (logopaths) {
         logopaths.forEach((value, index) => {
-            providers.append(`<img width="30px" src="${img_url}original${value}">`);
+            providers.append(`<img loading="lazy" width="30px" src="${img_url}original${value}">`);
         });
     }
     return providers;

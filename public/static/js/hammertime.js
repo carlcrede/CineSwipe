@@ -1,7 +1,5 @@
 let wrapper = $('.wrapper');
 
-const swipedElements = [];
-
 const initHammer = elem => {
     const hammertime = new Hammer(elem);
 
@@ -19,7 +17,7 @@ const initHammer = elem => {
         elem.style.transform = elem.style.transform.replace('scale(1)', 'scale(1.05)');
     });
 
-    hammertime.on('panend', (ev) => {
+    hammertime.on('panend', async (ev) => {
         $(elem).toggleClass('moving', false);
         const moveOutWidth = document.body.clientWidth;
         const keep = Math.abs(ev.velocityX) < 1.1;
@@ -30,13 +28,17 @@ const initHammer = elem => {
             const toY = ev.deltaY > 0 ? endY : -endY;
             elem.style.transition = 'all .4s ease-in-out';
             elem.style.transform = `translate3d(${toX}px, ${toY + ev.deltaY}px, 0)`;
-            swipedElements.push(elem);
             if (!elem.classList.contains('first')) {
-                addCard();
                 if (toX > 0) {
                     clientLikedItem(elem.id, elem.dataset.type);
                 }
             }
+            const length = popularMoviesAndTv.length;
+            await addCard(length);
+            setTimeout(() => {
+                elem.remove();
+            }, 1000);
+
         } else {
             elem.style.transition = 'all .2s ease-in-out';
             elem.style.transform = `translate3d(0, 0, 0) scale(1)`;
@@ -53,12 +55,6 @@ const initHammer = elem => {
         $(elem).toggleClass('moving');
         elem.style.transform = elem.style.transform.replace('scale(1.05)', 'scale(1)');
     });
-
-    setTimeout(() => {
-        if (swipedElements.length > 3) {
-            swipedElements.forEach(element => element.remove());
-        }
-    }, 1000);
 }
 
 let matches = 0;
