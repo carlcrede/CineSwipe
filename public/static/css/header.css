@@ -19,14 +19,14 @@ nav {
 .nav-item {
     padding: 0 1.5rem;
     color: rgb(255, 255, 255);
-    transition: .5s ease-in-out;
+    transition: .3s ease-in-out;
     text-decoration: none;
     display: flex;
     align-items: center;
 }
 
 #logo-small {
-    width: 3rem;
+    width: 2.7rem;
 }
 
 .nav-item:hover {

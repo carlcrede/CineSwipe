@@ -9,13 +9,13 @@
     text-align: center;
     padding: 1rem 5rem 0 5rem;
     width: 40rem;
-    /* justify-items: center; */
 }
 
 .error-label {
     text-align: left;
     color: rgb(215, 35, 35);
     font-size: .8rem;
+    min-height: 1.1rem;
 }
 
 .submit-button {
@@ -24,5 +24,28 @@
 }
 
 #failed-attempt {
+    min-height: 1.1rem;
     color: rgb(215, 35, 35);
+}
+
+.spinner-container {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    min-height: 50px;
+}
+
+.spinner {
+    opacity: 0;
+}
+
+.spinner.enabled {
+    opacity: 1;
+    font-size: 30px;
+    animation: spinner .6s linear infinite;
+    font-weight: 900;
+}
+
+@keyframes spinner {
+    to {transform: rotate(360deg);}
 }

@@ -1,25 +1,53 @@
-const fetchSessionErrors = async () => {
-    const response = await fetch('/session/errors');
-    const result = await response.json();
-    return result
-}
+$('form').submit( async (event) => {
+    event.preventDefault();
+    clearLabels();
+    $('#email-error-label').text('');
+    $('#username-error-label').text('');
+    $('#password-error-label').text('');
+    $('#loading-spinner').addClass('enabled');
 
-const displayInputErrors = async () => {
-    const result = await fetchSessionErrors();
-    const errors = result.errors;
-    if(errors){
-        errors.forEach(error => {
-            if(error.param === "email"){
-                $('#email-error-label').text('*' + error.msg);
-            }
-            else if(error.param === "username"){
-                $('#username-error-label').text('*' + error.msg);
-            }
-            else if(error.param === "password"){
-                $('#password-error-label').text('*' + error.msg);
-            }
-        });
-    }
-}
+    const array = $('form').serializeArray();
+    const data = {
+        email: array[0].value,
+        username: array[1].value,
+        password: array[2].value
+    };
 
-displayInputErrors();
+    const response = await fetch('/register', {
+        method: 'POST',
+        mode: 'same-origin',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        redirect: 'manual',
+        referrerPolicy: 'origin',
+        body: JSON.stringify(data)
+    });
+
+    if(response.status === 200){
+        $('#loading-spinner').removeClass('enabled');
+        displaySignupToast();
+    } else {
+        const result = await response.json();
+        $('#loading-spinner').removeClass('enabled');
+        const errors = result.errors;
+        if(errors){
+            errors.forEach(error => {
+                if(error.param === "email"){
+                    $('#email-error-label').text('*' + error.msg);
+                    return;
+                };
+                if(error.param === "username"){
+                    $('#username-error-label').text('*' + error.msg);
+                    return;
+                };
+                if(error.param === "password"){
+                    $('#password-error-label').text('*' + error.msg);
+                    return;
+                };
+            });
+        };
+    };
+});

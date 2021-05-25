@@ -24,19 +24,7 @@ const setup = async() => {
             </a>`
         );
         leftNav.append(userNavItem, logoutNavItem);
-        displayToaster(
-            `<div class=toast-icon>
-                <img class="success-icon"></img>
-            </div>
-            <div class="toast-text">
-                <div>
-                    Successfully logged in!
-                </div>
-                <div>
-                    Welcome ${userId}
-                </div>
-            </div>`
-        );
+        // displayLoginToast(userId);
     } else {
         const loginNavItem = $(
             `<a class="nav-item login" href="/login">
@@ -54,27 +42,6 @@ const setup = async() => {
         );
         leftNav.append(loginNavItem, registerNavItem);
     }
-}
-
-const displayToaster = (text) => {
-    toastr.options = {
-        closeButton: false,
-        debug: false,
-        newestOnTop: false,
-        progressBar: false,
-        positionClass: 'toast-top-right',
-        preventDuplicates: true,
-        onclick: null,
-        showDuration: 500,
-        hideDuration: 1000,
-        timeOut: 3500,
-        extendedTimeOut: 500000,
-        showEasing: 'swing',
-        hideEasing: 'swing',
-        showMethod: 'show',
-        hideMethod: 'fadeOut'
-    };
-    toastr.success(text);
 }
 
 $( document ).ready(() => {

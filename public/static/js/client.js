@@ -30,32 +30,6 @@ $("#copy-session").click(() => {
     const texttocopy = $('#session-url').text();
     navigator.clipboard.writeText(texttocopy)
         .then(() => {
-            toastr.options = {
-                closeButton: false,
-                debug: false,
-                newestOnTop: false,
-                progressBar: false,
-                positionClass: 'toast-top-right',
-                preventDuplicates: true,
-                onclick: null,
-                showDuration: 500,
-                hideDuration: 1000,
-                timeOut: 3500,
-                extendedTimeOut: 500,
-                showEasing: 'swing',
-                hideEasing: 'swing',
-                showMethod: 'show',
-                hideMethod: 'fadeOut'
-            }
-            toastr.info(
-                `<div class="toast-icon">
-                    <img class="copy-icon"></img>
-                </div>
-                <div class="toast-text">
-                    <div>
-                        Copied to clipboard!
-                    </div>
-                </div>`
-            );
+            displayCopyToast();
         });
 });
