@@ -1,11 +1,17 @@
-let moviePage = 1;
-let tvPage = 1;
-let movielist = new Array();
-let tvList = new Array();
-let popularMoviesAndTv = new Array();
+
+
+let buffer = 40; //buffer for refreshing popularMoviesAndTv
+
+let page = 1;
+
+let popularMoviesAndTv;
+
 const img_url = 'https://image.tmdb.org/t/p/';
+
 const tmdb_logo = 'https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aaebeb75dc7ae79426ddd9be3b2be1e342510f8202baf6bffa71d7f5c4.svg';
+
 let cards = $('#cards');
+
 const invalidItemStatuses = ['Rumored', 'Planned', 'In Production', 'Post Production', 'Canceled'];
 
 const fetchInitialItems = async() => {
@@ -16,27 +22,27 @@ const fetchInitialItems = async() => {
 }
 
 const fetchPopularMovies = async(page) => {
-    console.log('fetchPopularMovies called. popularMoviesAndTv length:', popularMoviesAndTv.length);
     const response = await fetch(`/movie/popular/${page}`);
     const result = await response.json();
-    movielist = [...result];
-    return result;
+    return [...result];
 }
 
 const fetchPopularTv = async (page) => {
-    console.log('fetchPopularTv called. popularMoviesAndTv length:', popularMoviesAndTv.length);
     const response = await fetch(`/tv/popular/${page}`);
     const result = await response.json();
-    tvList = [...result];
-    return result;
+    return [...result];
 }
 
-const combinePopularMoviesAndTv = async () => { 
-    console.log('combinePopularMoviesAndTv called', popularMoviesAndTv.length);
-    let result = [...movielist, ...tvList];
-    result.sort((a, b) => b.popularity - a.popularity);
-    popularMoviesAndTv = [...result];
-    return result;
+const fetchAndCombineMoviesAndTv = async (page) => { 
+    const popularMovies = fetchPopularMovies(page);
+    const popularTv = fetchPopularTv(page);
+    //Promise.all() is supposedly faster than:
+    // > awaiting fetchPopularMovies then awaiting fetchPopularTv <
+    //because they are not dependant on eachother
+    const promises = await Promise.all([popularMovies, popularTv]);
+    const combined = [...promises[0], ...promises[1]];
+    combined.sort((a, b) => b.popularity - a.popularity);
+    return combined;
 }
 
 const fetchDetails = async (item) => {
@@ -52,33 +58,36 @@ const addCardToMatches = async (item) => {
     card.attr('id', `match-${item.id}`);
     $('#match').prepend(card);
 }
-// TODO: refactor so user can swipe fast and we can avoid making a lot of API calls
-const addCard = async (length = popularMoviesAndTv.length) => {
-    console.log('addCard called. combinedList:', popularMoviesAndTv.length);
-    await isListEmpty(length);
-    let item = popularMoviesAndTv[0];
-    if (!isValidItem(item)) {
-        console.log('item was not valid', item);
-        popularMoviesAndTv.shift();
-        item = popularMoviesAndTv[0];
-    }
-    console.log('(addcard) item:', item);
-    let card = buildItemCard(item);
-    initHammer(...card);
-    cards.prepend(card);
-    popularMoviesAndTv.shift();
-}
 
-const isListEmpty = async (length) => {
-    if (length < 1) {
-        moviePage++;
-        await fetchPopularMovies(moviePage);
-        tvPage++;
-        await fetchPopularTv(tvPage);
-        combinePopularMoviesAndTv();
-        return true;
+const addCard = async () => {
+    
+    //logging - to be removed
+    // console.log('popularMoviesAndTv length:', popularMoviesAndTv.length);
+    // console.log('buffer', buffer);
+
+    //conditional for buffer to catch up once popularMoviesAndTv has been repopulated
+    if(popularMoviesAndTv.length >= 35){
+        buffer = popularMoviesAndTv.length;
     }
-    return false;
+
+    //conditional for resetting and then repopulating popularMoviesAndTv
+    if(buffer < 1){
+        buffer = 40;
+        page++;
+        const newItems = await fetchAndCombineMoviesAndTv(page);
+        popularMoviesAndTv = [...popularMoviesAndTv, ...newItems];
+    }
+
+    buffer--;
+
+    //if item(movie/tv show) is valid then insert card to DOM and init hammer.js eventhandlers
+    if(isValidItem(popularMoviesAndTv[0])){
+        let item = popularMoviesAndTv[0];
+        let card = buildItemCard(item);
+        initHammer(...card);
+        cards.prepend(card);
+        popularMoviesAndTv.shift();
+    }
 }
 
 const isValidItem = (item) => {
@@ -275,8 +284,10 @@ const buildProviderLogos = (item) => {
 }
 
 const initCards = async () => {
-    const initialItems = await fetchInitialItems();
-    popularMoviesAndTv = [...initialItems];
+    const result = await fetchInitialItems();
+    const initialItems = [...result];
+    initialItems.sort((a, b) => b.popularity - a.popularity);
+    popularMoviesAndTv = initialItems;
     for (let i = 0; i < 10; i++) {
         await addCard();
     }

@@ -33,7 +33,6 @@ const initHammer = elem => {
                     clientLikedItem(elem.id, elem.dataset.type);
                 }
             }
-            const length = popularMoviesAndTv.length;
             await addCard(length);
             setTimeout(() => {
                 elem.remove();
