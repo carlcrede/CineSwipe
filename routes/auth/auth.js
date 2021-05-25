@@ -23,15 +23,13 @@ router.get('/register', (req, res) => {
 });
 
 router.post('/register', checkSchema(schema.register), async (req, res) => {
-    console.log(req.body.username);
-    console.log(req.body.email);
-    console.log(req.body.password);
     //if express-validator validationResult contains any errors then form data is invalid
     //see -> validation-schema for details
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         req.session.errors = errors;
-        return res.redirect('/register');
+        res.status(401);
+        return res.send(errors);
     }
     try {
         const email = req.body.email;
@@ -43,8 +41,8 @@ router.post('/register', checkSchema(schema.register), async (req, res) => {
             username: username,
             password: hashedPwd
         });
-        res.cookie('registration_success', 'true', { expires: new Date(Date.now() + 5000), httpOnly: false, secure: false});
-        res.redirect('/login');
+        res.status(200);
+        return res.send({});
     } catch (error) {
         console.log(error);
         res.status(500).send("Internal Server error occured");
@@ -52,7 +50,6 @@ router.post('/register', checkSchema(schema.register), async (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-    res.cookie('registration_success', 'true', { expires: new Date(Date.now() + 5000), httpOnly: false, secure: false});
     if(req.session.userId){
         res.redirect('/');
     } else {
@@ -90,7 +87,6 @@ router.get('/logout', (req, res) => {
     if(req.session.userId){
         req.session.destroy();
     }
-    console.log(req.cookies);
     res.redirect('/');
 });
 
