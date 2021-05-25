@@ -9,12 +9,14 @@ let cards = $('#cards');
 const invalidItemStatuses = ['Rumored', 'Planned', 'In Production', 'Post Production', 'Canceled'];
 
 const fetchInitialItems = async() => {
+    console.log('fetchInitialItems called');
     const response = await fetch(`/items/initial`);
     const result = await response.json();
     return result;
 }
 
 const fetchPopularMovies = async(page) => {
+    console.log('fetchPopularMovies called. popularMoviesAndTv length:', popularMoviesAndTv.length);
     const response = await fetch(`/movie/popular/${page}`);
     const result = await response.json();
     movielist = [...result];
@@ -22,13 +24,15 @@ const fetchPopularMovies = async(page) => {
 }
 
 const fetchPopularTv = async (page) => {
+    console.log('fetchPopularTv called. popularMoviesAndTv length:', popularMoviesAndTv.length);
     const response = await fetch(`/tv/popular/${page}`);
     const result = await response.json();
     tvList = [...result];
     return result;
 }
 
-const combinePopularMoviesAndTv =async () => { 
+const combinePopularMoviesAndTv = async () => { 
+    console.log('combinePopularMoviesAndTv called', popularMoviesAndTv.length);
     let result = [...movielist, ...tvList];
     result.sort((a, b) => b.popularity - a.popularity);
     popularMoviesAndTv = [...result];
@@ -50,12 +54,15 @@ const addCardToMatches = async (item) => {
 }
 // TODO: refactor so user can swipe fast and we can avoid making a lot of API calls
 const addCard = async (length = popularMoviesAndTv.length) => {
+    console.log('addCard called. combinedList:', popularMoviesAndTv.length);
     await isListEmpty(length);
     let item = popularMoviesAndTv[0];
     if (!isValidItem(item)) {
+        console.log('item was not valid', item);
         popularMoviesAndTv.shift();
         item = popularMoviesAndTv[0];
     }
+    console.log('(addcard) item:', item);
     let card = buildItemCard(item);
     initHammer(...card);
     cards.prepend(card);
@@ -65,9 +72,9 @@ const addCard = async (length = popularMoviesAndTv.length) => {
 const isListEmpty = async (length) => {
     if (length < 1) {
         moviePage++;
-        fetchPopularMovies(moviePage);
+        await fetchPopularMovies(moviePage);
         tvPage++;
-        fetchPopularTv(tvPage);
+        await fetchPopularTv(tvPage);
         combinePopularMoviesAndTv();
         return true;
     }
