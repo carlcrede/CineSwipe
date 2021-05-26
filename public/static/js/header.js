@@ -10,7 +10,7 @@ const setupHeader = async() => {
     const userId = result.userId;
     if (userId){
         const logoutNavItem = $(
-            `<a class="nav-item logout" href="/logout" id=logout>
+            `<a class="nav-item logout" href="/auth/logout" id=logout>
                 <h3>
                     Logout
                 </h3>

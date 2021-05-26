@@ -11,7 +11,11 @@ app.use(express.urlencoded({extended: true}));
 const compression = require('compression');
 app.use(compression());
 
-const db = require('./db/db');
+const db = require('./db/db-connection');
+
+// use custom rate-limit
+const rateLimit = require('./util/rate-limit');
+app.use('/auth/*', rateLimit.auth);
 
 // include helmet for some security
 const helmet = require('helmet');

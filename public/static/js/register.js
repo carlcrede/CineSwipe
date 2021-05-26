@@ -12,7 +12,7 @@ $('form').submit( async (event) => {
         password: array[2].value
     };
 
-    const response = await fetch('/register', {
+    const response = await fetch('/auth/register', {
         method: 'POST',
         mode: 'same-origin',
         cache: 'no-cache',

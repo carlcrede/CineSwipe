@@ -22,7 +22,22 @@ router.get('/register', (req, res) => {
     res.send(pages.register);
 });
 
-router.post('/register', checkSchema(schema.register), async (req, res) => {
+router.get('/login', (req, res) => {
+    if(req.session.userId){
+        res.redirect('/');
+    } else {
+        res.send(pages.login);
+    }
+});
+
+router.get('/auth/logout', (req, res) => {
+    if(req.session.userId){
+        req.session.destroy();
+    }
+    res.redirect('/');
+});
+
+router.post('/auth/register', checkSchema(schema.register), async (req, res) => {
     //if express-validator validationResult contains any errors then form data is invalid
     //see -> validation-schema for details
     const errors = validationResult(req);
@@ -49,15 +64,7 @@ router.post('/register', checkSchema(schema.register), async (req, res) => {
     }
 });
 
-router.get('/login', (req, res) => {
-    if(req.session.userId){
-        res.redirect('/');
-    } else {
-        res.send(pages.login);
-    }
-});
-
-router.post('/login', async (req, res) => {
+router.post('/auth/login', async (req, res) => {
     try {
         const foundByUsername = await User.findOne({ username: req.body.user}); //search database for a 
         const foundByEmail = await User.findOne({ email: req.body.user});
@@ -81,13 +88,6 @@ router.post('/login', async (req, res) => {
         console.log(error);
         res.status(500).send('Internal Server error occured');
     }
-});
-
-router.get('/logout', (req, res) => {
-    if(req.session.userId){
-        req.session.destroy();
-    }
-    res.redirect('/');
 });
 
 module.exports = {
