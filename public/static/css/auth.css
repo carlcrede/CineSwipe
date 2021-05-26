@@ -37,13 +37,12 @@
 
 .spinner {
     opacity: 0;
+    width: 30px;
 }
 
 .spinner.enabled {
     opacity: 1;
-    font-size: 30px;
     animation: spinner .6s linear infinite;
-    font-weight: 900;
 }
 
 @keyframes spinner {

@@ -1,7 +1,7 @@
 $('form').submit( async(event) => {
     event.preventDefault();
     $('#failed-attempt').text('');
-    $('#loading-spinner').addClass('enabled');
+    $('.spinner').addClass('enabled');
 
     const array = $('form').serializeArray();
     const data = {
@@ -21,7 +21,7 @@ $('form').submit( async(event) => {
     });
 
     if(response.status === 200){
-        $('#loading-spinner').removeClass('enabled');
+        $('.spinner').removeClass('enabled');
         displayLoginToast();
     } else {
         const result = await response.json();

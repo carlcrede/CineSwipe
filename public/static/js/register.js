@@ -3,7 +3,7 @@ $('form').submit( async (event) => {
     $('#email-error-label').text('');
     $('#username-error-label').text('');
     $('#password-error-label').text('');
-    $('#loading-spinner').addClass('enabled');
+    $('.spinner').addClass('enabled');
 
     const array = $('form').serializeArray();
     const data = {
@@ -25,11 +25,11 @@ $('form').submit( async (event) => {
         body: JSON.stringify(data)
     });
     if(response.status === 200){
-        $('#loading-spinner').removeClass('enabled');
+        $('.spinner').removeClass('enabled');
         displaySignupToast();
     } else {
         const result = await response.json();
-        $('#loading-spinner').removeClass('enabled');
+        $('.spinner').removeClass('enabled');
         const errors = result.errors;
         if(errors){
             errors.forEach(error => {
