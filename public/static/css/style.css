@@ -30,6 +30,10 @@ body {
     color: rgb(255, 255, 255);
 }
 
+.noscroll {
+    overflow-y: hidden;
+}
+
 body::-webkit-scrollbar {
     display: none; /* for Chrome, Safari, and Opera */
 }
@@ -46,6 +50,68 @@ main {
     grid-column: 2;
     
 }
+
+.modal {
+    height: 100%;
+    width: 100%;
+    display: none;
+    position: fixed;
+    z-index: 1;
+    background-color: initial;
+    backdrop-filter: blur(40px);
+}
+
+.modal-content {
+    position: relative;
+    width: 100%;
+    top: 25%;
+    text-align: center;
+}
+
+.modal a {
+    position: absolute;
+    top: 20px;
+    right: 45px;
+    font-size: 60px;
+    cursor: pointer;
+}
+
+.modal-content .media button {
+    cursor: pointer;
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    color: rgba(255, 255, 255, 0.72);
+    transition: background 30ms ease-in-out 0s;
+    border-radius: 14px;
+    padding: 3px 15px;
+}
+
+.modal-content .media button.active {
+    border: 1px solid rgb(255, 255, 255);
+    background: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+}
+
+.modal-content .media button:hover {
+    color: white;
+    background: rgb(121, 126, 130);
+    border-color: rgb(255, 255, 255);
+}
+
+.filterBtn {
+    background: rgb(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    color: white;
+    cursor: pointer;
+    border-radius: 14px;
+    padding: 3px 15px;
+    transition: background 30ms ease-in-out 0s;
+}
+
+.filterBtn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
 
 /* @media screen and (max-width: 768px){
     .grid-row {
