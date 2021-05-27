@@ -33,7 +33,7 @@ const initHammer = elem => {
                     clientLikedItem(elem.id, elem.dataset.type);
                 }
             }
-            await addCard(length);
+            addCard();
             setTimeout(() => {
                 elem.remove();
             }, 1000);

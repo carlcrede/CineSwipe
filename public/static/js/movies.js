@@ -1,9 +1,3 @@
-
-
-let buffer = 40; //buffer for refreshing popularMoviesAndTv
-
-let page = 1;
-
 let popularMoviesAndTv;
 
 const img_url = 'https://image.tmdb.org/t/p/';
@@ -60,41 +54,24 @@ const addCardToMatches = async (item) => {
     $('#match').prepend(card);
 }
 
-const addCard = async () => {
-    
+const addCard = () => {
     //logging - to be removed
-    console.log('popularMoviesAndTv length:', popularMoviesAndTv.length);
-    console.log('buffer', buffer);
-
-    //conditional for buffer to catch up once popularMoviesAndTv has been repopulated
-    if(popularMoviesAndTv.length >= 35){
-        buffer = popularMoviesAndTv.length;
-    }
-
-    //conditional for resetting and then repopulating popularMoviesAndTv
-    if(buffer < 1){
-        buffer = 40;
-        page++;
-        const newItems = await fetchAndCombineMoviesAndTv(page);
-        popularMoviesAndTv = [...popularMoviesAndTv, ...newItems];
-    }
-
-    buffer--;
-
-    //if item(movie/tv show) is valid then insert card to DOM and init hammer.js eventhandlers
-    if(isValidItem(popularMoviesAndTv[0])){
-        let item = popularMoviesAndTv[0];
-        let card = buildItemCard(item);
-        initHammer(...card);
-        cards.prepend(card);
-        popularMoviesAndTv.shift();
+    // console.log('popularMoviesAndTv length:', popularMoviesAndTv.length);
+    
+    if (popularMoviesAndTv[0]) { 
+        //if item(movie/tv show) is valid then insert card to DOM and init hammer.js eventhandlers
+        if(isValidItem(popularMoviesAndTv[0])){
+            let item = popularMoviesAndTv[0];
+            let card = buildItemCard(item);
+            initHammer(...card);
+            cards.prepend(card);
+            popularMoviesAndTv.shift();
+        }
     }
 }
 
 const isValidItem = (item) => {
-    if (!item) { 
-        return false;
-    } else if (item.status in invalidItemStatuses) { 
+    if (item.status in invalidItemStatuses) { 
         return false;
     } else if (item.media_type == 'movie' && !item.title) {
         return false;
@@ -294,4 +271,21 @@ const initCards = async () => {
     }
 }
 
-initCards().catch(err => console.error(err));
+const checkAndRepopulate = () => {
+    setInterval( async() => {
+        console.log('checked');
+        if(popularMoviesAndTv && popularMoviesAndTv.length < 1){
+            page++;
+            const newItems = await fetchAndCombineMoviesAndTv(page);
+            popularMoviesAndTv = [...newItems];
+        }
+        const cards = $('.wrapper').children();
+        if(cards.length < 10){
+            for(let i = 0; i < 10 - cards.length; i++){
+                addCard();
+            }
+        }
+    }, 3000);
+}
+
+initCards().then(checkAndRepopulate()).catch( err => console.error(err) );
