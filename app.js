@@ -71,6 +71,9 @@ const authRoute = require('./routes/auth/auth');
 app.use(authRoute.router);
 const sessionRoute = require('./routes/session');
 app.use(sessionRoute.router);
+const userdata = require('./routes/userdata');
+app.use(userdata.router);
+
 
 app.get('/', (req, res) => {
     res.send(pages.index);

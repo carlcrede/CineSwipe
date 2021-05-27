@@ -1,6 +1,6 @@
 let wrapper = $('.wrapper');
 
-const initHammer = elem => {
+const initHammer = (elem, item) => {
     const hammertime = new Hammer(elem);
 
     hammertime.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 5 });
@@ -30,7 +30,7 @@ const initHammer = elem => {
             elem.style.transform = `translate3d(${toX}px, ${toY + ev.deltaY}px, 0)`;
             if (!elem.classList.contains('first')) {
                 if (toX > 0) {
-                    clientLikedItem(elem.id, elem.dataset.type);
+                    clientLikedItem(item);
                 }
             }
             addCard();

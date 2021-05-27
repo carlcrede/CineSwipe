@@ -19,14 +19,12 @@ $('form').submit( async(event) => {
         referrerPolicy: 'origin', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
         body: JSON.stringify(data) // body data type must match "Content-Type" header
     });
-
     if(response.status === 200){
         $('.spinner').removeClass('enabled');
         displayLoginToast();
     } else {
         const result = await response.json();
-        $('#loading-spinner').removeClass('enabled');
+        $('.spinner').removeClass('enabled');
         $('#failed-attempt').text(result.msg);
     }
-    
 });

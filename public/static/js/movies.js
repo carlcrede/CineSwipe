@@ -1,3 +1,5 @@
+let page = 1;
+
 let popularMoviesAndTv;
 
 const img_url = 'https://image.tmdb.org/t/p/';
@@ -9,10 +11,8 @@ let cards = $('#cards');
 const invalidItemStatuses = ['Rumored', 'Planned', 'In Production', 'Post Production', 'Canceled'];
 
 const fetchInitialItems = async() => {
-    console.log('fetchInitialItems called');
     const response = await fetch(`/items/initial`);
     const result = await response.json();
-    console.log(result);
     return result;
 }
 
@@ -63,7 +63,7 @@ const addCard = () => {
         if(isValidItem(popularMoviesAndTv[0])){
             let item = popularMoviesAndTv[0];
             let card = buildItemCard(item);
-            initHammer(...card);
+            initHammer(...card, item);
             cards.prepend(card);
             popularMoviesAndTv.shift();
         }
@@ -273,7 +273,7 @@ const initCards = async () => {
 
 const checkAndRepopulate = () => {
     setInterval( async() => {
-        console.log('checked');
+        // console.log('checked');
         if(popularMoviesAndTv && popularMoviesAndTv.length < 1){
             page++;
             const newItems = await fetchAndCombineMoviesAndTv(page);
