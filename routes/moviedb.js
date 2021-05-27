@@ -3,16 +3,9 @@ const moviedb = new MovieDb(process.env.MOVIEDB_API_KEY);
 
 const router = require('express').Router();
 
-let initalItems = new Array();
+let cache;
 
-const fetchInitialItems = async(page) => {
-    const movies = await popularMovies(page);
-    const tv = await popularTv(page);
-    const combined = [...movies, ...tv].sort((a, b) => b.popularity - a.popularity);
-    return combined;
-};
-
-const popularMovies = async (page) => {
+const fetchPopularMovies = async (page) => {
     try {
         const popularMovies = await moviedb.moviePopular({ page: page });
         const movies = await Promise.all(popularMovies.results.map(async (result) => {
@@ -26,7 +19,7 @@ const popularMovies = async (page) => {
     }
 }
 
-const popularTv = async (page) => {
+const fetchPopularTv = async (page) => {
     try {
         const popularTv = await moviedb.tvPopular({ page: page });
         const tv = await Promise.all(popularTv.results.map(async (result) => {
@@ -40,6 +33,11 @@ const popularTv = async (page) => {
     }
 }
 
+const sortByPopularity = async (items) => {
+    items.sort((a, b) => b.popularity - a.popularity);
+    return items;
+};
+
 const itemDetails = async (id, media_type) => {
     let details;
     if (media_type == 'movie') {
@@ -52,8 +50,47 @@ const itemDetails = async (id, media_type) => {
     return details;
 }
 
-router.get('/items/initial', (req, res, next) => {
-    res.send(initalItems);
+const initCache = async() => {
+    const popMovies = await fetchPopularMovies(1);
+    const popTv = await fetchPopularTv(1);
+    const combined = await sortByPopularity([...popMovies, ...popTv]);
+    console.log('caching movies and tv:', new Date, Date.now());
+    return {
+        initial: {
+            time: Date.now(),
+            data: combined,
+    
+        },
+        movies: {
+            time: Date.now(),
+            data: popMovies,
+    
+        },
+        tv: {
+            time: Date.now(),
+            data: popTv,
+        },
+    }
+}
+
+initCache().then(result => cache = result);
+
+router.get('/items/initial', async (req, res, next) => {
+    if(cache.initial.time > Date.now() - 30 * 1000){
+        console.log('didnt cache');
+        return res.send(cache.initial.data);
+    } else {
+        console.log('recached');
+        const popMovies = await fetchPopularMovies(1);
+        const popTv = await fetchPopularTv(1);
+        const combined = await sortByPopularity([...popMovies, ...popTv]);
+
+        cache.initial = {
+            time: Date.now(),
+            data: combined
+        }
+        return res.send(cache.initial.data);
+    }
 });
 
 router.get('/:media_type/:id/details', async (req, res, next) => {
@@ -65,18 +102,18 @@ router.get('/:media_type/:id/details', async (req, res, next) => {
 
 router.get('/movie/popular/:page', async (req, res, next) => {
     const page = Number(req.params.page);
-    const movies = await popularMovies(page);
+    const movies = await fetchPopularMovies(page);
     res.send(movies);
 });
 
 router.get('/tv/popular/:page', async (req, res, next) => {
     const page = Number(req.params.page);
-    const tv = await popularTv(page);
+    const tv = await fetchPopularTv(page);
     res.send(tv);
 });
 
-fetchInitialItems(1).then(result => {
-    initalItems = [...result];
+router.get('/cachetime', (req, res) => {
+    res.send({cache: cache});
 });
 
 module.exports = {

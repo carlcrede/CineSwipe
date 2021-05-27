@@ -18,6 +18,7 @@ const fetchInitialItems = async() => {
     console.log('fetchInitialItems called');
     const response = await fetch(`/items/initial`);
     const result = await response.json();
+    console.log(result);
     return result;
 }
 
@@ -62,8 +63,8 @@ const addCardToMatches = async (item) => {
 const addCard = async () => {
     
     //logging - to be removed
-    // console.log('popularMoviesAndTv length:', popularMoviesAndTv.length);
-    // console.log('buffer', buffer);
+    console.log('popularMoviesAndTv length:', popularMoviesAndTv.length);
+    console.log('buffer', buffer);
 
     //conditional for buffer to catch up once popularMoviesAndTv has been repopulated
     if(popularMoviesAndTv.length >= 35){
