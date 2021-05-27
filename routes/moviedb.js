@@ -76,20 +76,25 @@ const initCache = async() => {
 initCache().then(result => cache = result);
 
 router.get('/items/initial', async (req, res, next) => {
-    if(cache.initial.time > Date.now() - 30 * 1000){
-        console.log('didnt cache');
-        return res.send(cache.initial.data);
-    } else {
-        console.log('recached');
-        const popMovies = await fetchPopularMovies(1);
-        const popTv = await fetchPopularTv(1);
-        const combined = await sortByPopularity([...popMovies, ...popTv]);
+    try {
+        if(cache.initial.time > Date.now() - 30 * 1000){
+            console.log('didnt cache');
+            return res.send(cache.initial.data);
+        } else {
+            console.log('recached');
+            const popMovies = await fetchPopularMovies(1);
+            const popTv = await fetchPopularTv(1);
+            const combined = await sortByPopularity([...popMovies, ...popTv]);
 
-        cache.initial = {
-            time: Date.now(),
-            data: combined
+            cache.initial = {
+                time: Date.now(),
+                data: combined
+            }
+            return res.send(cache.initial.data);
         }
-        return res.send(cache.initial.data);
+    } catch (error) {
+        console.error(error);
+        next();
     }
 });
 
@@ -112,8 +117,16 @@ router.get('/tv/popular/:page', async (req, res, next) => {
     res.send(tv);
 });
 
-router.get('/cachetime', (req, res) => {
-    res.send({cache: cache});
+router.get('/genre/:media_type', async (req, res, next) => {
+    const media_type = req.params.media_type;
+    try {
+        const genres = (media_type == 'movie') ? await moviedb.genreMovieList() : await moviedb.genreTvList();
+        res.send(genres);
+    } catch (error) {
+        console.error(error);
+        next();
+    }
+
 });
 
 module.exports = {

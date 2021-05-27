@@ -1,4 +1,16 @@
 <body>
+    <div id="filters" class="modal">
+        <a id="closeFilterBtn">&times;</a>
+        <div class="modal-content">
+            <div class="media" id="media">
+                <button id="movie">Movies</button>
+                <button id="tv">Tv Shows</button>
+            </div>
+            <div class="genres">
+
+            </div>
+        </div>
+    </div>
     <main>
         <div class="grid-row session">
             <button class="session-link" id="copy-session">
@@ -6,8 +18,8 @@
                 <i class="far fa-clone"></i>
             </button>
         </div>
-        <div id="filters" class="grid-row">
-            
+        <div class="grid-row">
+            <button class="filterBtn" id="filterBtn">Edit filters</button>
         </div>
         <div class="grid-row">
             <div class="tab">
@@ -26,6 +38,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/client.js"></script>
     <script src="/js/hammertime.js"></script>
+    <script src="/js/filtering.js"></script>
     <script src="/js/movies.js"></script>
 </body>
 </html>
