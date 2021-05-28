@@ -42,13 +42,35 @@ main {
     display: grid;
     grid-template-columns: 1fr 700px 1fr;
     grid-template-rows: max-content;
-    row-gap: 10px;
-    padding-top: 20px;
+    row-gap: 15px;
 }
 
 .grid-row {
     grid-column: 2;
-    
+}
+
+.grid-row.session {
+    padding-top: 15px;
+}
+
+.grid-row.title {
+    display: grid;
+    grid-template-rows: max-content;
+    grid-area: 1 / 2;
+    justify-items: center;
+    text-align: center;
+}
+
+.grid-row.title p {
+    opacity: 0.75;
+    width: 75%;
+}
+
+.grid-row.title.back {
+    min-height: 175px;
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.12) 100%);
+    grid-area: 1 / 1 / span 1 / span 3;
+    border-radius: 0 0 40% 40%;
 }
 
 .modal {
@@ -110,8 +132,8 @@ main {
 
 .filterBtn:hover {
     background: rgba(255, 255, 255, 0.3);
+    
 }
-
 
 /* @media screen and (max-width: 768px){
     .grid-row {

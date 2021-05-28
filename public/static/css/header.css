@@ -2,7 +2,6 @@ header {
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: .5fr 10fr .5fr;
-    background-color: rgb(255, 255, 255, 0.12);
     min-height: 3rem;
 }
 
@@ -19,10 +18,11 @@ nav {
 .nav-item {
     padding: 0 1.5rem;
     color: rgb(255, 255, 255);
-    transition: .3s ease-in-out;
+    transition: .2s ease-in-out;
     text-decoration: none;
     display: flex;
     align-items: center;
+    border-radius: 1rem;
 }
 
 #logo-small {
