@@ -14,14 +14,7 @@ $('form').submit( async (event) => {
 
     const response = await fetch('/auth/register', {
         method: 'POST',
-        mode: 'same-origin',
-        cache: 'no-cache',
-        credentials: 'same-origin',
-        headers: {
-        'Content-Type': 'application/json'
-        },
-        redirect: 'manual',
-        referrerPolicy: 'origin',
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     });
     if(response.status === 200){
