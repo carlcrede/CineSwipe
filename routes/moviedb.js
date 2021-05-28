@@ -50,27 +50,32 @@ const sortByPopularity = async (items) => {
 
 let cache = {
     initialitems: undefined,
-    popularmovies: undefined,
-    populartv: undefined
 };
 
-const recache = (key, data) => {
-    cache[key] = {
+
+const fetchInitialItems = async () => {
+    const popMovies = await fetchPopularMovies(1);
+    const popTv = await fetchPopularTv(1);
+    const data = await sortByPopularity([...popMovies, ...popTv])
+    return data;
+};
+
+const cacheResponse = (key, data) => {
+    console.log(`cached ${key}`, new Date);
+    cache.initialitems = {
         time: Date.now(),
         data: data
     }
 }
 
+cacheResponse('initialitems', fetchInitialItems());
+
 router.get('/items/initial', async (req, res, next) => {
     try {
         if(!cache.initialitems || Date.now() - cache.initialitems.time > 60 * 1000){
-            console.log({'cached intialitems': new Date});
-            const popMovies = await fetchPopularMovies(1);
-            const popTv = await fetchPopularTv(1);
-            const data = await sortByPopularity([...popMovies, ...popTv])
-            recache('initialitems', data);
+            cacheResponse('initialitems', fetchInitialItems());
         }
-        res.send(cache.initialitems.data);
+        res.send(await cache.initialitems.data);
     } catch (error) {
         console.error(error);
         next();
@@ -85,23 +90,15 @@ router.get('/:media_type/:id/details', async (req, res, next) => {
 });
 
 router.get('/movie/popular/:page', async (req, res, next) => {
-    if(!cache.popularmovies || Date.now() - cache.popularmovies.time > 60 * 1000){
-        console.log({'cached popularmovies': new Date});
-        const page = Number(req.params.page);
-        const data = await fetchPopularMovies(page);
-        recache('popularmovies', data);
-    }
-    res.send(cache.popularmovies.data);
+    const page = Number(req.params.page);
+    const data = await fetchPopularMovies(page);
+    res.send(data);
 });
 
 router.get('/tv/popular/:page', async (req, res, next) => {
-    if(!cache.populartv || Date.now() - cache.populartv.time > 60 * 1000){
-        console.log({'cached populartv': new Date});
-        const page = Number(req.params.page);
-        const data = await fetchPopularTv(page);
-        recache('populartv', data);
-    }
-    res.send(cache.populartv.data);
+    const page = Number(req.params.page);
+    const data = await fetchPopularTv(page);
+    res.send(data);
 });
 
 router.get('/genre/:media_type', async (req, res, next) => {
