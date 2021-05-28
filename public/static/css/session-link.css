@@ -1,5 +1,5 @@
 .session-link {
-    background-color: rgb(255, 255, 255, 0.12);
+    background: linear-gradient(202deg, rgba(18,60,87,0.75) 0%, rgba(215,100,100,0.75) 100%);
     width: 100%;
     display: grid;
     grid-auto-flow: column;
@@ -9,16 +9,16 @@
     color: rgb(255, 255, 255);
     justify-content: center;
     align-items: center;
-    transition: .1s ease-in-out;
+    transition: .9s ease-in-out;
 }
 
 .session-link:hover {
-    background-color: rgb(255, 255, 255, 0.24);
+    background: linear-gradient(202deg, rgba(18,60,87,1) 0%, rgba(215,100,100,1) 100%);
     cursor: url('/img/clone-regular-24x24.png'), auto;
 }
 
 .session-link:active {
-    background-color: rgb(255, 255, 255, 0.12);
+    background: linear-gradient(202deg, rgba(18,60,87,0.75) 0%, rgba(215,100,100,0.75) 100%);
     cursor: url('/img/clone-solid-24x24.png'), auto;
 }
 

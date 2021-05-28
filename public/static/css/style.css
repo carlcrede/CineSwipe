@@ -49,9 +49,22 @@ main {
     grid-column: 2;
 }
 
-.grid-row.session {
-    padding-top: 15px;
+.description-container {
+    text-align: center;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.12) 25%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.12) 75%, rgba(255,255,255,0) 100%);
+    border-radius: 1rem 1rem 1rem 1rem;
+    margin: 0 10rem;
+    font-size: 0.9rem;
 }
+
+.description-text {
+    padding: 0.3rem 0;
+    margin: 0.5rem;
+}
+
+/* .grid-row.session {
+    padding-top: 15px;
+} */
 
 .grid-row.title {
     display: grid;
