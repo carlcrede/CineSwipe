@@ -1,7 +1,8 @@
 const fs = require('fs');
 
-const head = fs.readFileSync(__dirname + '/../public/fragments/head.html');
+const head = fs.readFileSync(__dirname + '/../public/fragments/head.html', 'utf-8');
 const nav = fs.readFileSync(__dirname + '/../public/fragments/header.html', 'utf-8');
+const footer = fs.readFileSync(__dirname + '/../public/fragments/footer.html', 'utf-8')
 
 const body = {
     index: fs.readFileSync(__dirname + '/../public/index/index.html', 'utf-8'),
@@ -9,9 +10,9 @@ const body = {
     register: fs.readFileSync(__dirname + '/../public/authentication/register/register.html', 'utf-8')
 }
 
-const index = head + nav + body.index;
-const login = head + nav + body.login;
-const register = head + nav + body.register;
+const index = head + nav + body.index + footer;
+const login = head + nav + body.login + footer;
+const register = head + nav + body.register + footer;
 
 module.exports = {
     index, login, register

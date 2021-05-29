@@ -12,6 +12,7 @@
     --color-white-alpha-36: rgba(255, 255, 255, 0.36);
     --gradient-red-to-blue: linear-gradient(202deg, rgba(18,60,87,0.75) 0%, rgba(215,100,100,0.75) 100%);
     --gradient-red-to-blue-hover: linear-gradient(202deg, rgba(18,60,87,1) 0%, rgba(215,100,100,1) 100%);
+    --gradient-fade-bottom-to-background-top: linear-gradient(180deg, var(--color-white-alpha-0) 0%, var(--color-white-alpha-12) 100%);
 }
 
 *, *:before, *:after {
@@ -40,7 +41,7 @@ body {
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */
     overflow: hidden scroll;
-    margin: 0;
+    margin: 0 0 10vh 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: var(--color-font-default);
@@ -60,7 +61,6 @@ header {
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: .5fr 10fr .5fr;
-    min-height: 3rem;
 }
 
 nav {
@@ -90,6 +90,38 @@ nav {
 
 .nav-item:hover {
     background-color: var(--color-white-alpha-24);
+}
+
+/* ________________________________________________________________________________________ */
+/* FOOTER styling */
+
+footer {
+    display: grid;
+    /* grid-auto-flow: column; */
+    grid-template-columns: 1fr 2fr 1fr;
+    /* grid-template-rows: 1fr; */
+    position: relative;
+    background: var(--gradient-fade-bottom-to-background-top);
+    height: 10em;
+    max-height: 10em;
+    top: 80vh;
+    padding: 1em 10em ;
+    transition: opacity .5s ease-in-out;
+}
+
+footer > .footer-content {
+    grid-column: 2;
+    display: grid;
+    grid-auto-flow: column;
+}
+
+footer > .footer-content > .column > p {
+    /* margin: .3rem 0; */
+}
+
+footer > .footer-content > .column > a {
+    /* text-decoration: none; */
+    color: var(--color-font-default);
 }
 
 /* ________________________________________________________________________________________ */
@@ -167,7 +199,7 @@ main {
 
 .grid-row.title.background {
     /* min-height: 175px; */
-    background: linear-gradient(180deg, var(--color-white-alpha-0) 0%, var(--color-white-alpha-12) 100%);
+    background: var(--gradient-fade-bottom-to-background-top);
     grid-area: 1 / 1 / span 1 / span 3;
     border-radius: 0 0 40% 40%;
 }
@@ -594,6 +626,13 @@ main {
 }
 
 /* ________________________________________________________________________________________ */
+
+@media screen and (max-height: 500px){
+    footer{
+        opacity: 0;
+        transition: opacity .5s ease-in-out;
+    }
+}
 
 /* @media screen and (max-width: 768px){
     .grid-row {
