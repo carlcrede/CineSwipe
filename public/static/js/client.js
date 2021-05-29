@@ -1,6 +1,5 @@
 $(document).ready(() => {
-    document.title = "Welcome!"
-    $('footer')
+    document.title = "CineSwipe"
 });
 
 const socket = io();

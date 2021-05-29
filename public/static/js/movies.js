@@ -298,7 +298,7 @@ const initCards = async () => {
     initialItems.sort((a, b) => b.popularity - a.popularity);
     popularMoviesAndTv = initialItems;
     for (let i = 0; i < 10; i++) {
-        await addCard();
+        addCard();
     }
 }
 
