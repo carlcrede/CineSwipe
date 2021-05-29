@@ -46,10 +46,11 @@ body {
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */
     overflow: hidden scroll;
-    margin: 0 0 10vh 0;
+    margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: var(--color-font-default);
+    /* min-height: 20rem; */
 }
 
 input, select, textarea, button{
@@ -132,7 +133,7 @@ footer {
     background: var(--gradient-lightbottom-to-darktop);
     height: 10em;
     max-height: 10em;
-    top: 20vh;
+    top: 20vh;;
     padding: 1em 10em ;
     transition: opacity .5s ease-in-out;
 }
@@ -155,6 +156,8 @@ main {
     grid-template-columns: 1fr 700px 1fr;
     grid-template-rows: max-content;
     row-gap: 15px;
+    margin-bottom: 5vh;
+    min-height: 700px;
 }
 
 .grid-row {

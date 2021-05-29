@@ -24,7 +24,7 @@ const setupHeader = async() => {
             </a>`
         );
         const likesNavItem = $(
-            `<a class="nav-item likes" href="/user/likes">
+            `<a class="nav-item likes" href="/user/preferences">
                 <h3>Your preferences</h3>
             </a>`
         );

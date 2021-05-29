@@ -7,13 +7,15 @@ const footer = fs.readFileSync(__dirname + '/../public/fragments/footer.html', '
 const body = {
     index: fs.readFileSync(__dirname + '/../public/index/index.html', 'utf-8'),
     login: fs.readFileSync(__dirname + '/../public/authentication/login/login.html', 'utf-8'),
-    register: fs.readFileSync(__dirname + '/../public/authentication/register/register.html', 'utf-8')
+    register: fs.readFileSync(__dirname + '/../public/authentication/register/register.html', 'utf-8'),
+    preferences: fs.readFileSync(__dirname + '/../public/user/preferences.html', 'utf-8')
 }
 
 const index = head + nav + body.index + footer;
 const login = head + nav + body.login + footer;
 const register = head + nav + body.register + footer;
+const preferences = head + nav + body.preferences + footer;
 
 module.exports = {
-    index, login, register
+    index, login, register, preferences
 }

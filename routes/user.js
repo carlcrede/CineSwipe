@@ -2,6 +2,12 @@ const router = require('express').Router();
 
 const Likes = require('../db/model/likes.js');
 
+const pages = require('../util/ssr');
+
+router.get('/user/preferences', (req, res) => {
+    res.send(pages.preferences);
+});
+
 router.post('/user/like', async(req, res) => {
     // console.group('user liked an item');
     // console.log({userId: req.session.userId});
