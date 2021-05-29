@@ -132,7 +132,7 @@ footer {
     background: var(--gradient-lightbottom-to-darktop);
     height: 10em;
     max-height: 10em;
-    top: 80vh;
+    top: 20vh;
     padding: 1em 10em ;
     transition: opacity .5s ease-in-out;
 }
