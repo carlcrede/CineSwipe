@@ -113,7 +113,7 @@ const buildItemData = (item) => {
         episodesOrSeasons: buildEpisodesOrSeasons(item),
         runtime: buildRuntime(item),
         overview: buildOverview(item),
-        buttons: buildButtons(item.id),
+        buttons: buildButtons(item),
     };
     return data;
 }
@@ -207,26 +207,27 @@ const buildGenres = (item) => {
     return genresDiv;
 }
 
-const buildButtons = (id) => {
+const buildButtons = (item) => {
     let btnDiv = $(`<div class="child-card-buttons"></div>`);
-    const dislikebtn = $(`<a id="dislikeBtn">👎</a>`);
+    const dislikebtn = $(`<a href="#" id="dislikeBtn">👎</a>`);
     btnDiv.append(dislikebtn);
-    const likebtn = $(`<a id="likeBtn">👍</a>`);
+    const likebtn = $(`<a href="#" id="likeBtn">👍</a>`);
     btnDiv.append(likebtn);
 
     btnDiv.map((index, element) => {
         const btnHammer = new Hammer(element);
         btnHammer.on('tap pressup', async (ev) => {
-            const parent = $(`#${id}`);
+            const itemId = item.id;
+            const parent = $(`#${itemId}`);
             if (ev.target.id == 'dislikeBtn') {
                 parent.css('transition', 'all .4s ease-in-out');
                 parent.css('transform', 'translate3d(-2000px, 0, 0)');
             } else {
                 parent.css('transition', 'all .4s ease-in-out');
                 parent.css('transform', 'translate3d(2000px, 0, 0)');
-                clientLikedItem(parent.attr('id'), parent.attr('data-type'));
+                clientLikedItem(item);
             }
-            await addCard();
+            addCard();
             setTimeout(() => {
                 parent.remove();
             }, 1000);
