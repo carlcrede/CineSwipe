@@ -479,7 +479,8 @@ main {
     font-size: 17px;
     margin-right: .5rem;
     border-bottom: 5px solid transparent;
-  }
+    border-radius: 0.3rem;
+}
 
 .tab a:hover {
     background-color: #f5eded9c;
