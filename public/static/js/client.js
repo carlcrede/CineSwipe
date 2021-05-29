@@ -3,14 +3,6 @@ $(document).ready(() => {
     $('footer')
 });
 
-// $( window ).scroll((event) => {
-//     console.log(window.width);
-//     if(window.pageYOffset > 50){
-//         $('footer').addClass('enabled');
-//         console.count('user scrolled');
-//     } else {}
-// });
-
 const socket = io();
 
 // keeps track of what has been liked in the room
