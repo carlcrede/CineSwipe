@@ -10,35 +10,14 @@ let cards = $('#cards');
 
 const invalidItemStatuses = ['Rumored', 'Planned', 'In Production', 'Post Production', 'Canceled'];
 
-const insertFirstCard = () => {
-    const firstCard = $('<div class="child first"></div>');
-
-    const instructions = $(
-        `<div class="instructions">
-        <p>Swipe right or 👍 if you'd like to watch it.</p>
-        <p>Swipe left or 👎 if you don't want to watch.</p>
-        <p>Don't forget to invite your friends or family!</p>
-        </div>`);
-    
-    let btnDiv = $(`<div class="child-card-buttons"></div>`);
-    const likebtn = $(`<div class="begin" id="beginBtn">Begin swiping 👍</div>`);
-    btnDiv.append(likebtn);
-    const btnHammer = new Hammer(...likebtn);
-
-    initHammer(...firstCard);
-    btnHammer.on('tap pressup', async (ev) => {
-        firstCard.css('transition', 'all .4s ease-in-out');
-        firstCard.css('transform', 'translate3d(2000px, 0, 0)');
-        addCard();
-        setTimeout(() => {
-            firstCard.remove();
-        }, 1000);
+$(document).ready(() => {
+    $(this).mousemove(() => {
+        idleTime = 0;
     });
-    firstCard.append(instructions);
-    firstCard.append(btnDiv);
-    wrapper.append(firstCard);
-}
-insertFirstCard();
+    $(this).keypress(() => {
+        idleTime = 0;
+    });
+});
 
 const fetchInitialItems = async() => {
     const response = await fetch(`/items/initial`);
@@ -292,19 +271,8 @@ const buildProviderLogos = (item) => {
     return providers;
 }
 
-const initCards = async () => {
-    const result = await fetchInitialItems();
-    const initialItems = [...result];
-    initialItems.sort((a, b) => b.popularity - a.popularity);
-    popularMoviesAndTv = initialItems;
-    for (let i = 0; i < 10; i++) {
-        addCard();
-    }
-}
-
-const checkAndRepopulate = () => {
-    setInterval( async() => {
-        // console.log('checked');
+const checkAndRepopulate = async() => {
+    if(document.hasFocus){
         if(popularMoviesAndTv && popularMoviesAndTv.length < 1){
             page++;
             const newItems = await fetchAndCombineMoviesAndTv(page);
@@ -316,7 +284,46 @@ const checkAndRepopulate = () => {
                 addCard();
             }
         }
-    }, 3000);
-}
+    }
+};
 
-initCards().then(checkAndRepopulate()).catch( err => console.error(err) );
+const cardInterval = setInterval(checkAndRepopulate, 3000);
+
+(function insertFirstCard() {
+    const firstCard = $('<div class="child first"></div>');
+
+    const instructions = $(
+        `<div class="instructions">
+        <p>Swipe right or 👍 if you'd like to watch it.</p>
+        <p>Swipe left or 👎 if you don't want to watch.</p>
+        <p>Don't forget to invite your friends or family!</p>
+        </div>`);
+    
+    let btnDiv = $(`<div class="child-card-buttons"></div>`);
+    const likebtn = $(`<div class="begin" id="beginBtn">Begin swiping 👍</div>`);
+    btnDiv.append(likebtn);
+    const btnHammer = new Hammer(...likebtn);
+
+    initHammer(...firstCard);
+    btnHammer.on('tap pressup', async (ev) => {
+        firstCard.css('transition', 'all .4s ease-in-out');
+        firstCard.css('transform', 'translate3d(2000px, 0, 0)');
+        addCard();
+        setTimeout(() => {
+            firstCard.remove();
+        }, 1000);
+    });
+    firstCard.append(instructions);
+    firstCard.append(btnDiv);
+    wrapper.append(firstCard);
+})();
+
+(async function initCards(){
+    const result = await fetchInitialItems();
+    const initialItems = [...result];
+    initialItems.sort((a, b) => b.popularity - a.popularity);
+    popularMoviesAndTv = initialItems;
+    for (let i = 0; i < 10; i++) {
+        addCard();
+    }
+})();

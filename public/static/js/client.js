@@ -1,11 +1,13 @@
-$(document).ready(() => {
-    document.title = "CineSwipe"
-});
+let idleTime = 0;
 
 const socket = io();
 
 // keeps track of what has been liked in the room
 let likedMovies = {};
+
+$(document).ready(() => {
+    document.title = "CineSwipe"
+});
 
 if(location.pathname === '/'){
     socket.emit('newroom');
