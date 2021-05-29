@@ -3,11 +3,11 @@ const router = require('express').Router();
 const Likes = require('../db/model/likes.js');
 
 router.post('/user/like', async(req, res) => {
-    console.group('user liked an item');
-    console.log({userId: req.session.userId});
-    console.log({id: req.body.like.id});
-    console.log({media_type: req.body.like.media_type});
-    console.groupEnd();
+    // console.group('user liked an item');
+    // console.log({userId: req.session.userId});
+    // console.log({id: req.body.like.id});
+    // console.log({media_type: req.body.like.media_type});
+    // console.groupEnd();
 
     const like = req.body.like.id;
     //TODO count media_type likes in database (add media_types to schema)

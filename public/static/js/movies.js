@@ -10,6 +10,36 @@ let cards = $('#cards');
 
 const invalidItemStatuses = ['Rumored', 'Planned', 'In Production', 'Post Production', 'Canceled'];
 
+const insertFirstCard = () => {
+    const firstCard = $('<div class="child first"></div>');
+
+    const instructions = $(
+        `<div class="instructions">
+        <p>Swipe right or 👍 if you'd like to watch it.</p>
+        <p>Swipe left or 👎 if you don't want to watch.</p>
+        <p>Don't forget to invite your friends or family!</p>
+        </div>`);
+    
+    let btnDiv = $(`<div class="child-card-buttons"></div>`);
+    const likebtn = $(`<div class="begin" id="beginBtn">Begin swiping 👍</div>`);
+    btnDiv.append(likebtn);
+    const btnHammer = new Hammer(...likebtn);
+
+    initHammer(...firstCard);
+    btnHammer.on('tap pressup', async (ev) => {
+        firstCard.css('transition', 'all .4s ease-in-out');
+        firstCard.css('transform', 'translate3d(2000px, 0, 0)');
+        addCard();
+        setTimeout(() => {
+            firstCard.remove();
+        }, 1000);
+    });
+    firstCard.append(instructions);
+    firstCard.append(btnDiv);
+    wrapper.append(firstCard);
+}
+insertFirstCard();
+
 const fetchInitialItems = async() => {
     const response = await fetch(`/items/initial`);
     const result = await response.json();
@@ -209,9 +239,9 @@ const buildGenres = (item) => {
 
 const buildButtons = (item) => {
     let btnDiv = $(`<div class="child-card-buttons"></div>`);
-    const dislikebtn = $(`<a href="#" id="dislikeBtn">👎</a>`);
+    const dislikebtn = $(`<div class="dislike" id="dislikeBtn">👎</div>`);
     btnDiv.append(dislikebtn);
-    const likebtn = $(`<a href="#" id="likeBtn">👍</a>`);
+    const likebtn = $(`<div class="like" href="#" id="likeBtn">👍</div>`);
     btnDiv.append(likebtn);
 
     btnDiv.map((index, element) => {

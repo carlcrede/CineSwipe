@@ -59,13 +59,6 @@ const initHammer = (elem, item) => {
 let matches = 0;
 $('#matchesCount').text(matches);
 
-const insertFirstCard = () => {
-    const firstCard = $('<div class="child first"></div>');
-    initHammer(...firstCard);
-    wrapper.append(firstCard);
-}
-insertFirstCard();
-
 const changeTab = (tabId) => {
     const tab = $(`#${tabId}`);
     if (tab.hasClass('active')) {

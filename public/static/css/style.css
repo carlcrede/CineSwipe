@@ -1,6 +1,19 @@
 /* ________________________________________________________________________________________ */
 /* GLOBAL STYLING */
 
+:root { /* css color variables */
+    --color-dark-background: rgb(4, 14, 20);
+    --color-font-default: rgb(255, 255, 255);
+    --color-yellow-highlight: rgb(	255, 255, 149);
+    --color-description-marine: rgba(152, 196, 196, 0.5);
+    --color-white-alpha-0: rgba(255, 255, 255, 0);
+    --color-white-alpha-12: rgba(255, 255, 255, 0.12);
+    --color-white-alpha-24: rgba(255, 255, 255, 0.24);
+    --color-white-alpha-36: rgba(255, 255, 255, 0.36);
+    --gradient-red-to-blue: linear-gradient(202deg, rgba(18,60,87,0.75) 0%, rgba(215,100,100,0.75) 100%);
+    --gradient-red-to-blue-hover: linear-gradient(202deg, rgba(18,60,87,1) 0%, rgba(215,100,100,1) 100%);
+}
+
 *, *:before, *:after {
     box-sizing: border-box;
 }
@@ -10,19 +23,19 @@
   }
 
 ::-webkit-scrollbar-track {
-    background:rgb(255, 255, 255, 0.12);
+    background: var(--color-white-alpha-12);
 }
 
 ::-webkit-scrollbar-thumb {
-    background:rgb(255, 255, 255, 0.24);
+    background: var(--color-white-alpha-24);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background:rgb(255, 255, 255, 0.36);
+    background: var(--color-white-alpha-36);
 }
 
 body {
-    background: rgb(4, 14, 20);
+    background: var(--color-dark-background);
     font-family: Arial, Helvetica, sans-serif;
     -ms-overflow-style: none; /* for Internet Explorer, Edge */
     scrollbar-width: none; /* for Firefox */
@@ -30,7 +43,7 @@ body {
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: rgb(255, 255, 255);
+    color: var(--color-font-default);
 }
 
 .noscroll {
@@ -61,21 +74,22 @@ nav {
 }
 
 .nav-item {
-    padding: 0 1.5rem;
-    color: rgb(255, 255, 255);
+    color: var(--color-font-default);
+    padding: 0 1rem;
     transition: .2s ease-in-out;
     text-decoration: none;
     display: flex;
     align-items: center;
     border-radius: 1rem;
+    font-size: 18px;
 }
 
 #logo-small {
-    width: 2.7rem;
+    width: 3rem;
 }
 
 .nav-item:hover {
-    background-color: rgb(255, 255, 255, 0.24);
+    background-color: var(--color-white-alpha-24);
 }
 
 /* ________________________________________________________________________________________ */
@@ -110,14 +124,14 @@ main {
 }
 
 .description-pointdown.left {
-    background: rgb(4, 14, 20);
+    background: var(--color-dark-background);
     border-top-right-radius: 1rem;
     grid-column: 1;
     grid-row: 2;
 }
 
 .description-pointdown.right {
-    background: rgb(4, 14, 20);
+    background: var(--color-dark-background);
     border-top-left-radius: 1rem;
     grid-column: 2;
     grid-row: 2;
@@ -133,18 +147,27 @@ main {
     text-align: center;
 }
 
-.grid-row.title h1 {
-    margin: 0;
+.grid-row.title > h1 {
+    margin: 0 0 0.3em 0;
 }
 
-.grid-row.title p {
+.grid-row.title > p {
+    margin: 0.1em;
     opacity: 0.75;
     width: 75%;
+    opacity: 0.8;
+}
+
+.grid-row.title > p:last-child {
+    margin-bottom: 1em;
+    font-size: 18px;
+    opacity: 1;
+    color: var(--color-yellow-highlight);
 }
 
 .grid-row.title.background {
     /* min-height: 175px; */
-    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.12) 100%);
+    background: linear-gradient(180deg, var(--color-white-alpha-0) 0%, var(--color-white-alpha-12) 100%);
     grid-area: 1 / 1 / span 1 / span 3;
     border-radius: 0 0 40% 40%;
 }
@@ -153,27 +176,30 @@ main {
 /* grid SESSION LINK styling */
 
 .session-link {
-    background: linear-gradient(202deg, rgba(18,60,87,0.75) 0%, rgba(215,100,100,0.75) 100%);
+    background: var(--gradient-red-to-blue);
     width: 100%;
     display: grid;
     grid-auto-flow: column;
     grid-column-gap: 1rem;
     border: none;
     border-radius: 1rem;
-    color: rgb(255, 255, 255);
+    color: var(--color-font-default);
     justify-content: center;
     align-items: center;
-    transition: .2s ease-in-out;
+    box-shadow: 0 5px var(--color-white-alpha-12);
+    transition: .1s ease-in-out;
 }
 
 .session-link:hover {
-    background: linear-gradient(202deg, rgba(18,60,87,1) 0%, rgba(215,100,100,1) 100%);
+    background: var(--gradient-red-to-blue-hover);
     cursor: url('/img/clone-regular-24x24.png'), auto;
 }
 
 .session-link:active {
-    background: linear-gradient(202deg, rgba(18,60,87,0.75) 0%, rgba(215,100,100,0.75) 100%);
+    background: var(--gradient-red-to-blue);
     cursor: url('/img/clone-solid-24x24.png'), auto;
+    box-shadow: 0 0px var(--color-white-alpha-0);
+    transform: translateY(4px);
 }
 
 .session-link i {
@@ -299,7 +325,7 @@ main {
     border-radius: 12px;
     height: 2em;
     display: inline-flex;
-    color: rgb(255, 255, 255);
+    color: var(--color-font-default);
 }
 
 .child-card-trailer a p{
@@ -347,30 +373,54 @@ main {
 
 .child-card-buttons {
     grid-row: 6;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 12px;
 }
 
-.child-card-buttons a {
-    background-color: rgba(255, 255, 255, 0.12);
-    padding: 10px 24px;
-    float: left;
-    text-align: center;
+.child-card-buttons > .like {
     border-radius: 0px 8px 8px 0px;
-    width: calc(50% - 6px);
+    background-color: rgba(255, 255, 255, 0.12);
+    padding: 10px 10px;
+    text-align: center;
     cursor: pointer;
 }
 
-.child-card-buttons a:first-of-type {
+.child-card-buttons > .dislike {
     border-radius: 8px 0px 0px 8px;
-    margin-right: 12px;
+    background-color: rgba(255, 255, 255, 0.12);
+    padding: 10px 10px;
+    text-align: center;
+    cursor: pointer;
 }
 
-.child-card-buttons a:hover {
+.child-card-buttons > .begin {
+    grid-column: 1 / span 2;
+    border-radius: 8px 8px 8px 8px;
+    background-color: rgba(255, 255, 255, 0.12);
+    padding: 10px 10px;
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.child-card-buttons > div:hover {
     background-color: rgba(255, 255, 255, 0.28);
 }
 
 
 .child.first {
     background: linear-gradient(180deg, rgba(215,100,100,1) 0%, rgba(215,164,100,1) 100%);
+}
+
+.child.first > .instructions {
+    grid-row: 2 / span 4;
+    text-align: center;
+    font-size: 18px;
+}
+
+.child.first > .instructions > p:last-child{
+    color: rgb(0, 0, 0);
 }
 
 .child.moving {
