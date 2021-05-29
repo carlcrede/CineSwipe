@@ -5,6 +5,7 @@
 
 :root { /* css color variables */
     --color-dark-background: rgb(4, 14, 20);
+    --color-dark-background-alpha-50: rgba(4, 14, 20, .5);
     --color-font-default: rgb(255, 255, 255);
     --color-yellow-highlight: rgb(	255, 255, 149);
     --color-description-marine: rgba(152, 196, 196, 0.5);
@@ -89,15 +90,36 @@ nav {
     display: flex;
     align-items: center;
     border-radius: 1rem;
-    font-size: 18px;
+    font-size: 1.125rem;
 }
 
-#logo-small {
-    width: 3rem;
+.nav-item.title {
+    font-size: 1.5rem;
+}
+
+.nav-item.title > h3 {
+    margin: 0.5em;
+}
+
+.nav-item.title:hover {
+    background: var(--color-white-alpha-6);
+}
+
+.nav-item.user {
+    color:rgb(255, 224, 198);
+}
+
+.nav-item.likes {
+    color:rgb(175, 225, 175);
+    font-size: 1rem;
 }
 
 .nav-item:hover {
     background-color: var(--color-white-alpha-24);
+}
+
+#logo-small {
+    width: 3rem;
 }
 
 /* ________________________________________________________________________________________ */
@@ -105,9 +127,7 @@ nav {
 
 footer {
     display: grid;
-    /* grid-auto-flow: column; */
     grid-template-columns: 1fr 2fr 1fr;
-    /* grid-template-rows: 1fr; */
     position: relative;
     background: var(--gradient-lightbottom-to-darktop);
     height: 10em;

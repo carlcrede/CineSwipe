@@ -23,7 +23,12 @@ const setupHeader = async() => {
                 </h3>
             </a>`
         );
-        leftNav.append(userNavItem, logoutNavItem);
+        const likesNavItem = $(
+            `<a class="nav-item likes" href="/user/likes">
+                <h3>Your preferences</h3>
+            </a>`
+        );
+        leftNav.append(likesNavItem, userNavItem, logoutNavItem);
     } else {
         const loginNavItem = $(
             `<a class="nav-item login" href="/login">
