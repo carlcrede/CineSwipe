@@ -4,7 +4,8 @@ $( document).ready(() => {
 
 $('form').submit( async(event) => {
     event.preventDefault();
-    $('#failed-attempt').text('');
+    $('#failed-attempt').removeClass('show');
+    $('#failed-attempt').text('&nbsp;');
     $('.spinner').addClass('enabled');
 
     const array = $('form').serializeArray();
@@ -30,5 +31,6 @@ $('form').submit( async(event) => {
         const result = await response.json();
         $('.spinner').removeClass('enabled');
         $('#failed-attempt').text(result.msg);
+        $('#failed-attempt').addClass('show');
     }
 });

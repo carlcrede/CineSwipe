@@ -49,6 +49,10 @@ body {
     color: var(--color-font-default);
 }
 
+input, select, textarea, button{
+    font-family:inherit;
+}
+
 .noscroll {
     overflow-y: hidden;
 }
@@ -516,7 +520,6 @@ main {
     display: grid;
     justify-content: center;
     align-items: center;
-    min-height: 50px;
 }
 
 .spinner {
@@ -550,15 +553,17 @@ main {
     width: 40rem;
 }
 
-/* .form-group input[type=text] {
-    background-color: #8842d5;
-} */
+.form-group > input{
+    border-radius: 0.5rem;
+    padding: 0.7rem;
+    font-size: 1rem;
+}
 
 .error-label {
+    opacity: 0;
     text-align: left;
     color: rgb(215, 35, 35);
     font-size: .8rem;
-    min-height: 1.1rem;
 }
 
 .submit-button {
@@ -567,8 +572,13 @@ main {
 }
 
 #failed-attempt {
-    min-height: 1.1rem;
+    opacity: 0;
     color: rgb(215, 35, 35);
+}
+
+.show {
+    opacity: 1;
+    transition: opacity 0.1s ease-in-out;
 }
 
 /* ________________________________________________________________________________________ */
