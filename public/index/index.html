@@ -12,14 +12,16 @@
         </div>
     </div>
     <main>
-        <div class="grid-row title back"></div>
+        <div class="grid-row title background"></div>
         <div class="grid-row title">
             <h1>Welcome</h1>
             <p>Kinda like a dating app but you match with movies and shows. Share, filter, and swipe till you match with something great to watch.</p>
         </div>
         <div class="grid-row session">
-            <div class="description-container">
+            <div class="row-description container">
                 <p class="description-text">Share this link</p>
+                <div class="description-pointdown left"></div>
+                <div class="description-pointdown right"></div>
             </div>
             <button class="session-link" id="copy-session">
                 <h2 id="session-url"></h2>
@@ -27,10 +29,15 @@
             </button>
         </div>
         <div class="grid-row">
-            <div class="description-container">
+            <div class="row-description container">
                 <p class="description-text">Change filters and providers</p>
-            </div>  
-            <button class="filterBtn" id="filterBtn">Edit filters</button>
+                <div class="description-pointdown left"></div>
+                <div class="description-pointdown right"></div>
+            </div>
+            <div class="filters-container">
+                <button class="filterBtn" id="filterBtn">Edit filters</button>
+                <button class="filterBtn">Edit providers</button>
+            </div>
         </div>
         <div class="grid-row">
             <div class="tab">
@@ -47,6 +54,7 @@
         </div>
     </main>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g==" crossorigin="anonymous"></script>
     <script src="/js/client.js"></script>
     <script src="/js/hammertime.js"></script>
     <script src="/js/filtering.js"></script>

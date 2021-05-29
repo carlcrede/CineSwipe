@@ -1,3 +1,7 @@
+$( document).ready(() => {
+    document.title = "Log in"
+});
+
 $('form').submit( async(event) => {
     event.preventDefault();
     $('#failed-attempt').text('');

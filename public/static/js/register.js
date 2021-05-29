@@ -1,3 +1,7 @@
+$( document).ready(() => {
+    document.title = "Sign up"
+});
+
 $('form').submit( async (event) => {
     event.preventDefault();
     $('#email-error-label').text('');

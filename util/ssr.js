@@ -1,27 +1,17 @@
 const fs = require('fs');
 
-const frag = {
-    header: fs.readFileSync(__dirname + '/../public/fragments/header.html', 'utf-8')
-};
+const head = fs.readFileSync(__dirname + '/../public/fragments/head.html');
+const nav = fs.readFileSync(__dirname + '/../public/fragments/header.html', 'utf-8');
 
-const indexfrag = {
-    head: fs.readFileSync(__dirname + '/../public/index/index-head.html', 'utf-8'),
-    body: fs.readFileSync(__dirname + '/../public/index/index.html', 'utf-8')
-};
+const body = {
+    index: fs.readFileSync(__dirname + '/../public/index/index.html', 'utf-8'),
+    login: fs.readFileSync(__dirname + '/../public/authentication/login/login.html', 'utf-8'),
+    register: fs.readFileSync(__dirname + '/../public/authentication/register/register.html', 'utf-8')
+}
 
-const loginfrag = {
-    head: fs.readFileSync(__dirname + '/../public/authentication/login/login-head.html', 'utf-8'),
-    body: fs.readFileSync(__dirname + '/../public/authentication/login/login.html', 'utf-8')
-};
-
-const registerfrag = {
-    head: fs.readFileSync(__dirname + '/../public/authentication/register/register-head.html', 'utf-8'),
-    body: fs.readFileSync(__dirname + '/../public/authentication/register/register.html', 'utf-8')
-};
-
-const index = indexfrag.head + frag.header + indexfrag.body;
-const login = loginfrag.head + frag.header + loginfrag.body;
-const register = registerfrag.head + frag.header + registerfrag.body;
+const index = head + nav + body.index;
+const login = head + nav + body.login;
+const register = head + nav + body.register;
 
 module.exports = {
     index, login, register

@@ -1,3 +1,7 @@
+$(document).ready(() => {
+    document.title = "Welcome!"
+});
+
 const socket = io();
 
 // keeps track of what has been liked in the room
@@ -34,7 +38,7 @@ const clientLikedItem = async (item) => {
         body: JSON.stringify(liked)
     });
     const result = await response.json();
-    console.log({'post /user/like result': result});
+    // console.log({'post /user/like result': result});
 }
 
 $("#copy-session").click(() => {
