@@ -24,7 +24,7 @@ app.use(helmet({
         useDefaults: true, 
         directives: { 
             'script-src': ["'self'", 'code.jquery.com', 'cdnjs.cloudflare.com'], 
-            'style-src': ["'self'", 'cdnjs.cloudflare.com', 'unsafe-inline', 'code.jquery.com'],
+            'style-src': ["'self'", 'cdnjs.cloudflare.com', 'unsafe-inline', 'code.jquery.com', 'fonts.googleapis.com'],
             'img-src': ["'self'", 'data:', 'www.themoviedb.org', 'image.tmdb.org'],
         },
     },
