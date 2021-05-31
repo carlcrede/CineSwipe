@@ -34,7 +34,7 @@ const clientLikedItem = async (item) => {
         id: item.id,
         media_type: item.media_type
     }};
-    const response = await fetch('/user/like', {
+    const response = await fetch('/api/user/like', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(liked)

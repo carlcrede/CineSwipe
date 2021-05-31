@@ -5,7 +5,17 @@ const likesSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    likes: [String]
+    likes: [{ 
+        _id : false,
+        likeId: {
+            type: String,
+            required: true
+        },
+        media_type: {
+            type: String,
+            required: true
+        }
+    }],
 });
 
 module.exports = mongoose.model('likes', likesSchema);

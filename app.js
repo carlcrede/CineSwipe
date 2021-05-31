@@ -76,7 +76,6 @@ app.use(userdata.router);
 
 
 app.get('/', (req, res) => {
-    req.session.userId = 'testuser';
     res.send(pages.index);
 });
 
