@@ -1,0 +1,18 @@
+
+.collapsed {
+    padding: 0.5rem 2rem;
+    max-height: 3.5rem;
+    font-size: 0.8rem;
+}
+
+
+#media-preferences {
+    display: grid;
+    grid-auto-flow: row;
+    justify-content: center;
+    justify-items: center;
+}
+
+.media-count {
+    color: var(--color-yellow-highlight);
+}

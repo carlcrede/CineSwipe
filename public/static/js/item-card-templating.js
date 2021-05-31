@@ -21,7 +21,10 @@ const buildItemCard = (item, swipecard = true) => {
     card.append(itemData.title);
     card.append(middle);
     card.append(itemData.overview);
-    if (swipecard) { card.append(itemData.buttons); }
+    if (swipecard) {
+        itemData[buttons] = buildButtons(item);
+        card.append(itemData.buttons); 
+    }
 
     if (item.backdrop_path) {
         card.css({'background-image': `linear-gradient(1deg, rgba(62,54,54,0.98) 31%, rgba(255,255,255,0) 80%), url('${img_url}w780${item.backdrop_path}')`});
@@ -39,8 +42,7 @@ const buildItemData = (item) => {
         genres: buildGenres(item),
         episodesOrSeasons: buildEpisodesOrSeasons(item),
         runtime: buildRuntime(item),
-        overview: buildOverview(item),
-        // buttons: buildButtons(item),
+        overview: buildOverview(item)
     };
     return data;
 }

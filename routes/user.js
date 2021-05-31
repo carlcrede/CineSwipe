@@ -9,22 +9,16 @@ router.get('/user/:id', (req, res) => {
 });
 
 router.get('/user/:id/preferences', (req, res) => {
+    req.session.userId = 'testuser';
     res.send(pages.preferences);
 });
 
-router.get('/user/:id/preferences/likes', (req, res) => {
-    res.send(pages.likes);
-});
-
-router.get('/api/user/like', async(req, res) => {
+router.get('/likes', async(req, res) => {
     const user = req.session.userId;
-    console.log(user);
     try {
         if(user){
             const foundUser = await Likes.findOne({user: user});
-            console.log(foundUser);
             const userLikes = foundUser.likes;
-            console.log(userLikes);
             res.send(userLikes);
         }
     } catch (error) {
@@ -33,32 +27,24 @@ router.get('/api/user/like', async(req, res) => {
     }
 });
 
-router.post('/api/user/like', async(req, res) => {
-    console.group('user liked an item');
-    console.log({userId: req.session.userId});
-    console.log({id: req.body.like.id});
-    console.log({media_type: req.body.like.media_type});
-    console.groupEnd();
-
+router.post('/likes', async(req, res) => {
     const like = req.body.like.id;
-    //TODO count media_type likes in database (add media_types to schema)
     const media_type = req.body.like.media_type
     const user = req.session.userId;
     try {
         if(user){
-            const filter = { user: user }; //what to find a document with
+            const filter = { user: user }; //what to find a document with the username
             const update = { "$addToSet": { likes: [{likeId: like, media_type: media_type}]}}; //what to update in that document
             const doc = await Likes.findOneAndUpdate(filter, update, {
                 new: true, 
                 upsert: true //insert/create user document if filter fails 
             });
-            console.log(doc);
             return res.send({doc});
         } else {
             return res.send({});
         }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).send('Internal Server error occured');
     }
 });
