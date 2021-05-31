@@ -7,7 +7,6 @@ const fetchUserLikes = async() => {
 ( async () => {
     document.title = 'Your likes';
     const userLikes = await fetchUserLikes();
-
     const likesElem = $('#match');
     userLikes.forEach( async like => {
         const details = await fetchDetails(like);
@@ -19,10 +18,10 @@ const fetchUserLikes = async() => {
         card.addClass('collapsed');
         addCollapseListener(card);
     });
-    foo(userLikes);
+    insertMediaPercentages(userLikes);
 })();
 
-const foo = (likes) => {
+const insertMediaPercentages = (likes) => {
     const media_type_likes = {movies: 0, tv: 0}
     likes.forEach((like) => {
         if(like.media_type === 'movie'){
@@ -31,25 +30,18 @@ const foo = (likes) => {
             media_type_likes.tv++;
         }
     });
-    console.group('percentages');
-    console.log('media_type_likes.movies', media_type_likes.movies);
-    console.log('media_type_likes.tv', media_type_likes.tv)
     const sum = media_type_likes.movies + media_type_likes.tv;
-    console.log('sum', sum);
     const movieLikesPercent = percent(sum, media_type_likes.movies);
-    console.log('movie%', movieLikesPercent);
     const tvLikesPercent = percent(sum, media_type_likes.tv);
-    console.log('tv%', tvLikesPercent);
     $('#liked-movies-count').text(`Movies: ${movieLikesPercent}%`);
     $('#liked-tv-count').text(`TV: ${tvLikesPercent}%`);
-    console.groupEnd();
 }
 
 const percent = (sum, value) => {
     console.log(sum / value);
-    return (!value == 0) ? (value / sum) * 100 : 0
+    const percentFloat =(!value == 0) ? (value / sum) * 100 : 0
+    return percentFloat.toFixed(0);
 }
-
 
 const addCollapseListener = (card) => {
     card.click(() => {

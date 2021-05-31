@@ -9,7 +9,6 @@ router.get('/user/:id', (req, res) => {
 });
 
 router.get('/user/:id/preferences', (req, res) => {
-    req.session.userId = 'testuser';
     res.send(pages.preferences);
 });
 
