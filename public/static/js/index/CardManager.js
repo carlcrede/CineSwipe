@@ -9,8 +9,8 @@ const CardManager = (() => {
         clearInterval(cardInterval);
         page = 1;
         $('.wrapper').children('.child').not('.first').remove();
-        const newItems = await ItemFetch.combinedMoviesAndTv(1);
-        popularMoviesAndTv = [...newItems];
+        const newItems = await ItemFetch.combinedMoviesAndTv(page);
+        popularMoviesAndTv = newItems;
         const cards = $('.wrapper').children();
         if(cards.length < 10 && popularMoviesAndTv){
             for(let i = 0; i < 10 - cards.length; i++){
@@ -64,7 +64,7 @@ const CardManager = (() => {
             if(popularMoviesAndTv && popularMoviesAndTv.length < 1){
                 page++;
                 const newItems = await ItemFetch.combinedMoviesAndTv(page);
-                popularMoviesAndTv = [...newItems];
+                popularMoviesAndTv = newItems;
             }
             const cards = $('.wrapper').children();
             if(cards.length < 10 && popularMoviesAndTv){
@@ -108,8 +108,7 @@ const CardManager = (() => {
 
     (async function initCards(){
         const result = await ItemFetch.initialItems();
-        const initialItems = [...result];
-        initialItems.sort((a, b) => b.popularity - a.popularity);
+        const initialItems = result;
         popularMoviesAndTv = initialItems;
         for (let i = 0; i < 10; i++) {
             addCard();

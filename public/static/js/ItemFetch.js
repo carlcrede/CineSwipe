@@ -3,7 +3,7 @@ const ItemFetch = (() => {
     const initialItems = async() => {
         const response = await fetch(`/items/initial`);
         const result = await response.json();
-        return result;
+        return [...result];
     }
 
     const popularMovies = async(page) => {
@@ -33,7 +33,7 @@ const ItemFetch = (() => {
             const promises = await Promise.all([movies, tv]);
             const combined = [...promises[0], ...promises[1]];
             combined.sort((a, b) => b.popularity - a.popularity);
-            return combined;
+            return [...combined];
         }
     }
 
