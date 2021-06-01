@@ -10,15 +10,6 @@ let cards = $('#cards');
 
 const invalidItemStatuses = ['Rumored', 'Planned', 'In Production', 'Post Production', 'Canceled'];
 
-$(document).ready(() => {
-    $(this).mousemove(() => {
-        idleTime = 0;
-    });
-    $(this).keypress(() => {
-        idleTime = 0;
-    });
-});
-
 const fetchInitialItems = async() => {
     const response = await fetch(`/items/initial`);
     const result = await response.json();

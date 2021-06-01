@@ -17,11 +17,11 @@ const setupHeader = async() => {
             </a>`
         );
         const userNavItem = $(
-            `<a class="nav-item user" href="/user/${userId}">
+            `<div class="nav-item user">
                 <h3>
                     ${userId}
                 </h3>
-            </a>`
+            </div>`
         );
         const likesNavItem = $(
             `<a class="nav-item likes" href="/user/${userId}/preferences">

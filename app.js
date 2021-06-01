@@ -31,7 +31,8 @@ app.use(helmet({
 }));
 
 // serve static files from /public folder
-// trying cahce-control for performance
+// trying cache-control for performance
+//enable caching in production 
 /* app.use(express.static(__dirname + '/public/static', { maxAge: 31557600 })); */
 app.use(express.static(__dirname + '/public/static'));
 
@@ -74,7 +75,6 @@ app.use(sessionRoute.router);
 const userdata = require('./routes/user');
 app.use(userdata.router);
 
-
 app.get('/', (req, res) => {
     res.send(pages.index);
 });
@@ -83,7 +83,7 @@ app.get('/:id', (req, res, next) => {
     if(io.sockets.adapter.rooms.has(req.params.id)){
         res.send(pages.index);
     } else {
-        next();
+        res.redirect('/');
     }
 });
 

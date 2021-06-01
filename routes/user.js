@@ -4,10 +4,6 @@ const Likes = require('../db/model/likes.js');
 
 const pages = require('../util/ssr');
 
-router.get('/user/:id', (req, res) => {
-    res.send(pages.user);
-});
-
 router.get('/user/:id/preferences', (req, res) => {
     res.send(pages.preferences);
 });
