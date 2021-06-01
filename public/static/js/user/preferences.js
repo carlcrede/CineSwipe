@@ -47,7 +47,7 @@ const addCollapseListener = (card) => {
     card.click(() => {
         card.off();
         card.removeClass('collapsed');
-        card.children().not('.child-card-title').show()
+        card.children().show();
         addExpandedListener(card);
     });
 };

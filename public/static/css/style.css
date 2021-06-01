@@ -18,6 +18,7 @@
     --gradient-red-to-blue: linear-gradient(202deg, rgba(18,60,87,0.75) 0%, rgba(215,100,100,0.75) 100%);
     --gradient-red-to-blue-hover: linear-gradient(202deg, rgba(18,60,87,1) 0%, rgba(215,100,100,1) 100%);
     --gradient-lightbottom-to-darktop: linear-gradient(180deg, var(--color-white-alpha-0) 0%, var(--color-white-alpha-12) 100%);
+    --gradient-green-blue: linear-gradient(202deg, rgba(18,60,87,1) 0%, rgba(127,203,127,1) 100%);
 }
 
 *, *:before, *:after {
@@ -302,10 +303,11 @@ main {
 }
 
 .modal-content {
-    position: relative;
+    margin: 10% 20%;
+    /* position: relative;
     width: 100%;
     top: 25%;
-    text-align: center;
+    text-align: center; */
 }
 
 .modal-content button:disabled {
@@ -313,7 +315,11 @@ main {
     cursor: none;
 }
 
-.modal a {
+.filter-row {
+    margin: 5px 0;
+}
+
+.modal #closeFilterBtn {
     position: absolute;
     top: 20px;
     right: 45px;
@@ -329,6 +335,9 @@ main {
     transition: background 30ms ease-in-out 0s;
     border-radius: 14px;
     padding: 3px 15px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    font-size: 1rem;
 }
 
 .modal-content .media button.active, .modal-content .genres button.active {
@@ -343,11 +352,14 @@ main {
     border-color: rgb(255, 255, 255);
 }
 
+.modal-content .filter-row.save {
+    padding-top: 10px;
+}
+
 .modal-content #saveBtn {
-    background: linear-gradient(180deg, rgba(215,100,100,1) 0%, rgba(215,164,100,1) 100%);
+    background: var(--gradient-green-blue);
     color: var(--color-font-default);
     padding: 5px;
-    margin: 5px;
     width: 150px;
     height: 40px;
     border-radius: 14px;
@@ -645,7 +657,7 @@ main {
 
 #toast-container > .toast-success {
     background-image: none !important;
-    background: linear-gradient(202deg, rgba(18,60,87,1) 0%, rgba(127,203,127,1) 100%) !important;
+    background: var(--gradient-green-blue) !important;
     opacity: 1;
     padding: 15px 25px;
 }
@@ -710,6 +722,6 @@ main {
     transition: 0.3s;
     font-size: 17px;
     border-radius: 1.5rem 0.5rem 0.5rem 1.5rem;
-    background: linear-gradient(202deg, rgba(18,60,87,1) 0%, rgba(127,203,127,1) 100%);
+    background: var(--gradient-green-blue);
     
 }

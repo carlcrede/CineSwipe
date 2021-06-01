@@ -18,7 +18,7 @@ const initGenres = (list) => {
             const name = value.name;
             const genre = {
                 id: value.id,
-                enabled: true,
+                enabled: false,
                 type: type
             }
             filters.genres[type][name] = genre;
@@ -26,7 +26,7 @@ const initGenres = (list) => {
     });
     const distinctGenres = {...filters.genres.movie, ...filters.genres.tv};
     Object.entries(distinctGenres).forEach(value => {
-        $('.genres').append(`<button class="active" id="${value[1].id}" data-name="${value[0]}">${value[0]}</button>`);
+        $('.genres').append(`<button class="" id="${value[1].id}" data-name="${value[0]}">${value[0]}</button>`);
     });
 }
 
