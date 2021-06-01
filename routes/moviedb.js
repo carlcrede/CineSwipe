@@ -13,7 +13,7 @@ const fetchPopularMovies = async (page) => {
         })); 
         return movies;
     } catch (error) {
-        // console.error(error);
+        console.error(error);
     }
 }
 
@@ -27,7 +27,7 @@ const fetchPopularTv = async (page) => {
         }));
         return tv;
     } catch (error) {
-        // console.error(error);
+        console.error(error);
     }
 }
 
@@ -77,7 +77,7 @@ router.get('/items/initial', async (req, res, next) => {
         }
         res.send(await cache.initialitems.data);
     } catch (error) {
-        // console.error(error);
+        console.error(error);
         next();
     }
 });
@@ -107,7 +107,7 @@ router.get('/genre/:media_type', async (req, res, next) => {
         const genres = (media_type == 'movie') ? await moviedb.genreMovieList() : await moviedb.genreTvList();
         res.send(genres);
     } catch (error) {
-        // console.error(error);
+        console.error(error);
         next();
     }
 
