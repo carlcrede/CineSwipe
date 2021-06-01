@@ -309,6 +309,11 @@ main {
     text-align: center;
 }
 
+.modal-content button:disabled {
+    background-color: grey;
+    cursor: none;
+}
+
 .modal a {
     position: absolute;
     top: 20px;
@@ -317,7 +322,7 @@ main {
     cursor: pointer;
 }
 
-.modal-content .media button {
+.modal-content .media button, .modal-content .genres button {
     cursor: pointer;
     background: none;
     border: 1px solid rgba(255, 255, 255, 0.72);
@@ -327,16 +332,31 @@ main {
     padding: 3px 15px;
 }
 
-.modal-content .media button.active {
+.modal-content .media button.active, .modal-content .genres button.active {
     border: 1px solid rgb(255, 255, 255);
     background: rgb(255, 255, 255);
     color: rgb(0, 0, 0);
 }
 
-.modal-content .media button:hover {
+.modal-content .media button:hover, .modal-content .genres button:hover {
     color: white;
     background: rgb(121, 126, 130);
     border-color: rgb(255, 255, 255);
+}
+
+.modal-content #saveBtn {
+    background: linear-gradient(180deg, rgba(215,100,100,1) 0%, rgba(215,164,100,1) 100%);
+    color: var(--color-font-default);
+    padding: 5px;
+    margin: 5px;
+    width: 150px;
+    height: 40px;
+    border-radius: 14px;
+    font-size: larger;
+    font-weight: bold;
+    border: none;
+    box-shadow: rgb(0 0 0 / 77%) 0px 2px 14px 0px;
+    cursor: pointer;
 }
 
 /* ________________________________________________________________________________________ */

@@ -37,16 +37,40 @@ const fetchPopularTv = async (page) => {
     return [...result];
 }
 
-const fetchAndCombineMoviesAndTv = async (page) => { 
-    const popularMovies = fetchPopularMovies(page);
-    const popularTv = fetchPopularTv(page);
-    //Promise.all() is supposedly faster than:
-    // > awaiting fetchPopularMovies then awaiting fetchPopularTv <
-    //because they are not dependant on eachother
-    const promises = await Promise.all([popularMovies, popularTv]);
-    const combined = [...promises[0], ...promises[1]];
-    combined.sort((a, b) => b.popularity - a.popularity);
-    return combined;
+const updateCardsWithFilters = async () => {
+    clearInterval(cardInterval);
+    $('.wrapper').children('.child').not('.first').remove();
+    const newItems = await fetchAndCombineMoviesAndTv();
+    popularMoviesAndTv = [...newItems];
+    const cards = $('.wrapper').children();
+    if(cards.length < 10 && popularMoviesAndTv){
+        for(let i = 0; i < 10 - cards.length; i++){
+            addCard();
+        }
+    }
+    cardInterval = setInterval(checkAndRepopulate, 3000);
+}
+
+const fetchAndCombineMoviesAndTv = async () => {
+    if (!filters.media_types.tv) {
+        const popularMovies = await fetchPopularMovies(filters.page);
+        popularMovies.sort((a, b) => b.popularity - a.popularity);
+        return popularMovies;
+    } else if (!filters.media_types.movie) {
+        const popularTv = await fetchPopularTv(filters.page);
+        popularTv.sort((a, b) => b.popularity - a.popularity);
+        return popularTv;
+    } else {
+        const popularMovies = fetchPopularMovies(filters.page);
+        const popularTv = fetchPopularTv(filters.page);
+        //Promise.all() is supposedly faster than:
+        // > awaiting fetchPopularMovies then awaiting fetchPopularTv <
+        //because they are not dependant on eachother
+        const promises = await Promise.all([popularMovies, popularTv]);
+        const combined = [...promises[0], ...promises[1]];
+        combined.sort((a, b) => b.popularity - a.popularity);
+        return combined;
+    }
 }
 
 const fetchDetails = async (item) => {
@@ -274,12 +298,12 @@ const buildProviderLogos = (item) => {
 const checkAndRepopulate = async() => {
     if(document.hasFocus){
         if(popularMoviesAndTv && popularMoviesAndTv.length < 1){
-            page++;
-            const newItems = await fetchAndCombineMoviesAndTv(page);
+            filters.page++;
+            const newItems = await fetchAndCombineMoviesAndTv();
             popularMoviesAndTv = [...newItems];
         }
         const cards = $('.wrapper').children();
-        if(cards.length < 10){
+        if(cards.length < 10 && popularMoviesAndTv){
             for(let i = 0; i < 10 - cards.length; i++){
                 addCard();
             }
@@ -287,7 +311,7 @@ const checkAndRepopulate = async() => {
     }
 };
 
-const cardInterval = setInterval(checkAndRepopulate, 3000);
+let cardInterval = setInterval(checkAndRepopulate, 3000);
 
 (function insertFirstCard() {
     const firstCard = $('<div class="child first"></div>');
