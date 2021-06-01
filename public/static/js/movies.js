@@ -85,12 +85,16 @@ const addCardToMatches = async (item) => {
     card.css('position', 'relative');
     card.attr('id', `match-${item.id}`);
     $('#match').prepend(card);
+    $('.tab').append()
+    // $('#match-notification').show()
+    const match_notif = $('#match-notification');
+    match_notif.show();
+    setTimeout(() => {
+        match_notif.fadeOut(300);
+    }, 3000);
 }
 
 const addCard = () => {
-    //logging - to be removed
-    // console.log('popularMoviesAndTv length:', popularMoviesAndTv.length);
-    
     if (popularMoviesAndTv[0]) { 
         //if item(movie/tv show) is valid then insert card to DOM and init hammer.js eventhandlers
         if(isValidItem(popularMoviesAndTv[0])){
