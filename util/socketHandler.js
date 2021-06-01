@@ -1,10 +1,13 @@
 module.exports = io => {
-    let likedMovies = {};
+    const crypto = require('crypto');
+    const likedMovies = {};
     try {
         io.on('connection', (socket) => {
             socket.on('newroom', () => {
-                likedMovies[socket.id] = {};
-                socket.emit('session', socket.id);
+                const roomId = crypto.randomBytes(6).toString('hex');
+                likedMovies[roomId] = {};
+                socket.join(roomId);
+                socket.emit('session', roomId);
             });
 
             socket.on('joinroom', (roomId) => {
@@ -13,11 +16,12 @@ module.exports = io => {
             });
 
             socket.on('clientLikedItem', (item) => {
-                //TODO same client likes the same item twice <- fix this :)
-                if (likedMovies[getRoom(socket)][item.id]) {
-                    io.in(getRoom(socket)).emit('match', item);
-                } else {
-                    likedMovies[getRoom(socket)][item.id] = true;
+                if (likedMovies[getRoom(socket)]) {
+                    if (likedMovies[getRoom(socket)][item.id]) {
+                        io.in(getRoom(socket)).emit('match', item);
+                    } else {
+                        likedMovies[getRoom(socket)][item.id] = true;
+                    }
                 }
             });
         });

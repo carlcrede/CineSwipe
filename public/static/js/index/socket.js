@@ -1,7 +1,5 @@
 const socket = io();
 
-// keeps track of what has been liked in the room
-
 if(location.pathname === '/'){
     socket.emit('newroom');
 } else {
@@ -16,7 +14,6 @@ socket.on('session', (roomId) => {
 socket.on('match', (item) => {
     if (!$(`#match-${item.id}`).length) {
         CardManager.addCardToMatches(item);
-        $('#matchesCount').text(++matches);
     }
 });
 
