@@ -21,6 +21,7 @@ const CardManager = (() => {
     }
 
     const addCardToMatches = async (item) => {
+        $('#matchesCount').text(++matches);
         const details = await ItemFetch.details(item);
         let card = CardBuilder.buildItemCard(details, false);
         card.css('position', 'relative');
@@ -32,7 +33,7 @@ const CardManager = (() => {
         match_notif.show();
         setTimeout(() => {
             match_notif.fadeOut(300);
-        }, 3000);
+        }, 3000);   
     }
 
     const addCard = () => {
