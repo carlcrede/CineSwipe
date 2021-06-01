@@ -1,16 +1,12 @@
-const fetchUserLikes = async() => {
-    const response = await fetch('/likes');
-    const result = await response.json();
-    return result;
-}
-
 ( async () => {
     document.title = 'Your likes';
-    const userLikes = await fetchUserLikes();
+
+    const response = await fetch('/likes');
+    const userLikes = await response.json();
     const likesElem = $('#match');
     userLikes.forEach( async like => {
-        const details = await fetchDetails(like);
-        let card = buildItemCard(details, false);
+        const details = await ItemFetch.details(like);
+        let card = CardBuilder.buildItemCard(details, false);
         card.css('position', 'relative');
         card.attr('id', `match-${like.likeId}`);
         likesElem.append(card);
@@ -38,7 +34,6 @@ const insertMediaPercentages = (likes) => {
 }
 
 const percent = (sum, value) => {
-    console.log(sum / value);
     const percentFloat =(!value == 0) ? (value / sum) * 100 : 0
     return percentFloat.toFixed(0);
 }

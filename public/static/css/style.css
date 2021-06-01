@@ -533,7 +533,7 @@ main {
     overflow: hidden;
 }
 
-.tab a {
+.tab .tablinks {
     float: left;
     outline: none;
     cursor: pointer;
@@ -545,11 +545,11 @@ main {
     border-radius: 0.3rem;
 }
 
-.tab a:hover {
+.tab .tablinks:hover {
     background-color: #f5eded9c;
 }
 
-.tab a.active {
+.tab .tablinks.active {
     border-bottom: 5px solid #d72323;
 }
 
@@ -570,6 +570,16 @@ main {
 
 #match {
     user-select: none;
+}
+
+#match-notification {
+    display: none;
+    float: left;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+    border-radius: 1.5rem 0.5rem 0.5rem 1.5rem;
+    background: var(--gradient-green-blue);
 }
 
 /* ________________________________________________________________________________________ */
@@ -694,34 +704,31 @@ main {
 }
 
 /* ________________________________________________________________________________________ */
+/* PREFERENCES styling */
+
+.collapsed {
+    padding: 0.5rem 2rem;
+    max-height: 3.5rem;
+    font-size: 0.8rem;
+}
+
+
+#media-preferences {
+    display: grid;
+    grid-auto-flow: row;
+    justify-content: center;
+    justify-items: center;
+}
+
+.media-count {
+    color: var(--color-yellow-highlight);
+}
+
+/* ________________________________________________________________________________________ */
 
 @media screen and (max-height: 500px){
     footer{
         opacity: 0;
         transition: opacity .5s ease-in-out;
     }
-}
-
-/* @media screen and (max-width: 768px){
-    .grid-row {
-        width: calc(100vw - 40px - 40px);
-    } 
-}
-
-@media screen and (max-width: 1025px){
-    .grid-row {
-        width: calc(100vw - 4vw - 4vw);
-    } 
-}
-*/
-
-#match-notification {
-    display: none;
-    float: left;
-    padding: 14px 16px;
-    transition: 0.3s;
-    font-size: 17px;
-    border-radius: 1.5rem 0.5rem 0.5rem 1.5rem;
-    background: var(--gradient-green-blue);
-    
 }

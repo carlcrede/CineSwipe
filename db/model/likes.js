@@ -7,7 +7,7 @@ const likesSchema = new mongoose.Schema({
     },
     likes: [{ 
         _id : false,
-        likeId: {
+        id: {
             type: String,
             required: true
         },

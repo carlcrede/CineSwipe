@@ -13,6 +13,7 @@ module.exports = io => {
             });
 
             socket.on('clientLikedItem', (item) => {
+                //TODO same client likes the same item twice <- fix this :)
                 if (likedMovies[getRoom(socket)][item.id]) {
                     io.in(getRoom(socket)).emit('match', item);
                 } else {

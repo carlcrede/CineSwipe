@@ -51,8 +51,8 @@
         </div>
         <div class="grid-row">
             <div class="tab">
-                <a id="cardTab" class="tablinks active">Swipe</a>
-                <a id="matchTab" class="tablinks">Matches (<span id="matchesCount"></span>)</a>
+                <div id="cardTab" class="tablinks active">Swipe</div>
+                <div id="matchTab" class="tablinks">Matches (<span id="matchesCount"></span>)</div>
                 <div id="match-notification">👈 New match</div>
             </div>
         </div>
@@ -64,9 +64,12 @@
         </div>
     </main>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/ItemFetch.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g==" crossorigin="anonymous"></script>
-    <script src="/js/client.js"></script>
     <script src="/js/hammertime.js"></script>
-    <script src="/js/movies.js"></script>
-    <script src="/js/filtering.js"></script>
+    <script src="/js/CardBuilder.js"></script>
+    <script src="/js/index/index.js"></script>
+    <script src="/js/index/socket.js"></script>
+    <script src="/js/index/CardManager.js"></script>
+    <script src="/js/index/filtering.js"></script>
 </body>

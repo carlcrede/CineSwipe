@@ -33,7 +33,7 @@ const initHammer = (elem, item) => {
                     clientLikedItem(item);
                 }
             }
-            addCard();
+            CardManager.addCard();
             setTimeout(() => {
                 elem.remove();
             }, 1000);

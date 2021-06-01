@@ -1,12 +1,7 @@
-const fetchUserId = async() => {
+( async function setupHeader(){
     const response = await fetch('/session/id');
     const result = await response.json();
-    return result;
-}
-
-const setupHeader = async() => {
     const leftNav = $('#left-nav-section');
-    const result = await fetchUserId();
     const userId = result.userId;
     if (userId){
         const logoutNavItem = $(
@@ -46,8 +41,4 @@ const setupHeader = async() => {
         );
         leftNav.append(loginNavItem, registerNavItem);
     }
-}
-
-$( document ).ready(() => {
-    setupHeader();
-});
+})();
