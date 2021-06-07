@@ -19,6 +19,11 @@ const CardBuilder = (() => {
             itemData['buttons'] = buildButtons(item);
             card.append(itemData.buttons); 
         }
+        if (!swipecard) {
+            // collect data about watch providers, and display aditional data on match-card.
+            itemData['providerDetails'] = buildProviderDetails(item);
+            card.append(itemData.providerDetails);
+        }
 
         if (item.backdrop_path) {
             card.css({'background-image': `linear-gradient(1deg, rgba(62,54,54,0.98) 31%, rgba(255,255,255,0) 80%), url('${img_url}w780${item.backdrop_path}')`});
@@ -39,6 +44,35 @@ const CardBuilder = (() => {
             overview: buildOverview(item)
         };
         return data;
+    }
+
+    // needs styling
+    const buildProviderDetails = (item) => {
+        const {DK} = item['watch/providers'].results;
+        if (DK) {
+            const { link, buy = 0, rent = 0, flatrate = 0 } = DK;
+            let div = $(`<div class="child-card-providers-details"><a href="${link}">See more</a></div>`);
+            if (flatrate) {
+                div.append('Streaming: ');
+                flatrate.forEach((value, index) => {
+                    div.append(`<div><img loading="lazy" width="30px" src="${img_url}original${value.logo_path}">${value.provider_name}</div>`);
+                });
+            }
+            if (buy) {
+                div.append('Buy: ');
+                buy.forEach((value, index) => {
+                    div.append(`<div><img loading="lazy" width="30px" src="${img_url}original${value.logo_path}">${value.provider_name}</div>`);
+                });
+            }
+            if (rent) {
+                rent.forEach((value, index) => {
+                    div.append(`<div><img loading="lazy" width="30px" src="${img_url}original${value.logo_path}">${value.provider_name}</div>`);
+                });
+            }
+            return div;
+        } else {
+            return '<div class="child-card-provider-details">No providers offer this movie/tv</div>';
+        }
     }
 
     const buildTitle = (item) => {
@@ -159,11 +193,12 @@ const CardBuilder = (() => {
         return btnDiv;
     }
 
+    // watch providers per country filtering should maybe be done server-side
     const getDistrinctProviders = (item, country = 'DK') => {
-        const watchProviders = item['watch/providers'].results[country];
+        let watchProviders = item['watch/providers'].results[country];
         if (watchProviders) {
-            delete watchProviders.link;
             let list = Object.values(watchProviders);
+            list.shift();
             let result = new Set();
             list.forEach(value => {
                 value.forEach(val => {

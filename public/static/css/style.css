@@ -327,11 +327,11 @@ main {
     cursor: pointer;
 }
 
-.modal-content .media button, .modal-content .genres button {
+.modal-content .media label, .modal-content .genres label {
     cursor: pointer;
     background: none;
-    border: 1px solid rgba(255, 255, 255, 0.72);
-    color: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    color: rgba(255, 255, 255, 0.92);
     transition: background 30ms ease-in-out 0s;
     border-radius: 14px;
     padding: 3px 15px;
@@ -340,16 +340,27 @@ main {
     font-size: 1rem;
 }
 
-.modal-content .media button.active, .modal-content .genres button.active {
+.modal-content .genres .genrelist {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.modal-content .media label.active, .modal-content .genres label.active {
     border: 1px solid rgb(255, 255, 255);
     background: rgb(255, 255, 255);
     color: rgb(0, 0, 0);
 }
 
-.modal-content .media button:hover, .modal-content .genres button:hover {
+.modal-content .media label:hover, .modal-content .genres label:hover {
     color: white;
     background: rgb(121, 126, 130);
     border-color: rgb(255, 255, 255);
+}
+
+.modal-content .genres .genrelist label.disabled {
+    border: 1px solid rgba(30, 30, 30, 0.52);
+    color: rgba(30, 30, 30, 0.62);
+    cursor: none;
 }
 
 .modal-content .filter-row.save {
@@ -414,7 +425,8 @@ main {
 .child-card-trailer a {
     text-decoration: none;
     padding: .5rem .75rem;
-    background-color: rgba(255, 255, 255, 0.28);
+    /* background-color: rgba(255, 255, 255, 0.28); */
+    background-color: rgba(8, 17, 24, 0.64);
     border-radius: 12px;
     height: 2em;
     display: inline-flex;
@@ -422,11 +434,13 @@ main {
 }
 
 .child-card-trailer a p{
-    margin: 0;
+    margin: 0 0 0 5px;
+    align-self: center;
 }
 
 .child-card-top a:hover {
-    background-color: rgba(255, 255, 255, 0.48);
+    /* background-color: rgba(255, 255, 255, 0.48); */
+    background-color: rgba(38, 47, 54, 0.74);
 }
 
 .child-card-providers {
@@ -438,6 +452,11 @@ main {
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 12px;
+}
+
+.child-card-providers-details {
+    display: flex;
+    grid-row: 6;
 }
 
 .child-card-title {

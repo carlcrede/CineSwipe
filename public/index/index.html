@@ -5,17 +5,20 @@
             <div>
                 <h1>Edit filters</h1>
             </div>
-            <div class="filter-row media" id="media">
-                <h3>Content type</h3>
-                <button class="active" id="movie">Movies</button>
-                <button class="active" id="tv">Tv Shows</button>
-            </div>
-            <div class="filter-row genres">
-                <h3>Genres (COMING SOON)</h3>
-            </div>
-            <div class="filter-row save">
-                <button id="saveBtn">Save</button>
-            </div>
+            <form id="filtersForm">
+                <div class="filter-row media" id="media">
+                    <h3>Content type</h3>
+                    <label for="movie" class="active">Movies</label><input type="checkbox" id="movie" name="media" value="movie" checked hidden>
+                    <label for="tv" class="active">Tv Shows</label><input type="checkbox" id="tv" name="media" value="tv" checked hidden>
+                </div>
+                <div class="filter-row genres">
+                    <h3>Genres (COMING SOON)</h3>
+                    <div class="genrelist"></div>
+                </div>
+                <div class="filter-row save">
+                    <button type="submit" id="saveBtn">Save</button>
+                </div>
+            </form>
         </div>
     </div>
     <main>
