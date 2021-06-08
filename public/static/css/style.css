@@ -457,6 +457,47 @@ main {
 .child-card-providers-details {
     display: flex;
     grid-row: 6;
+    margin-top: 10px;
+    font-size: small;
+    background: var(--color-white-alpha-24);
+    border-radius: 5px;
+    padding: 5px;
+    flex-direction: column;
+    row-gap: 6px;
+    justify-self: center;
+    width: fit-content;
+}
+
+.child-card-providers-details .list {
+    display: flex;
+    column-gap: 10px;
+    text-align: center;
+}
+
+.child-card-providers-details .list .label {
+    background-color: rgba(8, 17, 24, 0.64);
+    border-radius: 8px;
+    padding: 5px;
+    width: 80px;
+}
+
+.child-card-providers-details a {
+    border-radius: 8px;
+    width: fit-content;
+    text-decoration: none;
+    padding: .5rem .75rem;
+    background: var(--color-dark-background);
+    color: var(--color-font-default);
+    text-align: center;
+    align-self: center;
+}
+
+.child-card-providers-details .list img {
+    border-radius: 8px;
+}
+
+.match .child {
+    height: 500px;
 }
 
 .child-card-title {

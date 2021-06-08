@@ -3,7 +3,7 @@ let wrapper = $('.wrapper');
 const initHammer = (elem, item) => {
     const hammertime = new Hammer(elem);
 
-    hammertime.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 5 });
+    hammertime.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 10 });
 
     hammertime.get('press').set({ time: 100 });
 
