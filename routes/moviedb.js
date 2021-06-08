@@ -3,6 +3,40 @@ const moviedb = new MovieDb(process.env.MOVIEDB_API_KEY);
 
 const router = require('express').Router();
 
+const fetchMvoies = async (page, filter) => {
+    console.log('Current filter:', filter);
+    const { movie_genres = [], genres = [], sortBy } = filter;
+    const genresCombined = [...movie_genres, ...genres].join();
+    try {
+        const moviesResponse = await moviedb.discoverMovie({ page: page, with_genres: genresCombined });
+        const moviesList = await Promise.all(moviesResponse.results.map(async (result) => {
+            const movieDetails = await moviedb.movieInfo({ id: result.id, append_to_response: 'watch/providers,videos'});
+            movieDetails['media_type'] = 'movie';
+            return movieDetails;
+        }));
+        return moviesList;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+const fetchTv = async (page, filter) => {
+    console.log('Current filter:', filter);
+    const { tv_genres = [], genres = [], sortBy } = filter;
+    const genresCombined = [...tv_genres, ...genres].join();
+    try {
+        const tvResponse = await moviedb.discoverTv({ page: page, with_genres: genresCombined });
+        const tvList = await Promise.all(tvResponse.results.map(async (result) => {
+            const tvDetails = await moviedb.tvInfo({ id: result.id, append_to_response: 'watch/providers,videos'});
+            tvDetails['media_type'] = 'tv';
+            return tvDetails;
+        }));
+        return tvList;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 const fetchPopularMovies = async (page) => {
     try {
         const popularMovies = await moviedb.moviePopular({ page: page });
@@ -90,14 +124,18 @@ router.get('/:media_type/:id/details', async (req, res, next) => {
 });
 
 router.get('/movie/popular/:page', async (req, res, next) => {
+    const filter = req.query;
     const page = Number(req.params.page);
-    const data = await fetchPopularMovies(page);
+    //const data = await fetchPopularMovies(page, filter);
+    const data = await fetchMvoies(page, filter);
     res.send(data);
 });
 
 router.get('/tv/popular/:page', async (req, res, next) => {
+    const filter = req.query;
     const page = Number(req.params.page);
-    const data = await fetchPopularTv(page);
+    //const data = await fetchPopularTv(page);
+    const data = await fetchTv(page, filter);
     res.send(data);
 });
 

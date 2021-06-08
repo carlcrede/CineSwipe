@@ -65,6 +65,7 @@ const CardBuilder = (() => {
                 });
             }
             if (rent) {
+                div.append('Rent: ');
                 rent.forEach((value, index) => {
                     div.append(`<div><img loading="lazy" width="30px" src="${img_url}original${value.logo_path}">${value.provider_name}</div>`);
                 });

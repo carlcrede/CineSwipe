@@ -5,11 +5,11 @@ const CardManager = (() => {
     let cards = $('#cards');
     const invalidItemStatuses = ['Rumored', 'Planned', 'In Production', 'Post Production', 'Canceled'];
 
-    const updateCardsWithFilters = async () => {
+    const updateCardsWithFilters = async (filters) => {
         clearInterval(cardInterval);
         page = 1;
         $('.wrapper').children('.child').not('.first').remove();
-        const newItems = await ItemFetch.combinedMoviesAndTv(page);
+        const newItems = await ItemFetch.combinedMoviesAndTv(page, filters);
         popularMoviesAndTv = newItems;
         const cards = $('.wrapper').children();
         if(cards.length < 10 && popularMoviesAndTv){
@@ -64,7 +64,7 @@ const CardManager = (() => {
         if(document.hasFocus){
             if(popularMoviesAndTv && popularMoviesAndTv.length < 1){
                 page++;
-                const newItems = await ItemFetch.combinedMoviesAndTv(page);
+                const newItems = await ItemFetch.combinedMoviesAndTv(page, Filtering.getFilters());
                 popularMoviesAndTv = newItems;
             }
             const cards = $('.wrapper').children();
