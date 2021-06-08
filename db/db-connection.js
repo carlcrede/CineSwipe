@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
-const user = process.env.MONGODB_USER;
-const pass = process.env.MONGODB_PASS;
-const url = `mongodb+srv://${user}:${pass}@cluster0.hkbey.mongodb.net/auth?retryWrites=true&w=majority`
+const url = process.env.MONGODB_URL;
+
 mongoose.connect(url, { 
     useNewUrlParser: true, 
     useUnifiedTopology: true,
     useFindAndModify: false
 });
+
 const connection = mongoose.connection;
 
 connection.on('open', () => {

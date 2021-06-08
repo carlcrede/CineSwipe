@@ -9,8 +9,8 @@ const { body, check, checkSchema, validationResult } = require('express-validato
 //javascript objects/schemas to be used with express-validator
 const schema = require('./validation-schema');
 
-//mongoose User model
-const User = require('../../db/model/user.js');
+//mongoose Credentials model
+const Credentials = require('../../db/model/credentials.js');
 
 //password hashing
 const bcrypt = require('bcrypt');
@@ -51,7 +51,7 @@ router.post('/auth/register', checkSchema(schema.register), async (req, res) => 
         const username = req.body.username;
         const plainTextPassword = req.body.password;
         const hashedPwd = await bcrypt.hash(plainTextPassword, saltRounds);
-        const insertResult = await User.create({
+        const insertResult = await Credentials.create({
             email: email,
             username: username,
             password: hashedPwd
@@ -66,8 +66,8 @@ router.post('/auth/register', checkSchema(schema.register), async (req, res) => 
 
 router.post('/auth/login', async (req, res) => {
     try {
-        const foundByUsername = await User.findOne({ username: req.body.user}); //search database for a 
-        const foundByEmail = await User.findOne({ email: req.body.user});
+        const foundByUsername = await Credentials.findOne({ username: req.body.user}); //search database for a 
+        const foundByEmail = await Credentials.findOne({ email: req.body.user});
         const foundUser = (foundByUsername) ? foundByUsername : foundByEmail; //ternary operation to find user by email if not found by username;
         if (foundUser) { 
             const compared = await bcrypt.compare(req.body.password, foundUser.password);
