@@ -14,6 +14,19 @@ const preferencesSchema = new mongoose.Schema({
         media_type: {
             type: String,
             required: true
+        },
+        genres: {
+            type: [{
+                _id: false,
+                id: {
+                    type: String,
+                    required: true
+                },
+                name: {
+                    type: String,
+                    required: true
+                }
+            }],
         }
     }],
 });

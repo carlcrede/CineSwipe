@@ -24,12 +24,13 @@ router.get('/likes', async(req, res) => {
 
 router.post('/likes', async(req, res) => {
     const like = req.body.like.id;
-    const media_type = req.body.like.media_type
+    const media_type = req.body.like.media_type;
+    const genres = req.body.like.genres;
     const user = req.session.userId;
     try {
         if(user){
             const filter = { user: user }; //what to find a document with the username
-            const update = { "$addToSet": { likes: [{id: like, media_type: media_type}]}}; //what to update in that document
+            const update = { "$addToSet": { likes: [{id: like, media_type: media_type, genres: genres}]}}; //what to update in that document
             const doc = await Preferences.findOneAndUpdate(filter, update, {
                 new: true, 
                 upsert: true //insert/create user document if filter fails 

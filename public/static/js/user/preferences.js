@@ -15,6 +15,7 @@
         addCollapseListener(card);
     });
     insertMediaPercentages(userLikes);
+    insertGenreLikeCount(userLikes);
 })();
 
 const insertMediaPercentages = (likes) => {
@@ -34,8 +35,36 @@ const insertMediaPercentages = (likes) => {
 }
 
 const percent = (sum, value) => {
-    const percentFloat =(!value == 0) ? (value / sum) * 100 : 0
+    const percentFloat = (!value == 0) ? (value / sum) * 100 : 0
     return percentFloat.toFixed(0);
+}
+
+const insertGenreLikeCount = (likes) => {
+    const genre_count = {}
+    likes.forEach((like) => {
+        const genres = like.genres;
+        genres.forEach((genre) => {
+            const genre_name = genre.name;
+            if (genre_count[genre_name]){
+                genre_count[genre_name]++;
+            } else {
+                genre_count[genre_name] = 1;
+            }
+        });
+    });
+    const genres_container = $('#liked-genres-container');
+    Object.entries(genre_count).forEach((key) => {
+        genres_container.append(
+            `<div class="genre-preference">
+                <h4 class="genre-name">
+                    ${key[0]}
+                </h4>
+                <h4 class="genre-count">
+                    ${key[1]} likes
+                </h4>
+            </div>`
+        );
+    });
 }
 
 const addCollapseListener = (card) => {
