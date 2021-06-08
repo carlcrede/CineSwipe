@@ -18,10 +18,11 @@ socket.on('match', (item) => {
 });
 
 const clientLikedItem = async (item) => {
-    socket.emit('clientLikedItem', { id: item.id, media_type: item.media_type });
+    socket.emit('clientLikedItem', { id: item.id, media_type: item.media_type});
     const liked = {like: {
         id: item.id,
-        media_type: item.media_type
+        media_type: item.media_type,
+        genres: item.genres
     }};
     const post = await fetch('/likes', {
         method: 'POST',
