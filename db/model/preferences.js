@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const likesSchema = new mongoose.Schema({
+const preferencesSchema = new mongoose.Schema({
     user: {
         type: String,
         required: true
@@ -18,4 +18,4 @@ const likesSchema = new mongoose.Schema({
     }],
 });
 
-module.exports = mongoose.model('likes', likesSchema);
+module.exports = mongoose.model('preferences', preferencesSchema);

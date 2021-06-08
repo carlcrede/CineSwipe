@@ -1,11 +1,11 @@
-const { find } = require('../../db/model/user.js');
-const User = require('../../db/model/user.js');
+const { find } = require('../../db/model/credentials.js');
+const Credentials = require('../../db/model/credentials.js');
 
 const register = {
     username: {
         custom: {
             options: async value => {
-                const foundUser = await User.find({ username: value });
+                const foundUser = await Credentials.find({ username: value });
                 if (foundUser.length > 0) {
                     return Promise.reject('Username already in use');
                 }
@@ -37,7 +37,7 @@ const register = {
         normalizeEmail: true,
         custom: {
             options: async value => {
-                const foundEmail = await User.find({ email: value });
+                const foundEmail = await Credentials.find({ email: value });
                 if (foundEmail.length > 0) {
                     return Promise.reject('Email already in use');
                 }

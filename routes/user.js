@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const Likes = require('../db/model/likes.js');
+const Preferences = require('../db/model/preferences.js');
 
 const pages = require('../util/ssr');
 
@@ -12,7 +12,7 @@ router.get('/likes', async(req, res) => {
     const user = req.session.userId;
     try {
         if(user){
-            const foundUser = await Likes.findOne({user: user});
+            const foundUser = await Preferences.findOne({user: user});
             const userLikes = foundUser.likes;
             res.send(userLikes);
         }
@@ -30,7 +30,7 @@ router.post('/likes', async(req, res) => {
         if(user){
             const filter = { user: user }; //what to find a document with the username
             const update = { "$addToSet": { likes: [{id: like, media_type: media_type}]}}; //what to update in that document
-            const doc = await Likes.findOneAndUpdate(filter, update, {
+            const doc = await Preferences.findOneAndUpdate(filter, update, {
                 new: true, 
                 upsert: true //insert/create user document if filter fails 
             });
