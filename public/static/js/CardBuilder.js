@@ -51,25 +51,29 @@ const CardBuilder = (() => {
         const {DK} = item['watch/providers'].results;
         if (DK) {
             const { link, buy = 0, rent = 0, flatrate = 0 } = DK;
-            let div = $(`<div class="child-card-providers-details"><a href="${link}">See more</a></div>`);
+            let div = $(`<div class="child-card-providers-details"></div>`);
             if (flatrate) {
-                div.append('Streaming: ');
+                let flatRateDiv = $('<div class="list"><div class="label">Stream</div></div>');
                 flatrate.forEach((value, index) => {
-                    div.append(`<div><img loading="lazy" width="30px" src="${img_url}original${value.logo_path}">${value.provider_name}</div>`);
+                    flatRateDiv.append(`<img loading="lazy" width="30px" src="${img_url}original${value.logo_path}">`);
                 });
+                div.append(flatRateDiv);
             }
             if (buy) {
-                div.append('Buy: ');
+                let buyDiv = $('<div class="list"><div class="label">Buy</div></div>');
                 buy.forEach((value, index) => {
-                    div.append(`<div><img loading="lazy" width="30px" src="${img_url}original${value.logo_path}">${value.provider_name}</div>`);
+                    buyDiv.append(`<img loading="lazy" width="30px" src="${img_url}original${value.logo_path}">`);
                 });
+                div.append(buyDiv);
             }
             if (rent) {
-                div.append('Rent: ');
+                let rentDiv = $('<div class="list"><div class="label">Rent</div></div>');
                 rent.forEach((value, index) => {
-                    div.append(`<div><img loading="lazy" width="30px" src="${img_url}original${value.logo_path}">${value.provider_name}</div>`);
+                    rentDiv.append(`<img loading="lazy" width="30px" src="${img_url}original${value.logo_path}">`);
                 });
+                div.append(rentDiv);
             }
+            div.append(`<a target='_blank' href="${link}">See more</a>`);
             return div;
         } else {
             return '<div class="child-card-provider-details">No providers offer this movie/tv</div>';
