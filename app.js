@@ -64,9 +64,6 @@ app.use(session({
     }
 }));
 
-const cookieParser = require('cookie-parser');
-app.use(cookieParser());
-
 // fs module for server-side rendering
 const pages = require('./util/ssr');
 
