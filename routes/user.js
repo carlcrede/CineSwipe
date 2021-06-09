@@ -4,8 +4,12 @@ const Preferences = require('../db/model/preferences.js');
 
 const pages = require('../util/ssr');
 
-router.get('/user/:id/preferences', (req, res) => {
-    res.send(pages.preferences);
+router.get('/user/:id/preferences', (req, res, next) => {
+    if (req.session.userId) {
+        res.send(pages.preferences);
+    } else {
+        next();
+    }
 });
 
 router.get('/likes', async(req, res) => {
@@ -43,6 +47,10 @@ router.post('/likes', async(req, res) => {
         // console.log(error);
         res.status(500).send('Internal Server error occured');
     }
+});
+
+router.get("/user/*", (req, res) => {
+    res.send(pages.requestlogin);
 });
 
 module.exports = {

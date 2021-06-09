@@ -8,14 +8,16 @@ const body = {
     index: fs.readFileSync(__dirname + '/../public/index/index.html', 'utf-8'),
     login: fs.readFileSync(__dirname + '/../public/authentication/login/login.html', 'utf-8'),
     register: fs.readFileSync(__dirname + '/../public/authentication/register/register.html', 'utf-8'),
-    preferences: fs.readFileSync(__dirname + '/../public/user/preferences/preferences.html', 'utf-8')
+    preferences: fs.readFileSync(__dirname + '/../public/user/preferences/preferences.html', 'utf-8'),
+    requestlogin: fs.readFileSync(__dirname + '/../public/user/request-login.html', 'utf-8')
 }
 
 const index = head + nav + body.index + footer;
 const login = head + nav + body.login + footer;
 const register = head + nav + body.register + footer;
 const preferences = head + nav + body.preferences + footer;
+const requestlogin = head + nav + body.requestlogin;
 
 module.exports = {
-    index, login, register, preferences
+    index, login, register, preferences, requestlogin
 }

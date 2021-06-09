@@ -1,6 +1,5 @@
 ( async () => {
     document.title = 'Your likes';
-
     const response = await fetch('/likes');
     const userLikes = await response.json();
     const likesElem = $('#match');
