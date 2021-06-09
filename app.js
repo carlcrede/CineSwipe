@@ -36,8 +36,11 @@ app.use(helmet({
 // serve static files from /public folder
 // trying cache-control for performance
 //enable caching in production 
-/* app.use(express.static(__dirname + '/public/static', { maxAge: 31557600 })); */
-app.use(express.static(__dirname + '/public/static'));
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(__dirname + '/public/static', { maxAge: 31557600 }));
+} else {
+    app.use(express.static(__dirname + '/public/static'));
+}
 
 // create http server
 const http = require('http').createServer(app);
