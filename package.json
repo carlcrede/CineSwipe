@@ -2,9 +2,10 @@
   "name": "node_exam_project",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "pm2-runtime start ecosystem.config.js --env production",
+    "start": "cross-env NODE_ENV=production node app.js",
+    "pm2start": "pm2-runtime start ecosystem.config.js --env production",
     "devstart": "nodemon app.js"
   },
   "repository": {
@@ -22,6 +23,7 @@
     "bcrypt": "^5.0.1",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "express-rate-limit": "^5.2.6",
