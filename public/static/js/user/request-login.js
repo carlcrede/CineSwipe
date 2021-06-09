@@ -1,3 +1,3 @@
 setTimeout(() => {
-    window.location = '/';
-}, 4000);
+    window.location = '/login';
+}, 2000);

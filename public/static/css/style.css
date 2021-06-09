@@ -821,6 +821,12 @@ main {
 
 /* ________________________________________________________________________________________ */
 
+.request-login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 @media screen and (max-height: 500px){
     footer{
         opacity: 0;
