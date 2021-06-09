@@ -7,6 +7,9 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({extended: true}));
 
+const cors = require('cors');
+app.use(cors({ origin: 'http://cineswipe.herokuapp.com'}));
+
 // tring gzip compression for performance
 const compression = require('compression');
 app.use(compression());
