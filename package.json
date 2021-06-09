@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "pm2-runtime start ecosystem.config.js --env production",
+    "devstart": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,10 @@
     "helmet": "^4.6.0",
     "mongoose": "^5.12.10",
     "moviedb-promise": "^3.1.8",
+    "pm2": "^5.0.4",
     "socket.io": "^4.1.0"
+  },
+  "engines": {
+    "node": "16.3.0"
   }
 }
