@@ -1,4 +1,4 @@
-const socket = io('https://cineswipe.herokuapp.com');
+const socket = io();
 
 if(location.pathname === '/'){
     socket.emit('newroom');
