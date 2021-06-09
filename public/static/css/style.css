@@ -51,7 +51,9 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: var(--color-font-default);
-    /* min-height: 20rem; */
+    display: flex;
+    flex-direction: column;
+    min-height: 140vh;
 }
 
 input, select, textarea, button{
@@ -132,9 +134,7 @@ footer {
     grid-template-columns: 1fr 2fr 1fr;
     position: relative;
     background: var(--gradient-lightbottom-to-darktop);
-    height: 10em;
-    max-height: 10em;
-    top: 30vh;;
+    margin-top: auto;
     padding: 1em 10em ;
     transition: opacity .5s ease-in-out;
 }
