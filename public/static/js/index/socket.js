@@ -1,15 +1,9 @@
 const socket = io();
 
-if(location.pathname === '/'){
-    socket.emit('newroom');
-} else {
-    socket.emit('joinroom', location.pathname.substr(1));
-}
+socket.emit('joinroom', location.pathname.substr(1));
 
-socket.on('session', (roomId) => {
-    const session = $("#session-url");
-    session.text(location.host + '/' + roomId + '');
-});
+$("#session-url").text(location.host + location.pathname);
+$('#session-copy-icon').removeClass('hidden');
 
 socket.on('match', (item) => {
     if (!$(`#match-${item.id}`).length) {

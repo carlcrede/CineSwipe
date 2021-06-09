@@ -3,16 +3,12 @@ module.exports = io => {
     const likedMovies = {};
     try {
         io.on('connection', (socket) => {
-            socket.on('newroom', () => {
-                const roomId = crypto.randomBytes(6).toString('hex');
-                likedMovies[roomId] = {};
-                socket.join(roomId);
-                socket.emit('session', roomId);
-            });
-
             socket.on('joinroom', (roomId) => {
+                //if likes object for room hasn't been created
+                if(!io.sockets.adapter.rooms.has(roomId)){
+                    likedMovies[roomId] = {}
+                }
                 socket.join(roomId);
-                socket.emit('session', roomId);
             });
 
             socket.on('clientLikedItem', (item) => {

@@ -249,6 +249,10 @@ main {
     transition: .1s ease-in-out;
 }
 
+.far.fa-clone.hidden {
+    display: none;
+}
+
 .session-link:hover {
     background: var(--gradient-red-to-blue-hover);
     cursor: url('/img/clone-regular-24x24.png'), auto;
