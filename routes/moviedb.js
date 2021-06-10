@@ -1,6 +1,8 @@
 const { MovieDb } = require('moviedb-promise');
 const moviedb = new MovieDb(process.env.MOVIEDB_API_KEY);
 
+const fetch = require('node-fetch');
+
 const router = require('express').Router();
 
 const fetchMvoies = async (options) => {
@@ -46,14 +48,25 @@ const itemDetails = async (id, media_type) => {
 }
 
 const buildFilterOptions = (page, filter = {}) => {
-    const { movie_genres = [], tv_genres = [], genres = [] } = filter;
+    const { 
+        movie_genres = [], 
+        tv_genres = [], 
+        genres = [], 
+        providers = [], 
+        tv_providers = [], 
+        movie_providers = [] 
+    } = filter;
     const movieOptions = { 
         page: page, 
-        with_genres: [...movie_genres, ...genres].join() 
+        with_genres: [...movie_genres, ...genres].join(),
+        with_watch_providers: [...movie_providers, ...providers].join('|'),
+        watch_region: 'DK'
     };
     const tvOptions = { 
         page: page, 
-        with_genres: [...tv_genres, ...genres].join() 
+        with_genres: [...tv_genres, ...genres].join(),
+        with_watch_providers: [...tv_providers, ...providers].join('|'),
+        watch_region: 'DK'
     };
     return { movieOptions, tvOptions };
 }
@@ -100,6 +113,7 @@ router.get('/items/initial', async (req, res, next) => {
 
 router.get('/items/:page', async (req, res, next) => {
     const filter = req.query;
+    console.log('items endpoint:', filter);
     const page = req.params.page;
     const { movieOptions, tvOptions } = buildFilterOptions(page, filter);
     if (filter.media.length == 2) {
@@ -123,7 +137,7 @@ router.get('/:media_type/:id/details', async (req, res, next) => {
     res.send(item);
 });
 
-router.get('/genre/:media_type', async (req, res, next) => {
+router.get('/genres/:media_type', async (req, res, next) => {
     const media_type = req.params.media_type;
     try {
         const genres = (media_type == 'movie') ? await moviedb.genreMovieList() : await moviedb.genreTvList();
@@ -133,6 +147,19 @@ router.get('/genre/:media_type', async (req, res, next) => {
         next();
     }
 
+});
+
+router.get('/providers', async (req, res, next) => {
+    const base_url = 'https://api.themoviedb.org/3/watch/providers';
+    const query = `?api_key=${process.env.MOVIEDB_API_KEY}&language=en-US&watch_region=DK`;
+    try {
+        const [movieProvidersResponse, tvProvidersResponse] = await Promise.all([fetch(`${base_url}/movie${query}`), fetch(`${base_url}/tv${query}`)]);
+        const [ movieProviders, tvProviders ] = await Promise.all([movieProvidersResponse.json(), tvProvidersResponse.json()]);
+        res.send({movieProviders, tvProviders});
+    } catch (error) {
+        console.error(error);
+        next();
+    }
 });
 
 module.exports = {

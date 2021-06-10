@@ -308,6 +308,7 @@ main {
 
 .modal-content {
     margin: 10% 20%;
+    display: none;
     /* position: relative;
     width: 100%;
     top: 25%;
@@ -335,7 +336,17 @@ main {
     pointer-events: none;
 }
 
-.modal-content .media label, .modal-content .genres label {
+.modal-content .media {
+    width: max-content;
+    display: flex;
+}
+
+.modal-content .list img {
+    border-radius: .5rem;
+    pointer-events: none;
+}
+
+.modal-content .media label, .modal-content .genres label, .all {
     cursor: pointer;
     background: none;
     border: 1px solid rgba(255, 255, 255, 0.92);
@@ -346,14 +357,17 @@ main {
     margin-right: 5px;
     margin-bottom: 5px;
     font-size: 1rem;
+    align-items: center;
+    display: flex;
+    column-gap: .5rem;
 }
 
-.modal-content .genres .genrelist {
+.modal-content .genres .list {
     display: flex;
     flex-wrap: wrap;
 }
 
-.modal-content .media label.active, .modal-content .genres label.active {
+.modal-content .media label.active, .modal-content .genres .active {
     border: 1px solid rgb(255, 255, 255);
     background: rgb(255, 255, 255);
     color: rgb(0, 0, 0);
@@ -365,17 +379,22 @@ main {
     border-color: rgb(255, 255, 255);
 }
 
-.modal-content .genres .genrelist label.disabled {
+.modal-content .genres .list label.disabled {
     border: 1px solid rgba(30, 30, 30, 0.52);
     color: rgba(30, 30, 30, 0.62);
     cursor: none;
+    pointer-events: none;
+}
+
+.list#providerlist label.disabled {
+    display: none;
 }
 
 .modal-content .filter-row.save {
     padding-top: 10px;
 }
 
-.modal-content #saveBtn {
+.modal-content .saveBtn {
     background: var(--gradient-green-blue);
     color: var(--color-font-default);
     padding: 5px;
@@ -433,7 +452,6 @@ main {
 .child-card-trailer a {
     text-decoration: none;
     padding: .5rem .75rem;
-    /* background-color: rgba(255, 255, 255, 0.28); */
     background-color: rgba(8, 17, 24, 0.64);
     border-radius: 12px;
     height: 2em;
@@ -447,13 +465,13 @@ main {
 }
 
 .child-card-top a:hover {
-    /* background-color: rgba(255, 255, 255, 0.48); */
     background-color: rgba(38, 47, 54, 0.74);
 }
 
 .child-card-providers {
     display: inline-flex;
     gap: 5px;
+    pointer-events: none;
 }
 
 .child-card-providers img {

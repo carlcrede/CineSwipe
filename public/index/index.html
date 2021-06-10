@@ -1,22 +1,36 @@
 <body>
-    <div id="filters" class="modal">
+    <div id="filtersModal" class="modal">
         <a id="closeFilterBtn">&times;</a>
-        <div class="modal-content">
+        <div id="contentFilters" class="modal-content">
             <div>
                 <h1>Edit filters</h1>
             </div>
             <form id="filtersForm">
+                <h3>Content type</h3>
                 <div class="filter-row media" id="media">
-                    <h3>Content type</h3>
                     <label for="movie" class="active">Movies</label><input type="checkbox" id="movie" name="media" value="movie" checked hidden>
                     <label for="tv" class="active">Tv Shows</label><input type="checkbox" id="tv" name="media" value="tv" checked hidden>
                 </div>
                 <div class="filter-row genres">
                     <h3>Genres</h3>
-                    <div class="genrelist"></div>
+                    <div id="genrelist" class="list"></div>
                 </div>
                 <div class="filter-row save">
-                    <button type="submit" id="saveBtn">Save</button>
+                    <button type="submit" class="saveBtn">Save</button>
+                </div>
+            </form>
+        </div>
+        <div id="providerFilters" class="modal-content">
+            <div>
+                <h1>Edit watch providers</h1>
+            </div>
+            <form id="providersForm">
+                <div class="filter-row genres">
+                    <h3>Watch Providers</h3>
+                    <div id="providerlist" class="list"></div>
+                </div>
+                <div class="filter-row save">
+                    <button type="submit" class="saveBtn">Save</button>
                 </div>
             </form>
         </div>
@@ -48,8 +62,8 @@
                 <div class="description-pointdown right"></div>
             </div>
             <div class="filters-container">
-                <button class="filterBtn" id="filterBtn">Edit filters</button>
-                <button class="filterBtn">Edit providers</button>
+                <button class="filterBtn" id="contentFilterBtn">Edit filters</button>
+                <button class="filterBtn" id="providerFilterBtn">Edit providers</button>
             </div>
         </div>
         <div class="grid-row">

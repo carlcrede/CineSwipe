@@ -19,11 +19,16 @@ const ItemFetch = (() => {
     }
 
     const genres = async (media_type) => {
-        const genres = await fetch(`/genre/${media_type}`);
+        const genres = await fetch(`/genres/${media_type}`);
         return genres.json();
     }
 
+    const providers = async () => {
+        const providers = await fetch('/providers');
+        return providers.json();
+    }
+
     return {
-        initialItems, details, genres, fetchItems
+        initialItems, details, genres, fetchItems, providers
     }
 })();
