@@ -81,12 +81,15 @@ app.use(userdata.router);
 const crypto = require('crypto');
 
 app.get('/', (req, res) => {
-    const new_room = crypto.randomBytes(6).toString('hex');
-    res.redirect(`/${new_room}`);
+    res.send(pages.index);
 });
 
 app.get('/:id', (req, res, next) => {
-    res.send(pages.index);
+    if(io.sockets.adapter.rooms.has(req.params.id)){
+        res.send(pages.index);
+    } else {
+        res.redirect('/');
+    }
 });
 
 // error page

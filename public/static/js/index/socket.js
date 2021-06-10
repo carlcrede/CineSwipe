@@ -2,8 +2,10 @@ const socket = io();
 
 socket.emit('joinroom', location.pathname.substr(1));
 
-$("#session-url").text(location.host + location.pathname);
-$('#session-copy-icon').removeClass('hidden');
+socket.on('session', (roomId) => {
+    $('#session-copy-icon').removeClass('hidden');
+    $("#session-url").text(location.host + '/' + roomId);
+});
 
 socket.on('match', (item) => {
     if (!$(`#match-${item.id}`).length) {
