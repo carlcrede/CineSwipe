@@ -22,8 +22,7 @@ const initHammer = (elem, item) => {
         const moveOutWidth = document.body.clientWidth;
         const keep = Math.abs(ev.velocityX) < 1.1;
         if (!keep) {
-            // $(elem).hammer().unbind();
-            // Hammer(myElement).off(eventName);
+            hammertime.set({enable: false});
             const endX = Math.max(Math.abs(ev.velocityX) * moveOutWidth, moveOutWidth);
             const toX = ev.deltaX > 0 ? endX : -endX;
             const endY = Math.abs(ev.velocityY) * moveOutWidth;
@@ -39,7 +38,6 @@ const initHammer = (elem, item) => {
             setTimeout(() => {
                 elem.remove();
             }, 1000);
-
         } else {
             elem.style.transition = 'all .2s ease-in-out';
             elem.style.transform = `translate3d(0, 0, 0) scale(1)`;

@@ -837,3 +837,7 @@ main {
         transition: opacity .5s ease-in-out;
     }
 }
+
+.no-click {
+    pointer-events: none;
+}
