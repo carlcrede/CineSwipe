@@ -78,8 +78,6 @@ app.use(sessionRoute.router);
 const userdata = require('./routes/user');
 app.use(userdata.router);
 
-const crypto = require('crypto');
-
 app.get('/', (req, res) => {
     res.send(pages.index);
 });
