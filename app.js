@@ -29,6 +29,7 @@ app.use(helmet({
             'script-src': ["'self'", 'code.jquery.com', 'cdnjs.cloudflare.com'], 
             'style-src': ["'self'", 'cdnjs.cloudflare.com', 'unsafe-inline', 'code.jquery.com', 'fonts.googleapis.com'],
             'img-src': ["'self'", 'data:', 'www.themoviedb.org', 'image.tmdb.org'],
+            'connect-src': ["'self'" ,'api.db-ip.com/v2/free/self']
         },
     },
 }));

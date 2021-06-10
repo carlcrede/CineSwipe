@@ -3,7 +3,7 @@ const Filtering = (() => {
         media: ['movie', 'tv'],
         watchProviders: [],
         watch_monetization_types: '',
-        watch_region: 'DK',
+        watch_region: '',
         /*sortBy: ,
         release_date_gte: 'date',
         release_date_lte: 'date',
@@ -86,13 +86,26 @@ const Filtering = (() => {
         return genres;
     }
     
+    // maybe have this in utils
+    const getIpData = async () => {
+        const response = await fetch('https://api.db-ip.com/v2/free/self');
+        const ipdata = response.json();
+        return ipdata;
+    }
+    
     (async function initFilters () {
         const movieGenres = await ItemFetch.genres('movie');
         const tvGenres = await ItemFetch.genres('tv');
         const distinctGenres = getDistinctGenres(movieGenres.genres, tvGenres.genres);
         initGenres(distinctGenres, movieGenres.genres, tvGenres.genres);
 
-        const {movieProviders, tvProviders} = await ItemFetch.providers();
+        // gotta check for valid country, else set some default value
+        // logic in cardbuilder for setting provider logos, and for setting details on matches needs to be refactored.
+        const {countryCode} = await getIpData();
+        console.log('Region:', countryCode);
+        filters['watch_region'] = countryCode;
+        console.log(filters);
+        const {movieProviders, tvProviders} = await ItemFetch.providers(countryCode);
         const distinctProviders = getDistinctProviders(movieProviders.results, tvProviders.results);
         initProviders(distinctProviders, movieProviders.results, tvProviders.results);
 

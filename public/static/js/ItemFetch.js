@@ -23,8 +23,8 @@ const ItemFetch = (() => {
         return genres.json();
     }
 
-    const providers = async () => {
-        const providers = await fetch('/providers');
+    const providers = async (watch_region) => {
+        const providers = await fetch('/providers?watch_region=' + watch_region);
         return providers.json();
     }
 
