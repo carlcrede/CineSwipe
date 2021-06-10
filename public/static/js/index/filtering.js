@@ -49,6 +49,8 @@ const Filtering = (() => {
 
     $('#filtersForm').on('submit', async(event) => {
         event.preventDefault();
+        $('.modal').toggleClass('no-click', true);
+        showLoading(true);
         const data = new FormData(event.target);
         const filter = Object.fromEntries(data.entries());
         filter.media = data.getAll('media');
@@ -59,8 +61,19 @@ const Filtering = (() => {
         // show some kind of spinner / progress when fetching filtered data
         await CardManager.updateCardsWithFilters(filters);
         $('#filters').hide();
+        showLoading(false);
         $('body').toggleClass('noscroll');
     });
+
+    const showLoading = (enabled) => {
+        if(enabled){
+            $('#saveBtn').text('');
+            $('#saveBtn').append('<img class="spinner" src="/img/spinner.svg">');
+        } else {
+            $('#saveBtn').text('Save');
+        }
+        $('.spinner').toggleClass('enabled', enabled);
+    };
 
     const initGenreBtnClickHandler = () => {
         $('.genrelist label').on('click', (event) => {
@@ -87,6 +100,7 @@ const Filtering = (() => {
     });
     
     $('#filterBtn').on('click', () => {
+        $('.modal').toggleClass('no-click', false);
         $('body').toggleClass('noscroll');
         $('#filters').show();
     });

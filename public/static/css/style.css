@@ -331,6 +331,10 @@ main {
     cursor: pointer;
 }
 
+.no-click {
+    pointer-events: none;
+}
+
 .modal-content .media label, .modal-content .genres label {
     cursor: pointer;
     background: none;
@@ -836,8 +840,4 @@ main {
         opacity: 0;
         transition: opacity .5s ease-in-out;
     }
-}
-
-.no-click {
-    pointer-events: none;
 }
