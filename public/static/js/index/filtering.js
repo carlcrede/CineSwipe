@@ -1,7 +1,7 @@
 const Filtering = (() => {
     let filters = {
-        /* media_types: [],
-        genres: [],
+        media: ['movie', 'tv'],
+        /*genres: [],
         watchProviders: [],
         watch_monetization_types: '',
         watch_region: 'DK',
@@ -21,7 +21,7 @@ const Filtering = (() => {
     const initGenres = (distinctGenres, movieGenres, tvGenres) => {
         // maybe insert some element that acts as a 'reset btn' for the checkboxes.
         //$('.genrelist').append(`<label class="active" for="allGenres">All</label><input type="checkbox" id="allGenres" data-name="allGenres" name="genres" value="[]" checked hidden>`);
-    
+        
         const movieGenreKeys = movieGenres.map(value => {
             return value.id
         });
@@ -39,11 +39,22 @@ const Filtering = (() => {
             }
         });
     }
+
+    const getDistinctGenres = (movieGenres, tvGenres) => {
+        const seen = new Set();
+        const genres = [...movieGenres, ...tvGenres].filter(el => {
+            const duplicate = seen.has(el.id);
+            seen.add(el.id);
+            return !duplicate;
+        });
+        return genres;
+    }
     
     (async function initFilters () {
         const movieGenres = await ItemFetch.genres('movie');
         const tvGenres = await ItemFetch.genres('tv');
-        initGenres([...movieGenres.genres, ...tvGenres.genres], movieGenres.genres, tvGenres.genres);
+        const distinctGenres = getDistinctGenres(movieGenres.genres, tvGenres.genres);
+        initGenres(distinctGenres, movieGenres.genres, tvGenres.genres);
         initGenreBtnClickHandler();
     })();
 
