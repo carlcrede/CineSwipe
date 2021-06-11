@@ -5,7 +5,7 @@ const fetch = require('node-fetch');
 
 const router = require('express').Router();
 
-const fetchMvoies = async (options) => {
+const fetchMovies = async (options) => {
     try {
         const moviesResponse = await moviedb.discoverMovie(options);
         const moviesList = await Promise.all(moviesResponse.results.map(async (result) => {
@@ -33,6 +33,18 @@ const fetchTv = async (options) => {
     }
 }
 
+const fetchProviders = async (watch_region) => {
+    const base_url = 'https://api.themoviedb.org/3/watch/providers';
+    const query = `?api_key=${process.env.MOVIEDB_API_KEY}&language=en-US&watch_region=${watch_region}`;
+    try {
+        const [movieProvidersResponse, tvProvidersResponse] = await Promise.all([fetch(`${base_url}/movie${query}`), fetch(`${base_url}/tv${query}`)]);
+        const [ movieProviders, tvProviders ] = await Promise.all([movieProvidersResponse.json(), tvProvidersResponse.json()]);
+        return {movieProviders, tvProviders};
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 const itemDetails = async (id, media_type) => {
     let details;
     if (media_type == 'movie') {
@@ -50,7 +62,6 @@ const buildFilterOptions = (page, filter = {}) => {
         movie_genres = [], 
         tv_genres = [], 
         genres = [], 
-        providers = [], 
         tv_providers = [], 
         movie_providers = [],
         watch_region = '' 
@@ -58,13 +69,13 @@ const buildFilterOptions = (page, filter = {}) => {
     const movieOptions = { 
         page: page, 
         with_genres: [...movie_genres, ...genres].join('|'),
-        with_watch_providers: [...movie_providers, ...providers].join('|'),
+        with_watch_providers: movie_providers.join('|'),
         watch_region: watch_region
     };
     const tvOptions = { 
         page: page, 
         with_genres: [...tv_genres, ...genres].join('|'),
-        with_watch_providers: [...tv_providers, ...providers].join('|'),
+        with_watch_providers: tv_providers.join('|'),
         watch_region: watch_region
     };
     return { movieOptions, tvOptions };
@@ -80,8 +91,12 @@ let cache = {
 };
 
 const fetchInitialItems = async (watch_region) => {
-    const { movieOptions, tvOptions } = buildFilterOptions(1, {watch_region: watch_region});
-    const movies = await fetchMvoies(movieOptions);
+    let { movieProviders, tvProviders } = await fetchProviders(watch_region);
+    movieProviders = movieProviders.results.map(value => value.provider_id);
+    tvProviders = tvProviders.results.map(value => value.provider_id);
+
+    const { movieOptions, tvOptions } = buildFilterOptions(1, {watch_region: watch_region, movie_providers: movieProviders, tv_providers: tvProviders});
+    const movies = await fetchMovies(movieOptions);
     const tv = await fetchTv(tvOptions);
     const data = await sortByPopularity([...movies, ...tv]);
     return data;
@@ -115,12 +130,12 @@ router.get('/items/:page', async (req, res, next) => {
     const page = req.params.page;
     const { movieOptions, tvOptions } = buildFilterOptions(page, filter);
     if (filter.media.length == 2) {
-        const movies = await fetchMvoies(movieOptions);
+        const movies = await fetchMovies(movieOptions);
         const tv = await fetchTv(tvOptions);
         const data = await sortByPopularity([...movies, ...tv])
         res.send(data);
     } else if (filter.media[0] == 'movie') {
-        const movies = await fetchMvoies(movieOptions);
+        const movies = await fetchMovies(movieOptions);
         res.send(movies);
     } else {
         const tv = await fetchTv(tvOptions);
@@ -149,11 +164,8 @@ router.get('/genres/:media_type', async (req, res, next) => {
 
 router.get('/providers', async (req, res, next) => {
     const { watch_region } = req.query;
-    const base_url = 'https://api.themoviedb.org/3/watch/providers';
-    const query = `?api_key=${process.env.MOVIEDB_API_KEY}&language=en-US&watch_region=${watch_region}`;
-    try {
-        const [movieProvidersResponse, tvProvidersResponse] = await Promise.all([fetch(`${base_url}/movie${query}`), fetch(`${base_url}/tv${query}`)]);
-        const [ movieProviders, tvProviders ] = await Promise.all([movieProvidersResponse.json(), tvProvidersResponse.json()]);
+    try{
+        const { movieProviders, tvProviders } = await fetchProviders(watch_region);
         res.send({movieProviders, tvProviders});
     } catch (error) {
         console.error(error);

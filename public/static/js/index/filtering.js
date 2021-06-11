@@ -1,7 +1,6 @@
 const Filtering = (() => {
     let filters = {
         media: ['movie', 'tv'],
-        watchProviders: [],
         watch_monetization_types: '',
         watch_region: 'DK',
         /*sortBy: ,
@@ -49,6 +48,9 @@ const Filtering = (() => {
 
         const movieProviderKeys = movieProviders.map(value => value.provider_id);
         const tvProviderKeys = tvProviders.map(value => value.provider_id);
+
+        filters.movie_providers = movieProviderKeys;
+        filters.tv_providers = tvProviderKeys;
 
         distinctProviders.forEach(({provider_id, provider_name, logo_path}, index) => {
             if (movieProviderKeys.includes(provider_id) && tvProviderKeys.includes(provider_id)) {
@@ -125,12 +127,13 @@ const Filtering = (() => {
         event.preventDefault();
         $('.modal').toggleClass('no-click', true);
         showLoading(true);
-        const data = new FormData(event.target);
-        const filter = Object.fromEntries(data.entries());
-        filter.providers = data.getAll('providers');
-        filter.tv_providers = data.getAll('tv_providers');
-        filter.movie_providers = data.getAll('movie_providers');
-        filters = {...filters, ...filter};
+        if(!$('#allProviders').hasClass('active')){
+            const data = new FormData(event.target);
+            const filter = Object.fromEntries(data.entries());
+            filter.tv_providers = data.getAll('tv_providers');
+            filter.movie_providers = data.getAll('movie_providers');
+            filters = {...filters, ...filter};
+        }
         await CardManager.updateCardsWithFilters(filters);
         $('#filtersModal').hide();
         $('#providerFilters').hide();
