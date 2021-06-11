@@ -412,7 +412,7 @@ main {
 /* ________________________________________________________________________________________ */
 /* SWIPECARDS styling */
 
-.wrapper {
+.card-container {
     position: relative;
     height: 400px;
     border-radius: 1rem;
@@ -420,7 +420,7 @@ main {
     backface-visibility: hidden;
 }
 
-.child {
+.card {
     display: grid;
     grid-auto-rows: 3fr 5fr 1fr 1fr 4fr 2fr;
     row-gap: 5px;
@@ -437,20 +437,32 @@ main {
     backface-visibility: hidden;
     background-size: cover;
     background-position: center;
+    transform: scale(1);
+    transition: all .2s ease-in-out;
 }
 
-.child-card-top {
+.card.moving {
+    transition: all 0s;
+    box-shadow: rgba(0, 0, 0, 0.77) 0px 2px 14px 0px;
+}
+
+.card:active {
+    transform: scale(1.05);
+    filter: brightness(110%);
+}
+
+.card-top {
     display: grid;
     grid-row: 1;
     grid-auto-flow: column;
     justify-content: space-between;
 }
 
-.child-card-trailer {
+.card-trailer {
     display: flex;
 }
 
-.child-card-trailer a {
+.card-trailer a {
     text-decoration: none;
     padding: .5rem .75rem;
     background-color: rgba(8, 17, 24, 0.64);
@@ -460,28 +472,28 @@ main {
     color: var(--color-font-default);
 }
 
-.child-card-trailer a p{
+.card-trailer a p{
     margin: 0 0 0 5px;
     align-self: center;
 }
 
-.child-card-top a:hover {
+.card-top a:hover {
     background-color: rgba(38, 47, 54, 0.74);
 }
 
-.child-card-providers {
+.card-providers {
     display: inline-flex;
     gap: 5px;
     pointer-events: none;
 }
 
-.child-card-providers img {
+.card-providers img {
     width: 2rem;
     height: 2rem;
     border-radius: .5rem;
 }
 
-.child-card-providers-details {
+.card-providers-details {
     display: flex;
     grid-row: 6;
     margin-top: 10px;
@@ -495,20 +507,20 @@ main {
     width: fit-content;
 }
 
-.child-card-providers-details .list {
+.card-providers-details .list {
     display: flex;
     column-gap: 10px;
     text-align: center;
 }
 
-.child-card-providers-details .list .label {
+.card-providers-details .list .label {
     background-color: rgba(8, 17, 24, 0.64);
     border-radius: 8px;
     padding: 5px;
     width: 80px;
 }
 
-.child-card-providers-details a {
+.card-providers-details a {
     border-radius: 8px;
     width: fit-content;
     text-decoration: none;
@@ -519,46 +531,46 @@ main {
     align-self: center;
 }
 
-.child-card-providers-details .list img {
+.card-providers-details .list img {
     border-radius: 8px;
 }
 
-.match .child {
+.match-container .card {
     height: 500px;
 }
 
-.child-card-title {
+.card-title {
     grid-row: 3;
     align-self: end;
 }
 
-.child-card-title h2 {
+.card-title h2 {
     margin: 0;
 }
 
-.child-card-info {
+.card-info {
     grid-row: 4;
     display: flex;
     column-gap: 10px;
 }
 
-.child-card-info img {
+.card-info img {
     width: 2.5rem;
 }
 
-.child-card-overview {
+.card-overview {
     grid-row: 5;
     overflow-y: auto;
 }
 
-.child-card-buttons {
+.card-buttons {
     grid-row: 6;
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 12px;
 }
 
-.child-card-buttons > .like {
+.card-buttons > .like {
     border-radius: 0px 8px 8px 0px;
     background-color: rgba(255, 255, 255, 0.12);
     padding: 10px 10px;
@@ -566,7 +578,7 @@ main {
     cursor: pointer;
 }
 
-.child-card-buttons > .dislike {
+.card-buttons > .dislike {
     border-radius: 8px 0px 0px 8px;
     background-color: rgba(255, 255, 255, 0.12);
     padding: 10px 10px;
@@ -574,7 +586,7 @@ main {
     cursor: pointer;
 }
 
-.child-card-buttons > .begin {
+.card-buttons > .begin {
     grid-column: 1 / span 2;
     border-radius: 8px 8px 8px 8px;
     background-color: rgba(255, 255, 255, 0.12);
@@ -584,40 +596,38 @@ main {
     cursor: pointer;
 }
 
-.child-card-buttons > div:hover {
+.card-buttons > div:hover {
     background-color: rgba(255, 255, 255, 0.28);
 }
 
 
-.child.first {
+.card.first {
     background: linear-gradient(180deg, rgba(215,100,100,1) 0%, rgba(215,164,100,1) 100%);
 }
 
-.child.first > .instructions {
+.card.first > .instructions {
     grid-row: 2 / span 4;
     text-align: center;
     font-size: 18px;
 }
 
-.child.first > .instructions > p:last-child{
+.card.first > .instructions > p:last-child{
     color: rgb(0, 0, 0);
 }
 
-.child.moving {
-    box-shadow: rgba(0, 0, 0, 0.77) 0px 2px 14px 0px;
-}
-
-.child:hover {
+/* 
+.card:hover {
     transition: filter 250ms;
     filter: brightness(110%);
-}
+} */
 
-.child-card-overview {
+.card-overview {
     overflow-y: auto;
 }
 
 .tab {
     overflow: hidden;
+    user-select: none;
 }
 
 .tab .tablinks {
@@ -640,7 +650,7 @@ main {
     border-bottom: 5px solid #d72323;
 }
 
-.match {
+.match-container {
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -653,10 +663,6 @@ main {
 
 .fas.fa-star {
     color: yellow;
-} 
-
-#match {
-    user-select: none;
 }
 
 #match-notification {

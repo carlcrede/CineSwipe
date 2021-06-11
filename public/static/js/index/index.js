@@ -1,7 +1,3 @@
-$(document).ready(() => {
-    document.title = "CineSwipe"
-});
-
 //self invoking function
 (function handleSessionCopyEvent() {
     //enables clicklistener

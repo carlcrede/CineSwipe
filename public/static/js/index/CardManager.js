@@ -2,21 +2,22 @@ const CardManager = (() => {
 
     let page = 1;
     let popularMoviesAndTv;
-    let cards = $('#cards');
+    // let cards = $('#cards');
     const invalidItemStatuses = ['Rumored', 'Planned', 'In Production', 'Post Production', 'Canceled'];
 
     const updateCardsWithFilters = async (filters) => {
         clearInterval(cardInterval);
         page = 1;
-        $('.wrapper').children('.child').not('.first').remove();
+        $('.card-container').children('.card').not('.first').remove();
         const newItems = await ItemFetch.fetchItems(page, filters);
         popularMoviesAndTv = newItems;
-        const cards = $('.wrapper').children();
+        const cards = $('.card-container').children();
         if(cards.length < 10 && popularMoviesAndTv){
             for(let i = 0; i < 10 - cards.length; i++){
                 addCard();
             }
         }
+        
         cardInterval = setInterval(checkAndRepopulate, 3000);
     }
 
@@ -26,7 +27,7 @@ const CardManager = (() => {
         let card = CardBuilder.buildItemCard(details, false);
         card.css('position', 'relative');
         card.attr('id', `match-${item.id}`);
-        $('#match').prepend(card);
+        $('.match-container').prepend(card);
         $('.tab').append()
         // $('#match-notification').show()
         const match_notif = $('#match-notification');
@@ -43,7 +44,7 @@ const CardManager = (() => {
                 let item = popularMoviesAndTv[0];
                 let card = CardBuilder.buildItemCard(item);
                 initHammer(...card, item);
-                cards.prepend(card);
+                $('.card-container').prepend(card);
                 popularMoviesAndTv.shift();
             }
         }
@@ -67,7 +68,7 @@ const CardManager = (() => {
                 const newItems = await ItemFetch.fetchItems(page, Filtering.getFilters());
                 popularMoviesAndTv = newItems;
             }
-            const cards = $('.wrapper').children();
+            const cards = $('.card-container').children();
             if(cards.length < 10 && popularMoviesAndTv){
                 for(let i = 0; i < 10 - cards.length; i++){
                     addCard();
@@ -79,7 +80,7 @@ const CardManager = (() => {
     let cardInterval = setInterval(checkAndRepopulate, 3000);
 
     (function insertFirstCard() {
-        const firstCard = $('<div class="child first"></div>');
+        const firstCard = $('<div class="card first"></div>');
 
         const instructions = $(
             `<div class="instructions">
@@ -88,7 +89,7 @@ const CardManager = (() => {
             <p>Don't forget to invite your friends or family!</p>
             </div>`);
         
-        let btnDiv = $(`<div class="child-card-buttons"></div>`);
+        let btnDiv = $(`<div class="card-buttons"></div>`);
         const likebtn = $(`<div class="begin" id="beginBtn">Begin swiping 👍</div>`);
         btnDiv.append(likebtn);
         const btnHammer = new Hammer(...likebtn);
@@ -104,7 +105,7 @@ const CardManager = (() => {
         });
         firstCard.append(instructions);
         firstCard.append(btnDiv);
-        wrapper.append(firstCard);
+        $('.card-container').append(firstCard);
     })();
 
     (async function initCards(){

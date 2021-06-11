@@ -5,9 +5,9 @@ const CardBuilder = (() => {
     const buildItemCard = (item, swipecard = true) => {
         const itemData = buildItemData(item);
         
-        let card = $(`<div id="${item.id}" data-type="movie" class="child">`);
-        let top = $(`<div class="child-card-top"></div>`);
-        let middle = $(`<div class="child-card-info">`);
+        let card = $(`<div id="${item.id}" data-type="movie" class="card">`);
+        let top = $(`<div class="card-top"></div>`);
+        let middle = $(`<div class="card-info">`);
 
         top.append(itemData.trailer, itemData.providers);
         middle.append(itemData.vote_avg, itemData.release, itemData.genres, itemData.episodesOrSeasons, itemData.runtime);
@@ -51,7 +51,7 @@ const CardBuilder = (() => {
         const providers = item['watch/providers'].results[watch_region];
         if (providers) {
             const { link, buy = null, rent = null, flatrate = null, ads = null, free = null } = providers;
-            let div = $(`<div class="child-card-providers-details"></div>`);
+            let div = $(`<div class="card-providers-details"></div>`);
             if (flatrate) {
                 let flatRateDiv = $('<div class="list"><div class="label">Stream</div></div>');
                 flatrate.forEach((value, index) => {
@@ -76,13 +76,13 @@ const CardBuilder = (() => {
             div.append(`<a target='_blank' href="${link}">See more</a>`);
             return div;
         } else {
-            return '<div class="child-card-provider-details">No providers offer this movie/tv</div>';
+            return '<div class="card-provider-details">No providers offer this movie/tv</div>';
         }
     }
 
     const buildTitle = (item) => {
         const title = (item.media_type == 'movie') ? item.title : item.name;
-        return `<div class="child-card-title"><h2>${title}</h2></div>`;
+        return `<div class="card-title"><h2>${title}</h2></div>`;
     }
 
     const buildRuntime = (item) => {
@@ -120,9 +120,9 @@ const CardBuilder = (() => {
 
     const buildOverview = (item) => {
         if (!item.overview) {
-            return '<div class="child-card-overview"></div>';
+            return '<div class="card-overview"></div>';
         }
-        return `<div class="child-card-overview">${item.overview}</div>`;
+        return `<div class="card-overview">${item.overview}</div>`;
     }
 
     const buildVoteAvg = (item) => {
@@ -140,7 +140,7 @@ const CardBuilder = (() => {
     }
 
     const buildTrailer = (item) => {
-        let trailerDiv = $(`<div class="child-card-trailer"></div>`);
+        let trailerDiv = $(`<div class="card-trailer"></div>`);
         if (!item.videos) { return trailerDiv; }
         let trailer;
         if (item.videos.results.length > 0) {
@@ -170,7 +170,7 @@ const CardBuilder = (() => {
     }
 
     const buildButtons = (item) => {
-        let btnDiv = $(`<div class="child-card-buttons"></div>`);
+        let btnDiv = $(`<div class="card-buttons"></div>`);
         const dislikebtn = $(`<div class="dislike" id="dislikeBtn">👎</div>`);
         btnDiv.append(dislikebtn);
         const likebtn = $(`<div class="like" href="#" id="likeBtn">👍</div>`);
@@ -215,7 +215,7 @@ const CardBuilder = (() => {
     }
 
     const buildProviderLogos = (item) => {
-        let providers = $('<div class="child-card-providers"></div>');
+        let providers = $('<div class="card-providers"></div>');
         const { watch_region } = Filtering.getFilters();
         const logopaths = getDistrinctProviders(item, watch_region);
         if (logopaths) {

@@ -4,7 +4,7 @@ const ItemFetch = (() => {
     const getIpData = async () => {
         // gotta check for valid country, else set some default value
         const response = await fetch('https://api.db-ip.com/v2/free/self');
-        const ipdata = response.json();
+        const ipdata = await response.json();
         return ipdata;
     }
 
@@ -34,8 +34,9 @@ const ItemFetch = (() => {
     }
 
     const providers = async (watch_region) => {
-        const providers = await fetch('/providers?watch_region=' + watch_region);
-        return providers.json();
+        const response = await fetch('/providers?watch_region=' + watch_region);
+        const result = await response.json();
+        return result;
     }
 
     return {

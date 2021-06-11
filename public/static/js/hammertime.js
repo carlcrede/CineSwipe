@@ -1,20 +1,14 @@
-let wrapper = $('.wrapper');
-
 const initHammer = (elem, item) => {
     const hammertime = new Hammer(elem);
 
     hammertime.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 10 });
 
-    hammertime.get('press').set({ time: 100 });
-
     hammertime.on('pan', (ev) => {
-        elem.style.transition = '';
         elem.style.transform = `translate3d(${ev.deltaX}px, ${ev.deltaY}px, 0) rotateY(${ev.deltaX/1000}deg) rotateZ(${ev.deltaX/100}deg) scale(1.05)`;
     });
 
     hammertime.on('panstart', () => {
         $(elem).toggleClass('moving', true);
-        elem.style.transform = elem.style.transform.replace('scale(1)', 'scale(1.05)');
     });
 
     hammertime.on('panend', async (ev) => {
@@ -39,20 +33,8 @@ const initHammer = (elem, item) => {
                 elem.remove();
             }, 1000);
         } else {
-            elem.style.transition = 'all .2s ease-in-out';
-            elem.style.transform = `translate3d(0, 0, 0) scale(1)`;
+            elem.style.removeProperty('transform');
         }
-    });
-
-    hammertime.on('press', () => {
-        $(elem).toggleClass('moving');
-        elem.style.transition = 'all .2s ease-in-out';
-        elem.style.transform = 'perspective(1px) scale(1.05)';
-    });
-
-    hammertime.on('pressup', () => {
-        $(elem).toggleClass('moving');
-        elem.style.transform = elem.style.transform.replace('scale(1.05)', 'scale(1)');
     });
 }
 
