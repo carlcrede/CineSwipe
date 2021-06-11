@@ -46,11 +46,11 @@ const CardBuilder = (() => {
         return data;
     }
 
-    // needs styling
     const buildProviderDetails = (item) => {
-        const {DK} = item['watch/providers'].results;
-        if (DK) {
-            const { link, buy = 0, rent = 0, flatrate = 0 } = DK;
+        const { watch_region } = Filtering.getFilters();
+        const providers = item['watch/providers'].results[watch_region];
+        if (providers) {
+            const { link, buy = null, rent = null, flatrate = null, ads = null, free = null } = providers;
             let div = $(`<div class="child-card-providers-details"></div>`);
             if (flatrate) {
                 let flatRateDiv = $('<div class="list"><div class="label">Stream</div></div>');
