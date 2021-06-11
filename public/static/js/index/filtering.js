@@ -19,6 +19,10 @@ const Filtering = (() => {
         return filters;
     }
 
+    const setFilters = (changes) => {
+        filters = { ...filters, ...changes};
+    }
+
     const initGenres = (distinctGenres, movieGenres, tvGenres) => {
         $('#genrelist').append('<div id="allGenres" class="all active">All</div>');
         
@@ -86,13 +90,6 @@ const Filtering = (() => {
         return genres;
     }
     
-    // maybe have this in utils
-    const getIpData = async () => {
-        const response = await fetch('https://api.db-ip.com/v2/free/self');
-        const ipdata = response.json();
-        return ipdata;
-    }
-    
     (async function initFilters () {
         const movieGenres = await ItemFetch.genres('movie');
         const tvGenres = await ItemFetch.genres('tv');
@@ -101,7 +98,7 @@ const Filtering = (() => {
 
         // gotta check for valid country, else set some default value
         // logic in cardbuilder for setting provider logos, and for setting details on matches needs to be refactored.
-        const {countryCode} = await getIpData();
+        const {countryCode} = await ItemFetch.getIpData();
         console.log('Region:', countryCode);
         filters['watch_region'] = countryCode;
 
@@ -218,6 +215,6 @@ const Filtering = (() => {
         $('#filtersModal').hide();
     });
 
-    return { getFilters }
+    return { getFilters, setFilters }
 
 })();

@@ -76,34 +76,35 @@ const sortByPopularity = async (items) => {
 };
 
 let cache = {
-    initialitems: undefined,
+    initialitems: {},
 };
 
-
-const fetchInitialItems = async () => {
-    const { movieOptions, tvOptions } = buildFilterOptions(1);
+const fetchInitialItems = async (watch_region) => {
+    const { movieOptions, tvOptions } = buildFilterOptions(1, {watch_region: watch_region});
     const movies = await fetchMvoies(movieOptions);
     const tv = await fetchTv(tvOptions);
     const data = await sortByPopularity([...movies, ...tv]);
     return data;
 };
 
-const cacheResponse = (key, data) => {
-    console.log(`cached ${key}`, new Date);
-    cache.initialitems = {
+const cacheResponse = (watch_region, data) => {
+    console.log(`cached ${watch_region}`, new Date);
+    cache.initialitems[watch_region] = {
         time: Date.now(),
         data: data
     }
 }
 
-cacheResponse('initialitems', fetchInitialItems());
+cacheResponse('DK', fetchInitialItems('DK'));
 
-router.get('/items/initial', async (req, res, next) => {
+router.get('/items/initial/:watch_region', async (req, res, next) => {
+    const watch_region = req.params.watch_region;
     try {
-        if(!cache.initialitems || Date.now() - cache.initialitems.time > 60 * 1000){
-            cacheResponse('initialitems', fetchInitialItems());
+        if(!cache.initialitems[watch_region] || Date.now() - cache.initialitems[watch_region].time > 60 * 1000){
+            cacheResponse(watch_region, fetchInitialItems(watch_region));
         }
-        res.send(await cache.initialitems.data);
+        console.log(watch_region);
+        res.send(await cache.initialitems[watch_region].data);
     } catch (error) {
         console.error(error);
         next();

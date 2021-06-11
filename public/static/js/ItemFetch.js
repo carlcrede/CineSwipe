@@ -1,7 +1,17 @@
 const ItemFetch = (() => {
 
+    // maybe have this in utils
+    const getIpData = async () => {
+        const response = await fetch('https://api.db-ip.com/v2/free/self');
+        const ipdata = response.json();
+        return ipdata;
+    }
+
     const initialItems = async() => {
-        const response = await fetch(`/items/initial`);
+        const { countryCode } = await getIpData();
+        Filtering.setFilters({watch_region: countryCode})
+        console.log(Filtering.getFilters());
+        const response = await fetch(`/items/initial/${countryCode}`);
         const result = await response.json();
         return [...result];
     }
@@ -29,6 +39,6 @@ const ItemFetch = (() => {
     }
 
     return {
-        initialItems, details, genres, fetchItems, providers
+        getIpData, initialItems, details, genres, fetchItems, providers
     }
 })();
