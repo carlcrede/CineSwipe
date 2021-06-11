@@ -2,6 +2,7 @@ const ItemFetch = (() => {
 
     // maybe have this in utils
     const getIpData = async () => {
+        // gotta check for valid country, else set some default value
         const response = await fetch('https://api.db-ip.com/v2/free/self');
         const ipdata = response.json();
         return ipdata;
@@ -9,9 +10,8 @@ const ItemFetch = (() => {
 
     const initialItems = async() => {
         const { countryCode } = await getIpData();
-        Filtering.setFilters({watch_region: countryCode})
-        console.log(Filtering.getFilters());
-        const response = await fetch(`/items/initial/${countryCode}`);
+        Filtering.setFilters({watch_region: countryCode});
+        const response = await fetch(`/items/initial/${ countryCode }`);
         const result = await response.json();
         return [...result];
     }

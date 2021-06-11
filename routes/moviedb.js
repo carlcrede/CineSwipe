@@ -102,8 +102,7 @@ router.get('/items/initial/:watch_region', async (req, res, next) => {
     try {
         if(!cache.initialitems[watch_region] || Date.now() - cache.initialitems[watch_region].time > 60 * 1000){
             cacheResponse(watch_region, fetchInitialItems(watch_region));
-        }
-        console.log(watch_region);
+        };
         res.send(await cache.initialitems[watch_region].data);
     } catch (error) {
         console.error(error);

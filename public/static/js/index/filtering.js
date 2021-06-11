@@ -96,13 +96,7 @@ const Filtering = (() => {
         const distinctGenres = getDistinctGenres(movieGenres.genres, tvGenres.genres);
         initGenres(distinctGenres, movieGenres.genres, tvGenres.genres);
 
-        // gotta check for valid country, else set some default value
-        // logic in cardbuilder for setting provider logos, and for setting details on matches needs to be refactored.
-        const {countryCode} = await ItemFetch.getIpData();
-        console.log('Region:', countryCode);
-        filters['watch_region'] = countryCode;
-
-        const {movieProviders, tvProviders} = await ItemFetch.providers(countryCode);
+        const {movieProviders, tvProviders} = await ItemFetch.providers(filters.watch_region);
         const distinctProviders = getDistinctProviders(movieProviders.results, tvProviders.results);
         initProviders(distinctProviders, movieProviders.results, tvProviders.results);
 
