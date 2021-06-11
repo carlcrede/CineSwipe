@@ -304,6 +304,7 @@ main {
     z-index: 1;
     background-color: initial;
     backdrop-filter: blur(40px);
+    overflow-y: scroll;
 }
 
 .modal-content {
@@ -475,9 +476,9 @@ main {
 }
 
 .child-card-providers img {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 12px;
+    width: 2rem;
+    height: 2rem;
+    border-radius: .5rem;
 }
 
 .child-card-providers-details {

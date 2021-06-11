@@ -3,7 +3,7 @@ const Filtering = (() => {
         media: ['movie', 'tv'],
         watchProviders: [],
         watch_monetization_types: '',
-        watch_region: '',
+        watch_region: 'DK',
         /*sortBy: ,
         release_date_gte: 'date',
         release_date_lte: 'date',
@@ -104,7 +104,7 @@ const Filtering = (() => {
         const {countryCode} = await getIpData();
         console.log('Region:', countryCode);
         filters['watch_region'] = countryCode;
-        console.log(filters);
+
         const {movieProviders, tvProviders} = await ItemFetch.providers(countryCode);
         const distinctProviders = getDistinctProviders(movieProviders.results, tvProviders.results);
         initProviders(distinctProviders, movieProviders.results, tvProviders.results);

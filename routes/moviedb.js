@@ -6,7 +6,6 @@ const fetch = require('node-fetch');
 const router = require('express').Router();
 
 const fetchMvoies = async (options) => {
-    console.log('Movie filter:', options);
     try {
         const moviesResponse = await moviedb.discoverMovie(options);
         const moviesList = await Promise.all(moviesResponse.results.map(async (result) => {
@@ -21,7 +20,6 @@ const fetchMvoies = async (options) => {
 }
 
 const fetchTv = async (options) => {
-    console.log('Tv filter:', options);
     try {
         const tvResponse = await moviedb.discoverTv(options);
         const tvList = await Promise.all(tvResponse.results.map(async (result) => {
@@ -59,13 +57,13 @@ const buildFilterOptions = (page, filter = {}) => {
     } = filter;
     const movieOptions = { 
         page: page, 
-        with_genres: [...movie_genres, ...genres].join(),
+        with_genres: [...movie_genres, ...genres].join('|'),
         with_watch_providers: [...movie_providers, ...providers].join('|'),
         watch_region: watch_region
     };
     const tvOptions = { 
         page: page, 
-        with_genres: [...tv_genres, ...genres].join(),
+        with_genres: [...tv_genres, ...genres].join('|'),
         with_watch_providers: [...tv_providers, ...providers].join('|'),
         watch_region: watch_region
     };
@@ -151,7 +149,6 @@ router.get('/genres/:media_type', async (req, res, next) => {
 
 router.get('/providers', async (req, res, next) => {
     const { watch_region } = req.query;
-    console.log(watch_region);
     const base_url = 'https://api.themoviedb.org/3/watch/providers';
     const query = `?api_key=${process.env.MOVIEDB_API_KEY}&language=en-US&watch_region=${watch_region}`;
     try {

@@ -199,8 +199,8 @@ const CardBuilder = (() => {
     }
 
     // watch providers per country filtering should maybe be done server-side
-    const getDistrinctProviders = (item, country = 'DK') => {
-        let watchProviders = item['watch/providers'].results[country];
+    const getDistrinctProviders = (item, watch_region) => {
+        let watchProviders = item['watch/providers'].results[watch_region];
         if (watchProviders) {
             let list = Object.values(watchProviders);
             list.shift();
@@ -216,10 +216,11 @@ const CardBuilder = (() => {
 
     const buildProviderLogos = (item) => {
         let providers = $('<div class="child-card-providers"></div>');
-        const logopaths = getDistrinctProviders(item);
+        const { watch_region } = Filtering.getFilters();
+        const logopaths = getDistrinctProviders(item, watch_region);
         if (logopaths) {
             logopaths.forEach((value, index) => {
-                providers.append(`<img loading="lazy" width="30px" src="${img_url}original${value}">`);
+                providers.append(`<img loading="lazy" src="${img_url}original${value}">`);
             });
         }
         return providers;
