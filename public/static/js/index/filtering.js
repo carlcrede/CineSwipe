@@ -165,7 +165,6 @@ const Filtering = (() => {
                 const isEnabled = btn.hasClass('active');
                 const labels = $(`#${label} label`);
                 const inputs = $(`#${label} input`);
-            
                 if (!isEnabled) {
                     btn.addClass('active');
                     labels.removeClass('active');
@@ -184,8 +183,6 @@ const Filtering = (() => {
             $(`input[data-type=${event.target.htmlFor}]`).removeAttr('checked');
             $(`input[data-type=${event.target.htmlFor}]`).prop('disabled', (i, v) => { return !v; });
             $(`label[data-type=${event.target.htmlFor}]`).toggleClass('disabled').removeClass('active');
-
-
         }
     });
     
