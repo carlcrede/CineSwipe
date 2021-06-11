@@ -62,6 +62,7 @@ const buildFilterOptions = (page, filter = {}) => {
         movie_genres = [], 
         tv_genres = [], 
         genres = [], 
+        providers = [], 
         tv_providers = [], 
         movie_providers = [],
         watch_region = '' 
@@ -69,13 +70,13 @@ const buildFilterOptions = (page, filter = {}) => {
     const movieOptions = { 
         page: page, 
         with_genres: [...movie_genres, ...genres].join('|'),
-        with_watch_providers: movie_providers.join('|'),
+        with_watch_providers: [...movie_providers, ...providers].join('|'),
         watch_region: watch_region
     };
     const tvOptions = { 
         page: page, 
         with_genres: [...tv_genres, ...genres].join('|'),
-        with_watch_providers: tv_providers.join('|'),
+        with_watch_providers: [...tv_providers, ...providers].join('|'),
         watch_region: watch_region
     };
     return { movieOptions, tvOptions };

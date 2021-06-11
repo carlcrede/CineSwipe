@@ -131,6 +131,7 @@ const Filtering = (() => {
             const data = new FormData(event.target);
             const filter = Object.fromEntries(data.entries());
             filter.tv_providers = data.getAll('tv_providers');
+            filter.providers = data.getAll('providers');
             filter.movie_providers = data.getAll('movie_providers');
             filters = {...filters, ...filter};
         }
