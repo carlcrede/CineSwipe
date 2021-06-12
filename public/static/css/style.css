@@ -762,7 +762,7 @@ main {
     width: 15rem;
 }
 
-#failed-attempt {
+.failed-attempt {
     opacity: 0;
     color: rgb(215, 35, 35);
 }
