@@ -3,7 +3,8 @@ const Filtering = (() => {
         media: ['movie', 'tv'],
         watch_monetization_types: [],
         watch_region: 'DK',
-        /*sortBy: ,
+        sort_by: 'vote_count.desc',
+        /*
         release_date_gte: 'date',
         release_date_lte: 'date',
         vote_average_gte: 0,
@@ -119,6 +120,8 @@ const Filtering = (() => {
         filter.movie_genres = data.getAll('movie_genres');
         filter.tv_genres = data.getAll('tv_genres');
         filter.genres = data.getAll('genres');
+        filter.sort_by = data.get('sort_by');
+        console.log(filter.sort_by);
         filters = {...filters, ...filter};
         await CardManager.updateCardsWithFilters(filters);
         $('#filtersModal').hide();

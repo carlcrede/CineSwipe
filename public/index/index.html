@@ -6,10 +6,21 @@
                 <h1>Edit filters</h1>
             </div>
             <form id="filtersForm">
-                <h3>Content type</h3>
-                <div class="filter-row" id="media">
-                    <label for="movie" class="active">Movies</label><input type="checkbox" id="movie" name="media" value="movie" checked hidden>
-                    <label for="tv" class="active">Tv Shows</label><input type="checkbox" id="tv" name="media" value="tv" checked hidden>
+                <div id="filter-rows-content">
+                    <h3>Content type</h3>
+                    <div class="filter-row" id="media">
+                        <label for="movie" class="active">Movies</label><input type="checkbox" id="movie" name="media" value="movie" checked hidden>
+                        <label for="tv" class="active">Tv Shows</label><input type="checkbox" id="tv" name="media" value="tv" checked hidden>
+                    </div>
+                    <div id="sortOrder">
+                        <h3>Sort by</h3>
+                        <select name="sort_by" id="sort_by">
+                            <option value="vote_count.desc" selected>Default (Popularity)</option>
+                            <option value="popularity.desc">Trending</option>
+                            <option value="vote_average.desc">Rating</option>
+                            <option value="revenue.desc">Revenue</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="filter-row" id="genres">
                     <h3>Genres</h3>

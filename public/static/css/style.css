@@ -350,6 +350,12 @@ main {
     margin: 5px 0;
 }
 
+#filter-rows-content {
+    display: grid;
+    grid-auto-columns: max-content;
+    grid-column-gap: 2em;
+}
+
 .modal #closeFilterBtn {
     position: absolute;
     top: 20px;
@@ -365,6 +371,12 @@ main {
 .modal-content #media {
     width: max-content;
     display: flex;
+    grid-column: 1;
+}
+
+.modal-content #sortOrder {
+    grid-column: 2;
+    grid-row: 1;
 }
 
 .modal-content .list img {

@@ -25,6 +25,7 @@ const fetchTv = async (options) => {
         const tvList = await Promise.all(tvResponse.results.map(async (result) => {
             const tvDetails = await moviedb.tvInfo({ id: result.id, append_to_response: 'watch/providers,videos'});
             tvDetails['media_type'] = 'tv';
+            tvDetails['original_title'] = tvDetails.original_name;
             return tvDetails;
         }));
         return tvList;
@@ -66,27 +67,34 @@ const buildFilterOptions = (page, filter = {}) => {
         tv_providers = [], 
         movie_providers = [],
         watch_region = '',
-        watch_monetization_types = []
+        watch_monetization_types = [],
+        sort_by = 'vote_count.desc'
     } = filter;
     const movieOptions = { 
-        page: page, 
+        page,
         with_genres: [...movie_genres, ...genres].join('|'),
         with_watch_providers: [...movie_providers, ...providers].join('|'),
-        watch_region: watch_region,
-        with_watch_monetization_types: watch_monetization_types.join('|')
+        watch_region,
+        with_watch_monetization_types: watch_monetization_types.join('|'),
+        sort_by
     };
     const tvOptions = {
-        page: page, 
+        page,
         with_genres: [...tv_genres, ...genres].join('|'),
         with_watch_providers: [...tv_providers, ...providers].join('|'),
-        watch_region: watch_region,
-        with_watch_monetization_types: watch_monetization_types.join('|')
+        watch_region,
+        with_watch_monetization_types: watch_monetization_types.join('|'),
+        sort_by
     };
     return { movieOptions, tvOptions };
 }
 
-const sortByPopularity = async (items) => {
-    items.sort((a, b) => b.popularity - a.popularity);
+const mixAndSortItems = async (items, sort_by) => {
+    if (sort_by.includes('.desc')) {
+    items.sort((a, b) => b[sort_by] - a[sort_by]);
+    } else {
+        items.sort((a, b) => a[sort_by] - b[sort_by]);
+    }
     return items;
 };
 
@@ -102,7 +110,7 @@ const fetchInitialItems = async (watch_region) => {
     const { movieOptions, tvOptions } = buildFilterOptions(1, {watch_region: watch_region, movie_providers: movieProviders, tv_providers: tvProviders});
     const movies = await fetchMovies(movieOptions);
     const tv = await fetchTv(tvOptions);
-    const data = await sortByPopularity([...movies, ...tv]);
+    const data = await mixAndSortItems([...movies, ...tv], movieOptions.sort_by);
     return data;
 };
 
@@ -136,7 +144,7 @@ router.get('/items/:page', async (req, res, next) => {
     if (filter.media.length == 2) {
         const movies = await fetchMovies(movieOptions);
         const tv = await fetchTv(tvOptions);
-        const data = await sortByPopularity([...movies, ...tv])
+        const data = await mixAndSortItems([...movies, ...tv], filter.sort_by);
         res.send(data);
     } else if (filter.media[0] == 'movie') {
         const movies = await fetchMovies(movieOptions);
