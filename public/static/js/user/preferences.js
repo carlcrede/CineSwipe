@@ -2,14 +2,16 @@
     document.title = 'Your likes';
     const response = await fetch('/likes');
     const userLikes = await response.json();
-    const likesElem = $('#match');
+    const likesElem = $('#matches');
+    const { countryCode } = await ItemFetch.getIpData();
+    Filtering.setFilters({watch_region: countryCode});
     userLikes.forEach( async like => {
         const details = await ItemFetch.details(like);
         let card = CardBuilder.buildItemCard(details, false);
         card.css('position', 'relative');
         card.attr('id', `match-${like.likeId}`);
         likesElem.append(card);
-        card.children().not('.child-card-title').hide();
+        card.children().not('.card-title').hide();
         card.addClass('collapsed');
         addCollapseListener(card);
     });
@@ -78,7 +80,7 @@ const addCollapseListener = (card) => {
 const addExpandedListener = (card) => {
     card.click(() => {
         card.off();
-        card.children().not('.child-card-title').hide();
+        card.children().not('.card-title').hide();
         card.addClass('collapsed');
         addCollapseListener(card);
     });
