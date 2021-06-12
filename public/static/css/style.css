@@ -631,6 +631,11 @@ main {
     background-color: rgba(255, 255, 255, 0.28);
 }
 
+
+.card.first {
+    background: var(--gradient-filur-reverse)
+}
+
 .card.first > .instructions {
     grid-row: 2 / span 4;
     text-align: center;
