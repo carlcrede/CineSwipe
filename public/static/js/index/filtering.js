@@ -129,11 +129,13 @@ const Filtering = (() => {
         showLoading(true);
         if(!$('#allProviders').hasClass('active')){
             const data = new FormData(event.target);
-            const filter = Object.fromEntries(data.entries());
-            filter.tv_providers = data.getAll('tv_providers');
-            filter.providers = data.getAll('providers');
-            filter.movie_providers = data.getAll('movie_providers');
-            filters = {...filters, ...filter};
+            const newfilters = Object.fromEntries(data.entries());
+            newfilters.tv_providers = data.getAll('tv_providers');
+            newfilters.providers = data.getAll('providers');
+            newfilters.movie_providers = data.getAll('movie_providers');
+            if(newfilters.tv_providers.length > 0 && newfilters.movie_providers.length > 0 && newfilters.providers.length > 0){
+                filters = {...filters, ...newfilters};
+            }
         }
         await CardManager.updateCardsWithFilters(filters);
         $('#filtersModal').hide();
@@ -159,7 +161,11 @@ const Filtering = (() => {
                 const label = event.target;
                 const input = event.target.control;
                 if (!$(input).attr('disabled')) {
-                    $(`#${all}`).toggleClass('active', false);
+                    if (!$(label).siblings().hasClass('active')) {
+                        $(`#${all}`).toggleClass('active', true);
+                    } else {
+                        $(`#${all}`).toggleClass('active', false);
+                    }
                     $(label).toggleClass('active');
                     input.toggleAttribute('checked');
                 }
