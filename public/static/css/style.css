@@ -552,6 +552,7 @@ main {
     grid-row: 4;
     display: flex;
     column-gap: 10px;
+    pointer-events: none;
 }
 
 .card-info img {
@@ -573,7 +574,9 @@ main {
 .card-buttons > .like {
     border-radius: 0px 8px 8px 0px;
     background-color: rgba(255, 255, 255, 0.12);
-    padding: 10px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     cursor: pointer;
 }
@@ -581,7 +584,9 @@ main {
 .card-buttons > .dislike {
     border-radius: 8px 0px 0px 8px;
     background-color: rgba(255, 255, 255, 0.12);
-    padding: 10px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     cursor: pointer;
 }

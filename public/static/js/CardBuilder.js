@@ -173,14 +173,18 @@ const CardBuilder = (() => {
         let btnDiv = $(`<div class="card-buttons"></div>`);
         const dislikebtn = $(`<div class="dislike" id="dislikeBtn">👎</div>`);
         btnDiv.append(dislikebtn);
-        const likebtn = $(`<div class="like" href="#" id="likeBtn">👍</div>`);
+        const likebtn = $(`<div class="like" id="likeBtn">👍</div>`);
         btnDiv.append(likebtn);
 
-        btnDiv.map((index, element) => {
+        btnDiv.children().map((index, element) => {
             const btnHammer = new Hammer(element);
-            btnHammer.on('tap pressup', async (ev) => {
+            btnHammer.on('tap pressup', (ev) => {
+                btnHammer.set({enable: false});
+
                 const itemId = item.id;
                 const parent = $(`#${itemId}`);
+                parent.css('pointer-events', 'none');
+
                 if (ev.target.id == 'dislikeBtn') {
                     parent.css('transition', 'all .4s ease-in-out');
                     parent.css('transform', 'translate3d(-2000px, 0, 0)');

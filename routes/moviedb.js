@@ -58,7 +58,6 @@ const itemDetails = async (id, media_type) => {
 }
 
 const buildFilterOptions = (page, filter = {}) => {
-    console.log(filter);
     const { 
         movie_genres = [], 
         tv_genres = [], 
