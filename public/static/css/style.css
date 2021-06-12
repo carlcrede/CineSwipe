@@ -154,7 +154,7 @@ footer > .footer-content > .column > a {
 /* GRID styling */
 main {
     display: grid;
-    grid-template-columns: 1fr 700px 1fr;
+    grid-template-columns: minmax(10px, 1fr) minmax(auto, 700px) minmax(10px, 1fr);
     grid-template-rows: max-content;
     row-gap: 15px;
     margin-bottom: 5vh;
