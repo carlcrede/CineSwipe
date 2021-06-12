@@ -1,10 +1,12 @@
-const { find } = require('../../db/model/credentials.js');
 const Credentials = require('../../db/model/credentials.js');
 
 const register = {
     username: {
         custom: {
             options: async value => {
+                if(value.length < 5){
+                    return Promise.reject('Username must be at least 5 characters long');
+                }
                 const foundUser = await Credentials.find({ username: value });
                 if (foundUser.length > 0) {
                     return Promise.reject('Username already in use');
@@ -34,9 +36,11 @@ const register = {
         }
     },
     email: {
-        normalizeEmail: true,
         custom: {
             options: async value => {
+                if(value.length <= 0 || !value.includes('@')){
+                    return Promise.reject('Invalid email');
+                }
                 const foundEmail = await Credentials.find({ email: value });
                 if (foundEmail.length > 0) {
                     return Promise.reject('Email already in use');

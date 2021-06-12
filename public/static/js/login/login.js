@@ -4,8 +4,8 @@ $( document).ready(() => {
 
 $('form').submit( async(event) => {
     event.preventDefault();
-    $('#failed-attempt').removeClass('show');
-    $('#failed-attempt').text('&nbsp;');
+    $('.failed-attempt').removeClass('show');
+    $('.failed-attempt').text('&nbsp;');
     $('.spinner').addClass('enabled');
 
     const array = $('form').serializeArray();
@@ -16,12 +16,7 @@ $('form').submit( async(event) => {
 
     const response = await fetch('/auth/login', {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        // mode: 'same-origin', // no-cors, *cors, same-origin
-        // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        // credentials: 'same-origin', // include, *same-origin, omit
         headers: {'Content-Type': 'application/json'},
-        // redirect: 'manual', // manual, *follow, error
-        // referrerPolicy: 'origin', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
         body: JSON.stringify(data) // body data type must match "Content-Type" header
     });
     if(response.status === 200){
@@ -30,7 +25,7 @@ $('form').submit( async(event) => {
     } else {
         const result = await response.json();
         $('.spinner').removeClass('enabled');
-        $('#failed-attempt').text(result.msg);
-        $('#failed-attempt').addClass('show');
+        $('.failed-attempt').text(result.msg);
+        $('.failed-attempt').addClass('show');
     }
 });

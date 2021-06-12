@@ -15,6 +15,8 @@
     --color-white-alpha-12: rgba(255, 255, 255, 0.12);
     --color-white-alpha-24: rgba(255, 255, 255, 0.24);
     --color-white-alpha-36: rgba(255, 255, 255, 0.36);
+    --gradient-filur: linear-gradient(180deg, rgba(215,164,100,1) 0%, rgba(215,100,100,1) 100%);
+    --gradient-filur-reverse: linear-gradient(180deg, rgba(215,100,100,1) 0%, rgba(215,164,100,1) 100%);
     --gradient-red-to-blue: linear-gradient(202deg, rgba(18,60,87,0.75) 0%, rgba(215,100,100,0.75) 100%);
     --gradient-red-to-blue-hover: linear-gradient(202deg, rgba(18,60,87,1) 0%, rgba(215,100,100,1) 100%);
     --gradient-lightbottom-to-darktop: linear-gradient(180deg, var(--color-white-alpha-0) 0%, var(--color-white-alpha-12) 100%);
@@ -130,24 +132,48 @@ nav {
 /* FOOTER styling */
 
 footer {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    display: flex;
+    justify-content: center;
     position: relative;
     background: var(--gradient-lightbottom-to-darktop);
     margin-top: auto;
-    padding: 1em 10em ;
+    padding: 3em 0 2em;
     transition: opacity .5s ease-in-out;
 }
 
 footer > .footer-content {
-    grid-column: 2;
     display: grid;
+    width: 50%;
     grid-auto-flow: column;
+    column-gap: 1rem;
+    font-size: .85rem;
+}
+
+footer > .footer-content > .column {
+    display: grid;
+    grid-auto-rows: max-content;
+    row-gap: 1rem;
+    font-size: .85rem;
+}
+
+footer > .footer-content > .column > p {
+    margin: 0;
 }
 
 footer > .footer-content > .column > a {
+    display: flex;
+    align-items: center;
     text-decoration: none;
     color: var(--color-font-default);
+    column-gap: 0.5rem;
+}
+
+footer > .footer-content > .column > a > #moviedb {
+    height: 1rem;
+}
+
+footer > .footer-content > .column > a > #justwatch {
+    height: .8rem;
 }
 
 /* ________________________________________________________________________________________ */
@@ -255,19 +281,18 @@ main {
 
 .session-link:hover {
     background: var(--gradient-red-to-blue-hover);
-    cursor: url('/img/clone-regular-24x24.png'), auto;
+    cursor: url('/img/clone-regular-20x20.png'), pointer;
 }
 
 .session-link:active {
     background: var(--gradient-red-to-blue);
-    cursor: url('/img/clone-solid-24x24.png'), auto;
+    cursor: url('/img/clone-solid-20x20.png'), pointer;
     box-shadow: 0 0px var(--color-white-alpha-0);
     transform: translateY(4px);
 }
 
 .session-link i {
     font-size: 1.25rem;
-    transform: rotate(180deg);
 }
 
 /* ________________________________________________________________________________________ */
@@ -383,7 +408,6 @@ main {
 .modal-content #genres .list label.disabled {
     border: 1px solid rgba(30, 30, 30, 0.52);
     color: rgba(30, 30, 30, 0.62);
-    cursor: none;
     pointer-events: none;
 }
 
@@ -433,12 +457,13 @@ main {
     border: .1rem solid rgb(10, 16, 22);
     outline: 1px solid transparent;
     background-clip: content-box;
-    background: linear-gradient(5deg, rgba(0,0,0,1) 8%, rgba(215,35,35,1) 43%, rgba(243,223,223,1) 90%);
+    background: var(--gradient-filur);
     backface-visibility: hidden;
     background-size: cover;
     background-position: center;
     transform: scale(1);
     transition: all .2s ease-in-out;
+    cursor: grab;
 }
 
 .card.moving {
@@ -449,6 +474,7 @@ main {
 .card:active {
     transform: scale(1.05);
     filter: brightness(110%);
+    cursor: grabbing;
 }
 
 .card-top {
@@ -607,7 +633,7 @@ main {
 
 
 .card.first {
-    background: linear-gradient(180deg, rgba(215,100,100,1) 0%, rgba(215,164,100,1) 100%);
+    background: var(--gradient-filur-reverse)
 }
 
 .card.first > .instructions {
@@ -619,12 +645,6 @@ main {
 .card.first > .instructions > p:last-child{
     color: rgb(0, 0, 0);
 }
-
-/* 
-.card:hover {
-    transition: filter 250ms;
-    filter: brightness(110%);
-} */
 
 .card-overview {
     overflow-y: auto;
@@ -738,7 +758,7 @@ main {
     width: 15rem;
 }
 
-#failed-attempt {
+.failed-attempt {
     opacity: 0;
     color: rgb(215, 35, 35);
 }
