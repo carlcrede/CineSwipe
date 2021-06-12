@@ -15,6 +15,8 @@
     --color-white-alpha-12: rgba(255, 255, 255, 0.12);
     --color-white-alpha-24: rgba(255, 255, 255, 0.24);
     --color-white-alpha-36: rgba(255, 255, 255, 0.36);
+    --gradient-filur: linear-gradient(180deg, rgba(215,164,100,1) 0%, rgba(215,100,100,1) 100%);
+    --gradient-filur-reverse: linear-gradient(180deg, rgba(215,100,100,1) 0%, rgba(215,164,100,1) 100%);
     --gradient-red-to-blue: linear-gradient(202deg, rgba(18,60,87,0.75) 0%, rgba(215,100,100,0.75) 100%);
     --gradient-red-to-blue-hover: linear-gradient(202deg, rgba(18,60,87,1) 0%, rgba(215,100,100,1) 100%);
     --gradient-lightbottom-to-darktop: linear-gradient(180deg, var(--color-white-alpha-0) 0%, var(--color-white-alpha-12) 100%);
@@ -455,7 +457,7 @@ main {
     border: .1rem solid rgb(10, 16, 22);
     outline: 1px solid transparent;
     background-clip: content-box;
-    background: linear-gradient(5deg, rgba(0,0,0,1) 8%, rgba(215,35,35,1) 43%, rgba(243,223,223,1) 90%);
+    background: var(--gradient-filur);
     backface-visibility: hidden;
     background-size: cover;
     background-position: center;
@@ -629,11 +631,6 @@ main {
     background-color: rgba(255, 255, 255, 0.28);
 }
 
-
-.card.first {
-    background: linear-gradient(180deg, rgba(215,100,100,1) 0%, rgba(215,164,100,1) 100%);
-}
-
 .card.first > .instructions {
     grid-row: 2 / span 4;
     text-align: center;
@@ -643,12 +640,6 @@ main {
 .card.first > .instructions > p:last-child{
     color: rgb(0, 0, 0);
 }
-
-/* 
-.card:hover {
-    transition: filter 250ms;
-    filter: brightness(110%);
-} */
 
 .card-overview {
     overflow-y: auto;
