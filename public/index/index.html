@@ -7,14 +7,16 @@
             </div>
             <form id="filtersForm">
                 <div id="filter-rows-content">
-                    <h3>Content type</h3>
-                    <div class="filter-row" id="media">
-                        <label for="movie" class="active">Movies</label><input type="checkbox" id="movie" name="media" value="movie" checked hidden>
-                        <label for="tv" class="active">Tv Shows</label><input type="checkbox" id="tv" name="media" value="tv" checked hidden>
+                    <div>
+                        <h3>Content type</h3>
+                        <div class="filter-row" id="media">
+                            <label for="movie" class="active">Movies</label><input type="checkbox" id="movie" name="media" value="movie" checked hidden>
+                            <label for="tv" class="active">Tv Shows</label><input type="checkbox" id="tv" name="media" value="tv" checked hidden>
+                        </div>
                     </div>
-                    <div id="sortOrder">
+                    <div>
                         <h3>Sort by</h3>
-                        <select name="sort_by" id="sort_by">
+                        <select class="sort-by" name="sort_by" id="sort_by">
                             <option value="vote_count.desc" selected>Default (Popularity)</option>
                             <option value="popularity.desc">Trending</option>
                             <option value="vote_average.desc">Rating</option>

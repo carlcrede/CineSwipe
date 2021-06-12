@@ -352,6 +352,7 @@ main {
 
 #filter-rows-content {
     display: grid;
+    grid-auto-flow: column;
     grid-auto-columns: max-content;
     grid-column-gap: 2em;
 }
@@ -443,6 +444,17 @@ main {
     border: none;
     box-shadow: rgb(0 0 0 / 77%) 0px 2px 14px 0px;
     cursor: pointer;
+}
+
+.sort-by {
+    border: none;
+    border-radius: 1rem;
+    padding: .3rem.5rem;
+    font-size: 0.85rem;
+}
+
+.sort-by:focus {
+    border-radius: 1rem 1rem 0 0;
 }
 
 /* ________________________________________________________________________________________ */
