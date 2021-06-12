@@ -130,24 +130,48 @@ nav {
 /* FOOTER styling */
 
 footer {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    display: flex;
+    justify-content: center;
     position: relative;
     background: var(--gradient-lightbottom-to-darktop);
     margin-top: auto;
-    padding: 1em 10em ;
+    padding: 3em 0 2em;
     transition: opacity .5s ease-in-out;
 }
 
 footer > .footer-content {
-    grid-column: 2;
     display: grid;
+    width: 50%;
     grid-auto-flow: column;
+    column-gap: 1rem;
+    font-size: .85rem;
+}
+
+footer > .footer-content > .column {
+    display: grid;
+    grid-auto-rows: max-content;
+    row-gap: 1rem;
+    font-size: .85rem;
+}
+
+footer > .footer-content > .column > p {
+    margin: 0;
 }
 
 footer > .footer-content > .column > a {
+    display: flex;
+    align-items: center;
     text-decoration: none;
     color: var(--color-font-default);
+    column-gap: 0.5rem;
+}
+
+footer > .footer-content > .column > a > #moviedb {
+    height: 1rem;
+}
+
+footer > .footer-content > .column > a > #justwatch {
+    height: .8rem;
 }
 
 /* ________________________________________________________________________________________ */
@@ -255,19 +279,18 @@ main {
 
 .session-link:hover {
     background: var(--gradient-red-to-blue-hover);
-    cursor: url('/img/clone-regular-24x24.png'), auto;
+    cursor: url('/img/clone-regular-20x20.png'), pointer;
 }
 
 .session-link:active {
     background: var(--gradient-red-to-blue);
-    cursor: url('/img/clone-solid-24x24.png'), auto;
+    cursor: url('/img/clone-solid-20x20.png'), pointer;
     box-shadow: 0 0px var(--color-white-alpha-0);
     transform: translateY(4px);
 }
 
 .session-link i {
     font-size: 1.25rem;
-    transform: rotate(180deg);
 }
 
 /* ________________________________________________________________________________________ */
@@ -383,7 +406,6 @@ main {
 .modal-content #genres .list label.disabled {
     border: 1px solid rgba(30, 30, 30, 0.52);
     color: rgba(30, 30, 30, 0.62);
-    cursor: none;
     pointer-events: none;
 }
 
@@ -439,6 +461,7 @@ main {
     background-position: center;
     transform: scale(1);
     transition: all .2s ease-in-out;
+    cursor: grab;
 }
 
 .card.moving {
@@ -449,6 +472,7 @@ main {
 .card:active {
     transform: scale(1.05);
     filter: brightness(110%);
+    cursor: grabbing;
 }
 
 .card-top {

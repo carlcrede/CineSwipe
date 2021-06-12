@@ -6,7 +6,6 @@ const fetch = require('node-fetch');
 const router = require('express').Router();
 
 const fetchMovies = async (options) => {
-    console.log(options);
     try {
         const moviesResponse = await moviedb.discoverMovie(options);
         const moviesList = await Promise.all(moviesResponse.results.map(async (result) => {
