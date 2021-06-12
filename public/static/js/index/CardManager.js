@@ -76,7 +76,7 @@ const CardManager = (() => {
             }
         }
     };
-
+ 
     let cardInterval = setInterval(checkAndRepopulate, 3000);
 
     (function insertFirstCard() {

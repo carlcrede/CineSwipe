@@ -337,7 +337,7 @@ main {
     pointer-events: none;
 }
 
-.modal-content .media {
+.modal-content #media {
     width: max-content;
     display: flex;
 }
@@ -347,7 +347,7 @@ main {
     pointer-events: none;
 }
 
-.modal-content .media label, .modal-content .genres label, .all {
+.modal-content .filter-row label, .all {
     cursor: pointer;
     background: none;
     border: 1px solid rgba(255, 255, 255, 0.92);
@@ -363,24 +363,24 @@ main {
     column-gap: .5rem;
 }
 
-.modal-content .genres .list {
+.modal-content .list {
     display: flex;
     flex-wrap: wrap;
 }
 
-.modal-content .media label.active, .modal-content .genres .active {
+.modal-content .filter-row label.active, .all.active {
     border: 1px solid rgb(255, 255, 255);
     background: rgb(255, 255, 255);
     color: rgb(0, 0, 0);
 }
 
-.modal-content .media label:hover, .modal-content .genres label:hover {
+.modal-content .filter-row label:hover, .all:hover {
     color: white;
     background: rgb(121, 126, 130);
     border-color: rgb(255, 255, 255);
 }
 
-.modal-content .genres .list label.disabled {
+.modal-content #genres .list label.disabled {
     border: 1px solid rgba(30, 30, 30, 0.52);
     color: rgba(30, 30, 30, 0.62);
     cursor: none;

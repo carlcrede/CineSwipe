@@ -7,11 +7,11 @@
             </div>
             <form id="filtersForm">
                 <h3>Content type</h3>
-                <div class="filter-row media" id="media">
+                <div class="filter-row" id="media">
                     <label for="movie" class="active">Movies</label><input type="checkbox" id="movie" name="media" value="movie" checked hidden>
                     <label for="tv" class="active">Tv Shows</label><input type="checkbox" id="tv" name="media" value="tv" checked hidden>
                 </div>
-                <div class="filter-row genres">
+                <div class="filter-row" id="genres">
                     <h3>Genres</h3>
                     <div id="genrelist" class="list"></div>
                 </div>
@@ -25,9 +25,20 @@
                 <h1>Edit watch providers</h1>
             </div>
             <form id="providersForm">
-                <div class="filter-row genres">
+                <div class="filter-row">
                     <h3>Watch Providers</h3>
                     <div id="providerlist" class="list"></div>
+                </div>
+                <div class="filter-row">
+                    <h3>Payment preferences</h3>
+                    <div id="monetizationlist" class="list">
+                        <label for="flatrate">Streaming</label>
+                        <input id="flatrate" type="checkbox" data-name="flatrate" name="monetization" value="flatrate" data-type="monetization" hidden="">
+                        <label for="buy">Buy</label>
+                        <input id="buy" type="checkbox" data-name="buy" name="monetization" value="buy" data-type="monetization" hidden="">
+                        <label for="rent">Rent</label>
+                        <input id="rent" type="checkbox" data-name="rent" name="monetization" value="rent" data-type="monetization" hidden="">
+                    </div>
                 </div>
                 <div class="filter-row save">
                     <button type="submit" class="saveBtn">Save</button>

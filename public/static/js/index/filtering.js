@@ -1,7 +1,7 @@
 const Filtering = (() => {
     let filters = {
         media: ['movie', 'tv'],
-        watch_monetization_types: '',
+        watch_monetization_types: [],
         watch_region: 'DK',
         /*sortBy: ,
         release_date_gte: 'date',
@@ -11,6 +11,8 @@ const Filtering = (() => {
         runtime_gte: 0,
         runtime_lte: 0 */
     }
+
+    let localProviders = {};
 
     const img_url = 'https://image.tmdb.org/t/p/original';
 
@@ -51,6 +53,8 @@ const Filtering = (() => {
 
         filters.movie_providers = movieProviderKeys;
         filters.tv_providers = tvProviderKeys;
+
+        localProviders = { movie_providers: movieProviderKeys, tv_providers: tvProviderKeys };
 
         distinctProviders.forEach(({provider_id, provider_name, logo_path}, index) => {
             if (movieProviderKeys.includes(provider_id) && tvProviderKeys.includes(provider_id)) {
@@ -102,7 +106,7 @@ const Filtering = (() => {
         const distinctProviders = getDistinctProviders(movieProviders.results, tvProviders.results);
         initProviders(distinctProviders, movieProviders.results, tvProviders.results);
 
-        initFilterClickHandlers([{label: 'genrelist', all: 'allGenres'}, {label: 'providerlist', all: 'allProviders'}]);
+        initFilterClickHandlers([{label: 'genrelist', all: 'allGenres'}, {label: 'providerlist', all: 'allProviders'}, {label: 'monetizationlist'}]);
     })();
 
     $('#filtersForm').on('submit', async(event) => {
@@ -127,16 +131,17 @@ const Filtering = (() => {
         event.preventDefault();
         $('.modal').toggleClass('no-click', true);
         showLoading(true);
+        const data = new FormData(event.target);
         if(!$('#allProviders').hasClass('active')){
-            const data = new FormData(event.target);
             const newfilters = Object.fromEntries(data.entries());
             newfilters.tv_providers = data.getAll('tv_providers');
             newfilters.providers = data.getAll('providers');
             newfilters.movie_providers = data.getAll('movie_providers');
-            if(newfilters.tv_providers.length > 0 && newfilters.movie_providers.length > 0 && newfilters.providers.length > 0){
-                filters = {...filters, ...newfilters};
-            }
-        }
+            filters = {...filters, ...newfilters};
+        } else {
+            filters = {...filters, ...localProviders};
+        };
+        filters.watch_monetization_types = data.getAll('monetization');
         await CardManager.updateCardsWithFilters(filters);
         $('#filtersModal').hide();
         $('#providerFilters').hide();
@@ -184,7 +189,7 @@ const Filtering = (() => {
         });
     }
 
-    $('.media label').on('click', (event) => {
+    $('#media label').on('click', (event) => {
         event.preventDefault();
         if ($(event.target).siblings().hasClass('active')) {
             $(event.target).toggleClass('active');

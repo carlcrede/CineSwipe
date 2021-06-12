@@ -6,6 +6,7 @@ const fetch = require('node-fetch');
 const router = require('express').Router();
 
 const fetchMovies = async (options) => {
+    console.log(options);
     try {
         const moviesResponse = await moviedb.discoverMovie(options);
         const moviesList = await Promise.all(moviesResponse.results.map(async (result) => {
@@ -65,19 +66,22 @@ const buildFilterOptions = (page, filter = {}) => {
         providers = [], 
         tv_providers = [], 
         movie_providers = [],
-        watch_region = '' 
+        watch_region = '',
+        watch_monetization_types = []
     } = filter;
     const movieOptions = { 
         page: page, 
         with_genres: [...movie_genres, ...genres].join('|'),
         with_watch_providers: [...movie_providers, ...providers].join('|'),
-        watch_region: watch_region
+        watch_region: watch_region,
+        with_watch_monetization_types: watch_monetization_types.join('|')
     };
-    const tvOptions = { 
+    const tvOptions = {
         page: page, 
         with_genres: [...tv_genres, ...genres].join('|'),
         with_watch_providers: [...tv_providers, ...providers].join('|'),
-        watch_region: watch_region
+        watch_region: watch_region,
+        with_watch_monetization_types: watch_monetization_types.join('|')
     };
     return { movieOptions, tvOptions };
 }
