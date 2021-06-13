@@ -43,10 +43,6 @@
     background: var(--color-white-alpha-36);
 }
 
-html {
-    background: rgb(34, 42, 48);
-}
-
 body {
     background: var(--color-dark-background);
     font-family: 'Open Sans', sans-serif;
@@ -1004,6 +1000,28 @@ main {
         flex-direction: column;
         row-gap: .5rem;
         max-width: 60%;
+    }
+
+    .modal #closeFilterBtn {
+        top: 0;
+    }
+
+    .modal-content {
+        margin: 1vh 5vw;
+    }
+
+    .modal-content .filter-row label img {
+        width: 1.5em;
+    }
+
+    #filter-rows-content {
+        grid-auto-flow: row;
+        grid-auto-columns: max-content;
+    }
+
+    .modal-content .list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(calc(10% + 7.5rem), 1fr));
     }
 
     .tab .tablinks {
