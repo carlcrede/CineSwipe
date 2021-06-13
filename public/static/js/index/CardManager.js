@@ -86,7 +86,7 @@ const CardManager = (() => {
             `<div class="instructions">
             <p>Swipe right or 👍 if you'd like to watch it.</p>
             <p>Swipe left or 👎 if you don't want to watch.</p>
-            <p>Don't forget to invite your friends or family!</p>
+            <p>Don't forget to invite your friends and family!</p>
             </div>`);
         
         let btnDiv = $(`<div class="card-buttons"></div>`);

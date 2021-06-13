@@ -4,13 +4,6 @@ const Filtering = (() => {
         watch_monetization_types: [],
         watch_region: 'DK',
         sort_by: 'vote_count.desc',
-        /*
-        release_date_gte: 'date',
-        release_date_lte: 'date',
-        vote_average_gte: 0,
-        vote_average_lte: 0,
-        runtime_gte: 0,
-        runtime_lte: 0 */
     }
 
     let localProviders = {};
@@ -112,7 +105,7 @@ const Filtering = (() => {
 
     $('#filtersForm').on('submit', async(event) => {
         event.preventDefault();
-        $('.modal').toggleClass('no-click', true);
+        disablePointerEvents(true);
         showLoading(true);
         const data = new FormData(event.target);
         const filter = Object.fromEntries(data.entries());
@@ -132,7 +125,7 @@ const Filtering = (() => {
 
     $('#providersForm').on('submit', async(event) => {
         event.preventDefault();
-        $('.modal').toggleClass('no-click', true);
+        disablePointerEvents(true);
         showLoading(true);
         const data = new FormData(event.target);
         if(!$('#allProviders').hasClass('active')){
@@ -192,6 +185,12 @@ const Filtering = (() => {
         });
     }
 
+    const disablePointerEvents = (bool) => {
+        $('#closeFilterBtn').toggleClass('no-click', bool);
+        $('#contentFilters').toggleClass('no-click', bool);
+        $('#providerFilters').toggleClass('no-click', bool);
+    }
+
     $('#media label').on('click', (event) => {
         event.preventDefault();
         if ($(event.target).siblings().hasClass('active')) {
@@ -205,14 +204,14 @@ const Filtering = (() => {
     });
     
     $('#contentFilterBtn').on('click', () => {
-        $('.modal').toggleClass('no-click', false);
+        disablePointerEvents(false);
         $('body').toggleClass('noscroll');
         $('#contentFilters').show();
         $('#filtersModal').show();
     });
 
     $('#providerFilterBtn').on('click', () => {
-        $('.modal').toggleClass('no-click', false);
+        disablePointerEvents(false);
         $('body').toggleClass('noscroll');
         $('#providerFilters').show();
         $('#filtersModal').show();

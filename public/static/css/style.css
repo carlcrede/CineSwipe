@@ -90,7 +90,7 @@ nav {
 
 .nav-item {
     color: var(--color-font-default);
-    padding: 0 1rem;
+    /* padding: 0 1rem; */
     transition: .2s ease-in-out;
     text-decoration: none;
     display: flex;
@@ -105,6 +105,10 @@ nav {
 
 .nav-item.title > h3 {
     margin: 0.5em;
+}
+
+.nav-item.login > h3, .nav-item.register > h3 {
+    margin: 0 1vw;
 }
 
 .nav-item.title:hover {
@@ -154,6 +158,7 @@ footer > .footer-content > .column {
     grid-auto-rows: max-content;
     row-gap: 1rem;
     font-size: .85rem;
+    justify-content: center;
 }
 
 footer > .footer-content > .column > p {
@@ -166,6 +171,7 @@ footer > .footer-content > .column > a {
     text-decoration: none;
     color: var(--color-font-default);
     column-gap: 0.5rem;
+
 }
 
 footer > .footer-content > .column > a > #moviedb {
@@ -199,7 +205,8 @@ main {
     text-align: center;
     background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(152, 196, 196,0.5) 30%, rgba(152, 196, 196,.5) 50%, rgba(152, 196, 196,0.5) 70%, rgba(255,255,255,0) 100%);
     border-radius: 1rem 1rem 1rem 1rem;
-    margin: 0 10rem;
+    margin: auto;
+    max-width: 50%;
     font-size: 0.9rem;
 }
 
@@ -301,8 +308,10 @@ main {
 .filters-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 0.5rem;
-    margin: 0 8.5rem;
+    column-gap: .5rem;
+    max-width: 60%;
+    justify-content: center;
+    margin: auto;
 }
 
 .filterBtn {
@@ -336,15 +345,6 @@ main {
 .modal-content {
     margin: 10% 20%;
     display: none;
-    /* position: relative;
-    width: 100%;
-    top: 25%;
-    text-align: center; */
-}
-
-.modal-content button:disabled {
-    background-color: grey;
-    cursor: none;
 }
 
 .filter-row {
@@ -423,6 +423,7 @@ main {
     border: 1px solid rgba(30, 30, 30, 0.52);
     color: rgba(30, 30, 30, 0.62);
     pointer-events: none;
+    user-select: none;
 }
 
 .list#providerlist label.disabled {
@@ -684,7 +685,7 @@ main {
     float: left;
     outline: none;
     cursor: pointer;
-    padding: 14px 16px;
+    padding: 1rem 1rem;
     transition: 0.3s;
     font-size: 17px;
     margin-right: .5rem;
@@ -902,17 +903,125 @@ main {
     border-radius: .5rem;
 }
 
-/* ________________________________________________________________________________________ */
-
 .request-login-container {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+/* ________________________________________________________________________________________ */
+/* MEDIA QUERIES */
+
+
 @media screen and (max-height: 500px){
     footer{
         opacity: 0;
         transition: opacity .5s ease-in-out;
     }
+}
+
+@media screen and (max-width: 1031px){
+    footer > .footer-content > .column > a {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media screen and (max-width: 460px){
+    
+    header {
+        display: flex;
+        justify-content: center;
+        background: rgb(255, 255, 255, 0.12);
+    }
+
+    .nav-item {
+        padding: 0;
+    }
+
+    .nav-item.login > h3, .nav-item.register > h3 {
+        margin: 0 2vw;
+    }
+
+    #logo-small {
+        width: 2rem;
+    }
+
+    main {
+        background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 35%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 3% 0 3%;
+    }
+    
+    .grid-row title.background {
+        display: none;
+    }
+
+    .session-link {
+        grid-column-gap: .5rem;
+    }
+
+    p {
+        font-size: .95rem;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    h2 {
+        font-size: 1rem;
+        margin: 0.5em 0 0.5em 0;
+    }
+
+    h3 {
+        font-size: .9em;
+        margin: 0.5em 0 0.5em 0;
+    }
+
+    .session-link i {
+        font-size: .8rem;
+    }
+
+
+    .row-description.container {
+        max-width: 80%;
+    }
+
+    .filters-container {
+        display: flex;
+        flex-direction: column;
+        row-gap: .5rem;
+        max-width: 80%;
+    }
+
+    .tab .tablinks {
+        padding: .5rem 1rem;
+    }
+
+    .card {
+        padding: 3%;
+
+    }
+    
+    .card-providers {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        direction: rtl;
+        grid-template-rows: max-content;
+        gap: .2rem;
+    }
+
+    .card-info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    footer > .footer-content {
+        width: 80%;
+        column-gap: .5rem;
+    }
+
 }

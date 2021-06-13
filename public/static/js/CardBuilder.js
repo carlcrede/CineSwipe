@@ -127,7 +127,7 @@ const CardBuilder = (() => {
 
     const buildVoteAvg = (item) => {
         if (item.vote_average) {
-            return `<img loading="lazy" src="${tmdb_logo}"/><a><i class="fas fa-star"></i> ${item.vote_average} <small>/ 10</small></a>`;
+            return `<a><img loading="lazy" src="${tmdb_logo}"/><i class="fas fa-star"></i> ${item.vote_average} <small>/ 10</small></a>`;
         }
         return '';
     }
