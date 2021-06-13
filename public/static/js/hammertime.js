@@ -4,14 +4,17 @@ const initHammer = (elem, item) => {
     hammertime.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 10 });
 
     hammertime.on('pan', (ev) => {
-        elem.style.transform = `translate3d(${ev.deltaX}px, ${ev.deltaY}px, 0) rotateY(${ev.deltaX/1000}deg) rotateZ(${ev.deltaX/100}deg) scale(1.05)`;
+        $('.card-trailer').toggleClass('no-click', true);
+        elem.style.transform = `translate3d(${ev.deltaX}px, ${ev.deltaY}px, 100px) rotateY(${ev.deltaX/1000}deg) rotateZ(${ev.deltaX/100}deg) scale(1.05)`;
     });
 
     hammertime.on('panstart', () => {
+        $('.card-trailer').toggleClass('no-click', true);
         $(elem).toggleClass('moving', true);
     });
 
     hammertime.on('panend', async (ev) => {
+        $('.card-trailer').toggleClass('no-click', false);
         $(elem).toggleClass('moving', false);
         const moveOutWidth = document.body.clientWidth;
         const keep = Math.abs(ev.velocityX) < 1.1;
@@ -22,7 +25,7 @@ const initHammer = (elem, item) => {
             const endY = Math.abs(ev.velocityY) * moveOutWidth;
             const toY = ev.deltaY > 0 ? endY : -endY;
             elem.style.transition = 'all .4s ease-in-out';
-            elem.style.transform = `translate3d(${toX}px, ${toY + ev.deltaY}px, 0)`;
+            elem.style.transform = `translate3d(${toX}px, ${toY + ev.deltaY}px, 100px)`;
             if (!elem.classList.contains('first')) {
                 if (toX > 0) {
                     clientLikedItem(item);
@@ -33,6 +36,7 @@ const initHammer = (elem, item) => {
                 elem.remove();
             }, 1000);
         } else {
+            $('.card-trailer').toggleClass('no-click', false);
             elem.style.removeProperty('transform');
         }
     });
