@@ -43,6 +43,10 @@
     background: var(--color-white-alpha-36);
 }
 
+html {
+    background: rgb(34, 42, 48);
+}
+
 body {
     background: var(--color-dark-background);
     font-family: 'Open Sans', sans-serif;
@@ -607,7 +611,13 @@ main {
     pointer-events: none;
 }
 
-.card-info img {
+.card-info > .card-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.card-info > .card-rating > img {
     width: 2.5rem;
 }
 
@@ -927,7 +937,7 @@ main {
     }
 }
 
-@media screen and (max-width: 460px){
+@media screen and (max-width: 540px){
     
     header {
         display: flex;
@@ -985,7 +995,6 @@ main {
         font-size: .8rem;
     }
 
-
     .row-description.container {
         max-width: 80%;
     }
@@ -994,7 +1003,7 @@ main {
         display: flex;
         flex-direction: column;
         row-gap: .5rem;
-        max-width: 80%;
+        max-width: 60%;
     }
 
     .tab .tablinks {
