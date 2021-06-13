@@ -1,11 +1,11 @@
 const initHammer = (elem, item) => {
     const hammertime = new Hammer(elem);
 
-    hammertime.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 50 });
+    hammertime.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 10 });
 
     hammertime.on('pan', (ev) => {
         $('.card-trailer').toggleClass('no-click', true);
-        elem.style.transform = `translate3d(${ev.deltaX}px, ${ev.deltaY}px, 0) rotateY(${ev.deltaX/1000}deg) rotateZ(${ev.deltaX/100}deg) scale(1.05)`;
+        elem.style.transform = `translate3d(${ev.deltaX}px, ${ev.deltaY}px, 100px) rotateY(${ev.deltaX/1000}deg) rotateZ(${ev.deltaX/100}deg) scale(1.05)`;
     });
 
     hammertime.on('panstart', () => {
@@ -25,7 +25,7 @@ const initHammer = (elem, item) => {
             const endY = Math.abs(ev.velocityY) * moveOutWidth;
             const toY = ev.deltaY > 0 ? endY : -endY;
             elem.style.transition = 'all .4s ease-in-out';
-            elem.style.transform = `translate3d(${toX}px, ${toY + ev.deltaY}px, 0)`;
+            elem.style.transform = `translate3d(${toX}px, ${toY + ev.deltaY}px, 100px)`;
             if (!elem.classList.contains('first')) {
                 if (toX > 0) {
                     clientLikedItem(item);
