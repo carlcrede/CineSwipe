@@ -761,7 +761,6 @@ main {
 .form-container {
     display: grid;
     text-align: center;
-    justify-content: center;
     padding-top: 5rem;
 }
 
@@ -769,13 +768,12 @@ main {
     display: grid;
     text-align: center;
     padding: 1rem 5rem 0 5rem;
-    width: 40rem;
 }
 
 .form-group > input{
     border-radius: 0.5rem;
     padding: 0.7rem;
-    font-size: 1rem;
+    font-size: 1em;
 }
 
 .error-label {
@@ -1049,6 +1047,15 @@ main {
     footer > .footer-content {
         width: 80%;
         column-gap: .5rem;
+    }
+
+    .form-container {
+        padding-top: 0;
+        justify-content: unset;
+    }
+
+    .form-group {
+        padding: 1rem 0 0 0;
     }
 
 }
