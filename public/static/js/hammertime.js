@@ -1,17 +1,20 @@
 const initHammer = (elem, item) => {
     const hammertime = new Hammer(elem);
 
-    hammertime.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 10 });
+    hammertime.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 50 });
 
     hammertime.on('pan', (ev) => {
+        $('.card-trailer').toggleClass('no-click', true);
         elem.style.transform = `translate3d(${ev.deltaX}px, ${ev.deltaY}px, 0) rotateY(${ev.deltaX/1000}deg) rotateZ(${ev.deltaX/100}deg) scale(1.05)`;
     });
 
     hammertime.on('panstart', () => {
+        $('.card-trailer').toggleClass('no-click', true);
         $(elem).toggleClass('moving', true);
     });
 
     hammertime.on('panend', async (ev) => {
+        $('.card-trailer').toggleClass('no-click', false);
         $(elem).toggleClass('moving', false);
         const moveOutWidth = document.body.clientWidth;
         const keep = Math.abs(ev.velocityX) < 1.1;
@@ -33,6 +36,7 @@ const initHammer = (elem, item) => {
                 elem.remove();
             }, 1000);
         } else {
+            $('.card-trailer').toggleClass('no-click', false);
             elem.style.removeProperty('transform');
         }
     });

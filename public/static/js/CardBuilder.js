@@ -148,7 +148,7 @@ const CardBuilder = (() => {
                 return item.site == 'YouTube' && item.type == 'Trailer';
             });
             if (trailer) {
-                let trailerLink = $(`<a target="_blank"></a>`);
+                let trailerLink = $(`<a target="_blank" draggable="false"></a>`);
                 trailerLink.html('<i class="fas fa-play"></i><p>Trailer</p>');
                 trailerLink.attr('href', `https://youtu.be/${trailer.key}`);
                 trailerDiv.append(trailerLink);
