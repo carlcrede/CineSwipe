@@ -74,8 +74,8 @@ const authRoute = require('./routes/auth/auth');
 const sessionRoute = require('./routes/session');
 const userRoute = require('./routes/user');
 const errorRoute = require('./routes/error');
+app.use("/items", moviedbRoute.router)
 app.use(
-    moviedbRoute.router, 
     authRoute.router, 
     userRoute.router,
     sessionRoute.router,

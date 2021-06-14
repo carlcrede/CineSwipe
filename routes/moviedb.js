@@ -129,7 +129,7 @@ const cacheResponse = (watch_region, data) => {
 
 cacheResponse('DK', fetchInitialItems('DK'));
 
-router.get('/items', async (req, res) => {
+router.get('/', async (req, res) => {
     const filter = req.query;
     const { movieOptions, tvOptions } = buildFilterOptions(filter);
     if (filter.media.length == 2) {
@@ -146,7 +146,7 @@ router.get('/items', async (req, res) => {
     }
 });
 
-router.get('/items/initial/:watch_region', async (req, res, next) => {
+router.get('/initial/:watch_region', async (req, res, next) => {
     const watch_region = req.params.watch_region;
     try {
         if(!cache.initialitems[watch_region] || Date.now() - cache.initialitems[watch_region].time > 60 * 1000){
@@ -159,7 +159,7 @@ router.get('/items/initial/:watch_region', async (req, res, next) => {
     }
 });
 
-router.get('/items/genres/:media_type', async (req, res, next) => {
+router.get('/genres/:media_type', async (req, res, next) => {
     const media_type = req.params.media_type;
     try {
         const genres = (media_type == 'movie') ? await moviedb.genreMovieList() : await moviedb.genreTvList();
@@ -170,7 +170,7 @@ router.get('/items/genres/:media_type', async (req, res, next) => {
     }
 });
 
-router.get('/items/providers', async (req, res, next) => {
+router.get('/providers', async (req, res, next) => {
     const { watch_region } = req.query;
     try{
         const { movieProviders, tvProviders } = await fetchProviders(watch_region);
@@ -181,7 +181,7 @@ router.get('/items/providers', async (req, res, next) => {
     }
 });
 
-router.get('/items/:media_type/:id', async (req, res, next) => {
+router.get('/:media_type/:id', async (req, res, next) => {
     const media_type = req.params.media_type;
     const id = req.params.id;
     const item = await itemDetails(id, media_type);
