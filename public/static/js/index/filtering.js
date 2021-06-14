@@ -1,5 +1,6 @@
 const Filtering = (() => {
     let filters = {
+        page: 1,
         media: ['movie', 'tv'],
         watch_monetization_types: [],
         watch_region: 'DK',
@@ -16,6 +17,10 @@ const Filtering = (() => {
 
     const setFilters = (changes) => {
         filters = { ...filters, ...changes};
+    }
+
+    const paginate = () => {
+        filters.page++;
     }
 
     const initGenres = (distinctGenres, movieGenres, tvGenres) => {
@@ -91,12 +96,12 @@ const Filtering = (() => {
     }
     
     (async function initFilters () {
-        const movieGenres = await ItemFetch.genres('movie');
-        const tvGenres = await ItemFetch.genres('tv');
+        const movieGenres = await ItemFetch.fetchGenres('movie');
+        const tvGenres = await ItemFetch.fetchGenres('tv');
         const distinctGenres = getDistinctGenres(movieGenres.genres, tvGenres.genres);
         initGenres(distinctGenres, movieGenres.genres, tvGenres.genres);
 
-        const {movieProviders, tvProviders} = await ItemFetch.providers(filters.watch_region);
+        const {movieProviders, tvProviders} = await ItemFetch.fetchProviders(filters.watch_region);
         const distinctProviders = getDistinctProviders(movieProviders.results, tvProviders.results);
         initProviders(distinctProviders, movieProviders.results, tvProviders.results);
 
@@ -116,6 +121,7 @@ const Filtering = (() => {
         filter.sort_by = data.get('sort_by');
         console.log(filter.sort_by);
         filters = {...filters, ...filter};
+        filters.page = 1;
         await CardManager.updateCardsWithFilters(filters);
         $('#filtersModal').hide();
         $('#contentFilters').hide();
@@ -138,6 +144,7 @@ const Filtering = (() => {
             filters = {...filters, ...localProviders};
         };
         filters.watch_monetization_types = data.getAll('monetization');
+        filters.page = 1;
         await CardManager.updateCardsWithFilters(filters);
         $('#filtersModal').hide();
         $('#providerFilters').hide();
@@ -223,6 +230,6 @@ const Filtering = (() => {
         $('#filtersModal').hide();
     });
 
-    return { getFilters, setFilters }
+    return { getFilters, setFilters, paginate }
 
 })();

@@ -1,15 +1,12 @@
 const CardManager = (() => {
 
-    let page = 1;
     let popularMoviesAndTv;
-    // let cards = $('#cards');
     const invalidItemStatuses = ['Rumored', 'Planned', 'In Production', 'Post Production', 'Canceled'];
 
     const updateCardsWithFilters = async (filters) => {
         clearInterval(cardInterval);
-        page = 1;
         $('.card-container').children('.card').not('.first').remove();
-        const newItems = await ItemFetch.fetchItems(page, filters);
+        const newItems = await ItemFetch.fetchItems(filters);
         popularMoviesAndTv = newItems;
         const cards = $('.card-container').children();
         if(cards.length < 10 && popularMoviesAndTv){
@@ -23,7 +20,7 @@ const CardManager = (() => {
 
     const addCardToMatches = async (item) => {
         $('#matchesCount').text(++matches);
-        const details = await ItemFetch.details(item);
+        const details = await ItemFetch.fetchItemDetails(item);
         let card = CardBuilder.buildItemCard(details, false);
         card.css('position', 'relative');
         card.attr('id', `match-${item.id}`);
@@ -64,8 +61,9 @@ const CardManager = (() => {
     const checkAndRepopulate = async() => {
         if(document.hasFocus){
             if(popularMoviesAndTv && popularMoviesAndTv.length < 1){
-                page++;
-                const newItems = await ItemFetch.fetchItems(page, Filtering.getFilters());
+                Filtering.paginate();
+                console.log(Filtering.getFilters().page);
+                const newItems = await ItemFetch.fetchItems(Filtering.getFilters());
                 popularMoviesAndTv = newItems;
             }
             const cards = $('.card-container').children();
@@ -109,7 +107,7 @@ const CardManager = (() => {
     })();
 
     (async function initCards(){
-        const result = await ItemFetch.initialItems();
+        const result = await ItemFetch.fetchInitialItems();
         const initialItems = result;
         popularMoviesAndTv = initialItems;
         for (let i = 0; i < 10; i++) {

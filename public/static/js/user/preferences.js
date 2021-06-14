@@ -3,10 +3,10 @@
     const response = await fetch('/likes');
     const userLikes = await response.json();
     const likesElem = $('#matches');
-    const { countryCode } = await ItemFetch.getIpData();
+    const { countryCode } = await ItemFetch.fetchIpData();
     Filtering.setFilters({watch_region: countryCode});
     userLikes.forEach( async like => {
-        const details = await ItemFetch.details(like);
+        const details = await ItemFetch.fetchItemDetails(like);
         let card = CardBuilder.buildItemCard(details, false);
         card.css('position', 'relative');
         card.attr('id', `match-${like.likeId}`);

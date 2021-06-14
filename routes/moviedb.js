@@ -47,19 +47,24 @@ const fetchProviders = async (watch_region) => {
 };
 
 const itemDetails = async (id, media_type) => {
-    let details;
-    if (media_type == 'movie') {
-        details = await moviedb.movieInfo({ id: id, append_to_response: 'watch/providers,videos' });
-        details['media_type'] = 'movie';
-    } else {
-        details = await moviedb.tvInfo({ id: id, append_to_response: 'watch/providers,videos' });
-        details['media_type'] = 'tv';
+    try {
+        let details;
+        if (media_type == 'movie') {
+            details = await moviedb.movieInfo({ id: id, append_to_response: 'watch/providers,videos' });
+            details['media_type'] = 'movie';
+        } else {
+            details = await moviedb.tvInfo({ id: id, append_to_response: 'watch/providers,videos' });
+            details['media_type'] = 'tv';
+        }
+        return details;
+    } catch (error) {
+        console.log('nothing');
     }
-    return details;
 }
 
-const buildFilterOptions = (page, filter = {}) => {
+const buildFilterOptions = (filter = {}) => {
     const { 
+        page = 1,
         movie_genres = [], 
         tv_genres = [], 
         genres = [], 
@@ -124,23 +129,9 @@ const cacheResponse = (watch_region, data) => {
 
 cacheResponse('DK', fetchInitialItems('DK'));
 
-router.get('/items/initial/:watch_region', async (req, res, next) => {
-    const watch_region = req.params.watch_region;
-    try {
-        if(!cache.initialitems[watch_region] || Date.now() - cache.initialitems[watch_region].time > 60 * 1000){
-            cacheResponse(watch_region, fetchInitialItems(watch_region));
-        };
-        res.send(await cache.initialitems[watch_region].data);
-    } catch (error) {
-        console.error(error);
-        next();
-    }
-});
-
-router.get('/items/:page', async (req, res, next) => {
+router.get('/items', async (req, res) => {
     const filter = req.query;
-    const page = req.params.page;
-    const { movieOptions, tvOptions } = buildFilterOptions(page, filter);
+    const { movieOptions, tvOptions } = buildFilterOptions(filter);
     if (filter.media.length == 2) {
         const movies = await fetchMovies(movieOptions);
         const tv = await fetchTv(tvOptions);
@@ -155,14 +146,20 @@ router.get('/items/:page', async (req, res, next) => {
     }
 });
 
-router.get('/:media_type/:id/details', async (req, res, next) => {
-    const id = req.params.id;
-    const media_type = req.params.media_type;
-    const item = await itemDetails(id, media_type);
-    res.send(item);
+router.get('/items/initial/:watch_region', async (req, res, next) => {
+    const watch_region = req.params.watch_region;
+    try {
+        if(!cache.initialitems[watch_region] || Date.now() - cache.initialitems[watch_region].time > 60 * 1000){
+            cacheResponse(watch_region, fetchInitialItems(watch_region));
+        };
+        res.send(await cache.initialitems[watch_region].data);
+    } catch (error) {
+        console.error(error);
+        next();
+    }
 });
 
-router.get('/genres/:media_type', async (req, res, next) => {
+router.get('/items/genres/:media_type', async (req, res, next) => {
     const media_type = req.params.media_type;
     try {
         const genres = (media_type == 'movie') ? await moviedb.genreMovieList() : await moviedb.genreTvList();
@@ -171,10 +168,9 @@ router.get('/genres/:media_type', async (req, res, next) => {
         console.error(error);
         next();
     }
-
 });
 
-router.get('/providers', async (req, res, next) => {
+router.get('/items/providers', async (req, res, next) => {
     const { watch_region } = req.query;
     try{
         const { movieProviders, tvProviders } = await fetchProviders(watch_region);
@@ -183,6 +179,13 @@ router.get('/providers', async (req, res, next) => {
         console.error(error);
         next();
     }
+});
+
+router.get('/items/:media_type/:id', async (req, res, next) => {
+    const media_type = req.params.media_type;
+    const id = req.params.id;
+    const item = await itemDetails(id, media_type);
+    res.send(item);
 });
 
 module.exports = {
