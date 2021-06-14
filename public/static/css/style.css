@@ -103,13 +103,13 @@ nav {
     font-size: 1.5rem;
 }
 
-.nav-item.title > h3 {
-    margin: 0.5em;
-}
-
-.nav-item.login > h3, .nav-item.register > h3 {
+.nav-item > h3 {
     margin: 0 1vw;
 }
+
+.nav-item.title > h3 {
+    margin: 1vw;
+} 
 
 .nav-item.title:hover {
     background: var(--color-white-alpha-6);
@@ -939,12 +939,20 @@ main {
         background: rgb(255, 255, 255, 0.12);
     }
 
+    nav {
+        flex-direction: column;
+    }
+
+    .nav-section {
+        justify-content: center;
+    }
+
     .nav-item {
         padding: 0;
     }
 
-    .nav-item.login > h3, .nav-item.register > h3 {
-        margin: 0 2vw;
+    .nav-item > h3 {
+        margin: 0 1vw;
     }
 
     #logo-small {
@@ -1005,7 +1013,7 @@ main {
     }
 
     .modal-content {
-        margin: 1vh 5vw;
+        margin: 0 5vw 10vh 5vw;
     }
 
     .modal-content .filter-row label img {

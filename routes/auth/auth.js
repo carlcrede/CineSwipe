@@ -4,10 +4,10 @@ const router = require('express').Router();
 const pages = require('../../util/ssr');
 
 //express-validator for form validation
-const { body, check, checkSchema, validationResult } = require('express-validator');
+const { checkSchema, validationResult } = require('express-validator');
 
 //javascript objects/schemas to be used with express-validator
-const schema = require('./validation-schema');
+const {register} = require('./validation-schema');
 
 //mongoose Credentials model
 const Credentials = require('../../db/model/credentials.js');
@@ -37,7 +37,7 @@ router.get('/auth/logout', (req, res) => {
     res.redirect('/');
 });
 
-router.post('/auth/register', checkSchema(schema.register), async (req, res) => {
+router.post('/auth/register', checkSchema(register), async (req, res) => {
     //if express-validator validationResult contains any errors then form data is invalid
     //see -> validation-schema for details
     const errors = validationResult(req);
