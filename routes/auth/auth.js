@@ -37,7 +37,7 @@ router.get('/auth/logout', (req, res) => {
     res.redirect('/');
 });
 
-router.post('/auth/register', checkSchema(register), async (req, res) => {
+router.post('/auth/register', checkSchema(register), async (req, res, next) => {
     //if express-validator validationResult contains any errors then form data is invalid
     //see -> validation-schema for details
     const errors = validationResult(req);
@@ -59,8 +59,7 @@ router.post('/auth/register', checkSchema(register), async (req, res) => {
         res.status(200);
         return res.send({});
     } catch (error) {
-        console.log(error);
-        res.status(500).send("Internal Server error occured");
+        res.status(500).send(`Internal server error`);
     }
 });
 
@@ -75,18 +74,13 @@ router.post('/auth/login', async (req, res) => {
                 req.session.loggedIn = true;
                 req.session.userId = req.body.user;
                 res.status(200);
-                res.send({msg: 'Authorized'});
-            } else {
-                res.status(401);
-                res.send({msg: 'Invalid password or username'});
+                return res.send({msg: 'Authenticated'});
             }
-        } else {
-            res.status(401);
-            res.send({msg: 'Invalid password or username'});
         }
+        res.status(401);
+        return res.send({msg: 'Invalid password or username'});
     } catch (error) {
-        console.log(error);
-        res.status(500).send('Internal Server error occured');
+        res.status(500).send(`Internal server error`);
     }
 });
 

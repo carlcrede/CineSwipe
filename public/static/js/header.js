@@ -1,5 +1,5 @@
 ( async function setupHeader(){
-    const response = await fetch('/session/id');
+    const response = await fetch('/session/userid');
     const result = await response.json();
     const leftNav = $('#left-nav-section');
     const userId = result.userId;

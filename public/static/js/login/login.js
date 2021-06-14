@@ -1,4 +1,4 @@
-$( document).ready(() => {
+$(document).ready(() => {
     document.title = "Log in"
 });
 
@@ -19,13 +19,19 @@ $('form').submit( async(event) => {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data) // body data type must match "Content-Type" header
     });
-    if(response.status === 200){
-        $('.spinner').removeClass('enabled');
-        displayLoginToast();
-    } else {
-        const result = await response.json();
-        $('.spinner').removeClass('enabled');
-        $('.failed-attempt').text(result.msg);
-        $('.failed-attempt').addClass('show');
+    switch (response.status) {
+        case 200:
+            $('.spinner').removeClass('enabled');
+            displayLoginToast();
+            break;
+        case 401:
+            const result = await response.json();
+            $('.spinner').removeClass('enabled');
+            $('.failed-attempt').text(result.msg);
+            $('.failed-attempt').addClass('show');
+            break;
+        default:
+            location.assign('/error/500');
     }
+
 });

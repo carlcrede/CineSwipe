@@ -1,4 +1,4 @@
-$( document).ready(() => {
+$(document).ready(() => {
     document.title = "Sign up"
 });
 
@@ -20,17 +20,18 @@ $('form').submit( async (event) => {
         body: JSON.stringify(data)
     });
 
-    if(response.status === 200){
-        $('.spinner').removeClass('enabled');
-        displaySignupToast();
-    } else if (response.status === 401){
-        const result = await response.json();
-        const errors = result.errors;
-        if(errors){
-            displayErrors(errors);
-        };
-    }
     $('.spinner').removeClass('enabled');
+    switch(response.status){
+        case 200:
+            displaySignupToast();
+            break;
+        case 401:
+            const result = await response.json();
+            displayErrors(result.errors);
+            break;
+        default:
+            location.assign('/error/500');
+    }
 });
 
 const displayErrors = (errors) => {
@@ -41,7 +42,6 @@ const displayErrors = (errors) => {
     }
     errors.forEach(error => {
         if(error.msg){
-            console.log({'error had a msg': error.msg});
             displayErrorOnLabel(labels[error.param], error.msg);
         }
     });
@@ -54,7 +54,6 @@ const resetLabels = () => {
 }
 
 const displayErrorOnLabel = (label, error) => {
-    console.log(label, error);
     label.text('*' + error);
     label.addClass('show');
 }

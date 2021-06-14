@@ -38,10 +38,10 @@ app.use(helmet({
 // trying cache-control for performance
 //enable caching in production 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(__dirname + '/public/static', { maxAge: 31557600 }));
+    app.use(express.static(__dirname + '/public/static', { maxAge: 1000 * 60 * 60 * 2 }));
 } else {
     app.use(express.static(__dirname + '/public/static'));
-}
+};
 
 // create http server
 const http = require('http').createServer(app);
@@ -70,14 +70,18 @@ const pages = require('./util/ssr');
 
 // routing
 const moviedbRoute = require('./routes/moviedb');
-const { Double } = require('bson');
-app.use(moviedbRoute.router);
 const authRoute = require('./routes/auth/auth');
-app.use(authRoute.router);
 const sessionRoute = require('./routes/session');
-app.use(sessionRoute.router);
-const userdata = require('./routes/user');
-app.use(userdata.router);
+const userRoute = require('./routes/user');
+const errorRoute = require('./routes/error');
+
+app.use(
+    moviedbRoute.router, 
+    authRoute.router, 
+    userRoute.router,
+    sessionRoute.router,
+    errorRoute.router
+);
 
 app.get('/', (req, res) => {
     res.send(pages.index);
@@ -87,13 +91,13 @@ app.get('/:id', (req, res, next) => {
     if(io.sockets.adapter.rooms.has(req.params.id)){
         res.send(pages.index);
     } else {
-        res.redirect('/');
-    }
+        next();
+    };
 });
 
 // error page
 app.get('/*', (req, res) => {
-    res.status(404).send(`<h1>The page you were looking for was not found.</h1>`);
+    res.status(404).send(pages[404]);
 });
 
 const server = http.listen(PORT, (error) => {

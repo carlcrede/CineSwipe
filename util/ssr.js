@@ -9,15 +9,17 @@ const body = {
     login: fs.readFileSync(__dirname + '/../public/authentication/login/login.html', 'utf-8'),
     register: fs.readFileSync(__dirname + '/../public/authentication/register/register.html', 'utf-8'),
     preferences: fs.readFileSync(__dirname + '/../public/user/preferences/preferences.html', 'utf-8'),
-    requestlogin: fs.readFileSync(__dirname + '/../public/user/request-login.html', 'utf-8')
+    requestlogin: fs.readFileSync(__dirname + '/../public/user/request-login.html', 'utf-8'),
+    404: fs.readFileSync(__dirname + '/../public/errors/404.html', 'utf-8'),
+    500: fs.readFileSync(__dirname + '/../public/errors/500.html', 'utf-8')
 }
 
-const index = head + nav + body.index + footer;
-const login = head + nav + body.login + footer;
-const register = head + nav + body.register + footer;
-const preferences = head + nav + body.preferences + footer;
-const requestlogin = head + nav + body.requestlogin;
+const prepare = (function(){
+    Object.keys(body).forEach((key) => {
+        body[key] = head + nav + body[key] + footer;
+    });
+}());
 
 module.exports = {
-    index, login, register, preferences, requestlogin
+    ...body
 }

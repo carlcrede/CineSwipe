@@ -944,7 +944,7 @@ main {
     }
 
     .nav-section {
-        justify-content: center;
+        justify-content: flex-end;
     }
 
     .nav-item {
