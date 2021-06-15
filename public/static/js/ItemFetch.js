@@ -10,7 +10,6 @@ const ItemFetch = (() => {
 
     const fetchInitialItems = async() => {
         const { countryCode } = await fetchIpData();
-        Filtering.setFilters({watch_region: countryCode});
         const response = await fetch(`/items/initial/${ countryCode }`);
         const result = await response.json();
         return [...result];

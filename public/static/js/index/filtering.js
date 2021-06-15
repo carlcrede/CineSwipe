@@ -96,6 +96,9 @@ const Filtering = (() => {
     }
     
     (async function initFilters () {
+        const { countryCode } = await ItemFetch.fetchIpData();
+        setFilters({watch_region: countryCode});
+
         const movieGenres = await ItemFetch.fetchGenres('movie');
         const tvGenres = await ItemFetch.fetchGenres('tv');
         const distinctGenres = getDistinctGenres(movieGenres.genres, tvGenres.genres);
