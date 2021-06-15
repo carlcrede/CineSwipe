@@ -25,8 +25,8 @@ module.exports = (io) => {
                 }
             });
 
-            socket.on('clientUpdatedFilters', (filters) => {
-                socket.to(getRoom(socket)).emit('clientUpdatedFilters', filters);
+            socket.on('clientUpdatedFilters', (filters, filterHtml) => {
+                socket.to(getRoom(socket)).emit('clientUpdatedFilters', filters, filterHtml);
             });
         });
     } catch (error) {

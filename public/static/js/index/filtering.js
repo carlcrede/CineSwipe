@@ -126,7 +126,7 @@ const Filtering = (() => {
             $('#filtersModal').hide();
             $('#contentFilters').hide();
             showLoading(false);
-            Socket.clientUpdatedFilters(filters);
+            Socket.clientUpdatedFilters(filters, document.getElementById('filtersModal').innerHTML);
             $('body').toggleClass('noscroll');
         });
     }
@@ -152,7 +152,7 @@ const Filtering = (() => {
             $('#filtersModal').hide();
             $('#providerFilters').hide();
             showLoading(false);
-            Socket.clientUpdatedFilters(filters);
+            Socket.clientUpdatedFilters(filters, document.getElementById('filtersModal').innerHTML);
             $('body').toggleClass('noscroll');
         });
     }
@@ -238,6 +238,17 @@ const Filtering = (() => {
         $('body').toggleClass('noscroll');
         $('#providerFilters').show();
         $('#filtersModal').show();
+    });
+
+    $('#sort_by').change(({target}) => {
+        const options = target.options;
+        options[0].defaultSelected = false;
+        options[1].defaultSelected = false;
+        options[2].defaultSelected = false;
+        options[3].defaultSelected = false;
+        
+        options[target.selectedIndex].defaultSelected = true;
+        options.selectedIndex = options.selectedIndex;
     });
     
     const addFilterCloseBtnListener = async() => {

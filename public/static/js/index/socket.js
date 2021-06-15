@@ -28,14 +28,20 @@ const Socket = (() => {
         });
     }
     
-    socket.on('clientUpdatedFilters', async (filters) => {
+    socket.on('clientUpdatedFilters', async (filters, filterHtml) => {
         Filtering.setFilters(filters);
+        $('#filtersModal').hide();
+        $('#contentFilters').hide();
+        $('#providerFilters').hide();
+        $('#filtersModal').empty();
+        $('#filtersModal').append($(filterHtml));
+        Filtering.initFilterClickHandlers();
         displayFiltersUpdatedToast();
         await CardManager.updateCardsWithFilters(filters);
     });
     
-    const clientUpdatedFilters = (filters) => {
-        socket.emit('clientUpdatedFilters', filters);
+    const clientUpdatedFilters = (filters, filterHtml) => {
+        socket.emit('clientUpdatedFilters', filters, filterHtml);
     };
 
     return {
