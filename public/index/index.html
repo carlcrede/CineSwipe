@@ -1,62 +1,64 @@
 <body>
     <div id="filtersModal" class="modal">
         <a id="closeFilterBtn">&times;</a>
-        <div id="contentFilters" class="modal-content">
-            <div>
-                <h1>Edit filters</h1>
-            </div>
-            <form id="filtersForm">
-                <div id="filter-rows-content">
-                    <div>
-                        <h3>Content type</h3>
-                        <div class="filter-row" id="media">
-                            <label for="movie" class="active">Movies</label><input type="checkbox" id="movie" name="media" value="movie" checked hidden>
-                            <label for="tv" class="active">Tv Shows</label><input type="checkbox" id="tv" name="media" value="tv" checked hidden>
+        <div id="filter-mount-point">
+            <div id="contentFilters" class="modal-content">
+                <div>
+                    <h1>Edit filters</h1>
+                </div>
+                <form id="filtersForm">
+                    <div id="filter-rows-content">
+                        <div>
+                            <h3>Content type</h3>
+                            <div class="filter-row" id="media">
+                                <label for="movie" class="active">Movies</label><input type="checkbox" id="movie" name="media" value="movie" checked hidden>
+                                <label for="tv" class="active">Tv Shows</label><input type="checkbox" id="tv" name="media" value="tv" checked hidden>
+                            </div>
+                        </div>
+                        <div>
+                            <h3>Sort by</h3>
+                            <select class="sort-by" name="sort_by" id="sort_by">
+                                <option value="vote_count.desc" selected>Default (Popularity)</option>
+                                <option value="popularity.desc">Trending</option>
+                                <option value="vote_average.desc">Rating</option>
+                                <option value="revenue.desc">Revenue</option>
+                            </select>
                         </div>
                     </div>
-                    <div>
-                        <h3>Sort by</h3>
-                        <select class="sort-by" name="sort_by" id="sort_by">
-                            <option value="vote_count.desc" selected>Default (Popularity)</option>
-                            <option value="popularity.desc">Trending</option>
-                            <option value="vote_average.desc">Rating</option>
-                            <option value="revenue.desc">Revenue</option>
-                        </select>
+                    <div class="filter-row" id="genres">
+                        <h3>Genres</h3>
+                        <div id="genrelist" class="list"></div>
                     </div>
-                </div>
-                <div class="filter-row" id="genres">
-                    <h3>Genres</h3>
-                    <div id="genrelist" class="list"></div>
-                </div>
-                <div class="filter-row save">
-                    <button type="submit" class="saveBtn">Save</button>
-                </div>
-            </form>
-        </div>
-        <div id="providerFilters" class="modal-content">
-            <div>
-                <h1>Edit watch providers</h1>
+                    <div class="filter-row save">
+                        <button type="submit" class="saveBtn">Save</button>
+                    </div>
+                </form>
             </div>
-            <form id="providersForm">
-                <div class="filter-row">
-                    <h3>Watch Providers</h3>
-                    <div id="providerlist" class="list"></div>
+            <div id="providerFilters" class="modal-content">
+                <div>
+                    <h1>Edit watch providers</h1>
                 </div>
-                <div class="filter-row">
-                    <h3>Payment preferences</h3>
-                    <div id="monetizationlist" class="list">
-                        <label for="flatrate">Streaming</label>
-                        <input id="flatrate" type="checkbox" data-name="flatrate" name="monetization" value="flatrate" data-type="monetization" hidden="">
-                        <label for="buy">Buy</label>
-                        <input id="buy" type="checkbox" data-name="buy" name="monetization" value="buy" data-type="monetization" hidden="">
-                        <label for="rent">Rent</label>
-                        <input id="rent" type="checkbox" data-name="rent" name="monetization" value="rent" data-type="monetization" hidden="">
+                <form id="providersForm">
+                    <div class="filter-row">
+                        <h3>Watch Providers</h3>
+                        <div id="providerlist" class="list"></div>
                     </div>
-                </div>
-                <div class="filter-row save">
-                    <button type="submit" class="saveBtn">Save</button>
-                </div>
-            </form>
+                    <div class="filter-row">
+                        <h3>Payment preferences</h3>
+                        <div id="monetizationlist" class="list">
+                            <label for="flatrate">Streaming</label>
+                            <input id="flatrate" type="checkbox" data-name="flatrate" name="monetization" value="flatrate" data-type="monetization" hidden="">
+                            <label for="buy">Buy</label>
+                            <input id="buy" type="checkbox" data-name="buy" name="monetization" value="buy" data-type="monetization" hidden="">
+                            <label for="rent">Rent</label>
+                            <input id="rent" type="checkbox" data-name="rent" name="monetization" value="rent" data-type="monetization" hidden="">
+                        </div>
+                    </div>
+                    <div class="filter-row save">
+                        <button type="submit" class="saveBtn">Save</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <main>

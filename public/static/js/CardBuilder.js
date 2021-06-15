@@ -191,7 +191,7 @@ const CardBuilder = (() => {
                 } else {
                     parent.css('transition', 'all .4s ease-in-out');
                     parent.css('transform', 'translate3d(2000px, 0, 0)');
-                    clientLikedItem(item);
+                    Socket.clientLikedItem(item);
                 }
                 CardManager.addCard();
                 setTimeout(() => {

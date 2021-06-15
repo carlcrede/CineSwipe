@@ -28,7 +28,7 @@ const initHammer = (elem, item) => {
             elem.style.transform = `translate3d(${toX}px, ${toY + ev.deltaY}px, 100px)`;
             if (!elem.classList.contains('first')) {
                 if (toX > 0) {
-                    clientLikedItem(item);
+                    Socket.clientLikedItem(item);
                 }
             }
             CardManager.addCard();

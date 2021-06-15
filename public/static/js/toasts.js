@@ -98,3 +98,34 @@ const displayLoginToast = () => {
         </div>`
     );
 }
+
+const displayFiltersUpdatedToast = () => {
+    toastr.options = {
+        tapToDismiss: false,
+        closeButton: false,
+        debug: false,
+        newestOnTop: false,
+        progressBar: false,
+        positionClass: 'toast-top-right',
+        preventDuplicates: true,
+        onclick: null,
+        showDuration: 100,
+        hideDuration: 1000,
+        timeOut: 3000,
+        extendedTimeOut: 0,
+        hideMethod: 'fadeOut',
+        onHidden: undefined,
+        newestOnTop: true
+    };
+    toastr.info(
+        `<div class="toast-icon">
+            <img class="copy-icon"></img>
+        </div>
+        <div class="toast-text">
+            <div>
+                Filters updated.<br>
+                Updating suggestions
+            </div>
+        </div>`
+    );
+}

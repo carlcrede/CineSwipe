@@ -1,5 +1,5 @@
 {
-  "name": "node_exam_project",
+  "name": "cineswipe",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/carlcrede/node_exam_project.git"
+    "url": "git+https://github.com/carlcrede/cineswipe.git"
   },
   "keywords": [],
   "author": "Carl Christian Hasselbalch & Peter Hartmann",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/carlcrede/node_exam_project/issues"
+    "url": "https://github.com/carlcrede/cineswipe/issues"
   },
-  "homepage": "https://github.com/carlcrede/node_exam_project#readme",
+  "homepage": "https://github.com/carlcrede/cineswipe#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "compression": "^1.7.4",

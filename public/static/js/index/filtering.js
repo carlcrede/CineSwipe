@@ -105,52 +105,57 @@ const Filtering = (() => {
         const distinctProviders = getDistinctProviders(movieProviders.results, tvProviders.results);
         initProviders(distinctProviders, movieProviders.results, tvProviders.results);
 
-        initFilterClickHandlers([{label: 'genrelist', all: 'allGenres'}, {label: 'providerlist', all: 'allProviders'}, {label: 'monetizationlist'}]);
+        initFilterClickHandlers();
     })();
 
-    $('#filtersForm').on('submit', async(event) => {
-        event.preventDefault();
-        disablePointerEvents(true);
-        showLoading(true);
-        const data = new FormData(event.target);
-        const filter = Object.fromEntries(data.entries());
-        filter.media = data.getAll('media');
-        filter.movie_genres = data.getAll('movie_genres');
-        filter.tv_genres = data.getAll('tv_genres');
-        filter.genres = data.getAll('genres');
-        filter.sort_by = data.get('sort_by');
-        console.log(filter.sort_by);
-        filters = {...filters, ...filter};
-        filters.page = 1;
-        await CardManager.updateCardsWithFilters(filters);
-        $('#filtersModal').hide();
-        $('#contentFilters').hide();
-        showLoading(false);
-        $('body').toggleClass('noscroll');
-    });
+    const addFilterFormSubmitListener = async () => {
+        $('#filtersForm').on('submit', async(event) => {
+            event.preventDefault();
+            disablePointerEvents(true);
+            showLoading(true);
+            const data = new FormData(event.target);
+            const filter = Object.fromEntries(data.entries());
+            filter.media = data.getAll('media');
+            filter.movie_genres = data.getAll('movie_genres');
+            filter.tv_genres = data.getAll('tv_genres');
+            filter.genres = data.getAll('genres');
+            filter.sort_by = data.get('sort_by');
+            filters = {...filters, ...filter};
+            filters.page = 1;
+            await CardManager.updateCardsWithFilters(filters);
+            $('#filtersModal').hide();
+            $('#contentFilters').hide();
+            showLoading(false);
+            Socket.clientUpdatedFilters(filters);
+            $('body').toggleClass('noscroll');
+        });
+    }
 
-    $('#providersForm').on('submit', async(event) => {
-        event.preventDefault();
-        disablePointerEvents(true);
-        showLoading(true);
-        const data = new FormData(event.target);
-        if(!$('#allProviders').hasClass('active')){
-            const newfilters = Object.fromEntries(data.entries());
-            newfilters.tv_providers = data.getAll('tv_providers');
-            newfilters.providers = data.getAll('providers');
-            newfilters.movie_providers = data.getAll('movie_providers');
-            filters = {...filters, ...newfilters};
-        } else {
-            filters = {...filters, ...localProviders};
-        };
-        filters.watch_monetization_types = data.getAll('monetization');
-        filters.page = 1;
-        await CardManager.updateCardsWithFilters(filters);
-        $('#filtersModal').hide();
-        $('#providerFilters').hide();
-        showLoading(false);
-        $('body').toggleClass('noscroll');
-    });
+    const addProviderFormSubmitListener = async () => {
+        $('#providersForm').on('submit', async(event) => {
+            event.preventDefault();
+            disablePointerEvents(true);
+            showLoading(true);
+            const data = new FormData(event.target);
+            if(!$('#allProviders').hasClass('active')){
+                const newfilters = Object.fromEntries(data.entries());
+                newfilters.tv_providers = data.getAll('tv_providers');
+                newfilters.providers = data.getAll('providers');
+                newfilters.movie_providers = data.getAll('movie_providers');
+                filters = {...filters, ...newfilters};
+            } else {
+                filters = {...filters, ...localProviders};
+            };
+            filters.watch_monetization_types = data.getAll('monetization');
+            filters.page = 1;
+            await CardManager.updateCardsWithFilters(filters);
+            $('#filtersModal').hide();
+            $('#providerFilters').hide();
+            showLoading(false);
+            Socket.clientUpdatedFilters(filters);
+            $('body').toggleClass('noscroll');
+        });
+    }
 
     const showLoading = (enabled) => {
         if(enabled){
@@ -162,7 +167,36 @@ const Filtering = (() => {
         $('.spinner').toggleClass('enabled', enabled);
     };
 
-    const initFilterClickHandlers = (ids) => {
+    const initFilterClickHandlers = () => {
+        addFilterCloseBtnListener();
+        addMediaListener();
+        addFormInputListeners();
+        addFilterFormSubmitListener();
+        addProviderFormSubmitListener();
+    };
+
+    const disablePointerEvents = (bool) => {
+        $('#closeFilterBtn').toggleClass('no-click', bool);
+        $('#contentFilters').toggleClass('no-click', bool);
+        $('#providerFilters').toggleClass('no-click', bool);
+    }
+
+    const addMediaListener = async() => {
+        $('#media label').on('click', (event) => {
+            event.preventDefault();
+            if ($(event.target).siblings().hasClass('active')) {
+                $(event.target).toggleClass('active');
+                event.target.control.toggleAttribute('checked'); 
+                // disable genres that are unique to the media type
+                $(`input[data-type=${event.target.htmlFor}]`).removeAttr('checked');
+                $(`input[data-type=${event.target.htmlFor}]`).prop('disabled', (i, v) => { return !v; });
+                $(`label[data-type=${event.target.htmlFor}]`).toggleClass('disabled').removeClass('active');
+            };
+        });
+    };
+
+    const addFormInputListeners = async () => {
+        const ids = [{label: 'genrelist', all: 'allGenres'}, {label: 'providerlist', all: 'allProviders'}, {label: 'monetizationlist'}]
         ids.forEach(({label, all}, index) => {
             $(`#${label} label`).on('click', (event) => {
                 event.preventDefault();
@@ -176,7 +210,7 @@ const Filtering = (() => {
                     }
                     $(label).toggleClass('active');
                     input.toggleAttribute('checked');
-                }
+                };
             });
             $(`#${all}`).on('click', (event) => {
                 const btn = $(event.target);
@@ -187,28 +221,10 @@ const Filtering = (() => {
                     btn.addClass('active');
                     labels.removeClass('active');
                     inputs.removeAttr('checked');
-                }
+                };
             });
         });
     }
-
-    const disablePointerEvents = (bool) => {
-        $('#closeFilterBtn').toggleClass('no-click', bool);
-        $('#contentFilters').toggleClass('no-click', bool);
-        $('#providerFilters').toggleClass('no-click', bool);
-    }
-
-    $('#media label').on('click', (event) => {
-        event.preventDefault();
-        if ($(event.target).siblings().hasClass('active')) {
-            $(event.target).toggleClass('active');
-            event.target.control.toggleAttribute('checked'); 
-            // disable genres that are unique to the media type
-            $(`input[data-type=${event.target.htmlFor}]`).removeAttr('checked');
-            $(`input[data-type=${event.target.htmlFor}]`).prop('disabled', (i, v) => { return !v; });
-            $(`label[data-type=${event.target.htmlFor}]`).toggleClass('disabled').removeClass('active');
-        }
-    });
     
     $('#contentFilterBtn').on('click', () => {
         disablePointerEvents(false);
@@ -224,12 +240,14 @@ const Filtering = (() => {
         $('#filtersModal').show();
     });
     
-    $('#closeFilterBtn').on('click', () => {
-        $('body').toggleClass('noscroll');
-        $('.modal-content').hide();
-        $('#filtersModal').hide();
-    });
+    const addFilterCloseBtnListener = async() => {
+        $('#closeFilterBtn').on('click', () => {
+            $('body').toggleClass('noscroll');
+            $('.modal-content').hide();
+            $('#filtersModal').hide();
+        });
+    };
 
-    return { getFilters, setFilters, paginate }
+    return { getFilters, setFilters, paginate, initFilterClickHandlers };
 
 })();

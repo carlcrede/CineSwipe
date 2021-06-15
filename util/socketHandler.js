@@ -1,4 +1,4 @@
-module.exports = io => {
+module.exports = (io) => {
     const crypto = require('crypto');
     const likedMovies = {};
     try {
@@ -24,12 +24,16 @@ module.exports = io => {
                     }
                 }
             });
+
+            socket.on('clientUpdatedFilters', (filters) => {
+                socket.to(getRoom(socket)).emit('clientUpdatedFilters', filters);
+            });
         });
     } catch (error) {
         console.error(error);
     }
 }
 
-const getRoom = socket => {
+const getRoom = (socket) => {
     return Array.from(socket.rooms.values()).pop();
 }
