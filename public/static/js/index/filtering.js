@@ -96,19 +96,20 @@ const Filtering = (() => {
     }
     
     (async function initFilters () {
-        const { countryCode } = await ItemFetch.fetchIpData();
-        setFilters({watch_region: countryCode});
-
+        
         const movieGenres = await ItemFetch.fetchGenres('movie');
         const tvGenres = await ItemFetch.fetchGenres('tv');
         const distinctGenres = getDistinctGenres(movieGenres.genres, tvGenres.genres);
         initGenres(distinctGenres, movieGenres.genres, tvGenres.genres);
-
+        
         const {movieProviders, tvProviders} = await ItemFetch.fetchProviders(filters.watch_region);
         const distinctProviders = getDistinctProviders(movieProviders.results, tvProviders.results);
         initProviders(distinctProviders, movieProviders.results, tvProviders.results);
-
+        
         initFilterClickHandlers();
+        
+        const { countryCode } = await ItemFetch.fetchIpData();
+        setFilters({watch_region: countryCode});
     })();
 
     const addFilterFormSubmitListener = async () => {
