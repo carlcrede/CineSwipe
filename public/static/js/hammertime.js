@@ -1,7 +1,7 @@
 const initHammer = (elem, item) => {
     const hammertime = new Hammer(elem);
 
-    hammertime.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 10 });
+    hammertime.get('pan').set({ direction: Hammer.DIRECTION_ALL, threshold: 5 });
 
     hammertime.on('pan', (ev) => {
         $('.card-trailer').toggleClass('no-click', true);
@@ -24,7 +24,7 @@ const initHammer = (elem, item) => {
             const toX = ev.deltaX > 0 ? endX : -endX;
             const endY = Math.abs(ev.velocityY) * moveOutWidth;
             const toY = ev.deltaY > 0 ? endY : -endY;
-            elem.style.transition = 'all .4s ease-in-out';
+            elem.style.transition = 'all 1s ease';
             elem.style.transform = `translate3d(${toX}px, ${toY + ev.deltaY}px, 100px)`;
             if (!elem.classList.contains('first')) {
                 if (toX > 0) {
@@ -40,7 +40,7 @@ const initHammer = (elem, item) => {
             elem.style.removeProperty('transform');
         }
     });
-}
+};
 
 let matches = 0;
 $('#matchesCount').text(matches);

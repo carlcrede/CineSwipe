@@ -1,8 +1,8 @@
-$(document).ready(() => {
+$(() => {
     document.title = "Sign up"
 });
 
-$('form').submit( async (event) => {
+$('form').on('submit', async (event) => {
     event.preventDefault();
     $('.spinner').addClass('enabled');
     resetLabels();
@@ -45,15 +45,15 @@ const displayErrors = (errors) => {
             displayErrorOnLabel(labels[error.param], error.msg);
         }
     });
-}
+};
 
 const resetLabels = () => {
     const allLabels = $('.error-label');
     allLabels.removeClass('show');
     allLabels.text('&nbsp;');
-}
+};
 
 const displayErrorOnLabel = (label, error) => {
     label.text('*' + error);
     label.addClass('show');
-}
+};

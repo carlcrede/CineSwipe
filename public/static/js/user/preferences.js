@@ -33,12 +33,12 @@ const insertMediaPercentages = (likes) => {
     const tvLikesPercent = percent(sum, media_type_likes.tv);
     $('#liked-movies-count').text(`Movies: ${movieLikesPercent}%`);
     $('#liked-tv-count').text(`TV: ${tvLikesPercent}%`);
-}
+};
 
 const percent = (sum, value) => {
     const percentFloat = (!value == 0) ? (value / sum) * 100 : 0
     return percentFloat.toFixed(0);
-}
+};
 
 const insertGenreLikeCount = (likes) => {
     const genre_count = {}
@@ -66,7 +66,7 @@ const insertGenreLikeCount = (likes) => {
             </div>`
         );
     });
-}
+};
 
 const addCollapseListener = (card) => {
     card.click(() => {
@@ -84,4 +84,4 @@ const addExpandedListener = (card) => {
         card.addClass('collapsed');
         addCollapseListener(card);
     });
-}
+};

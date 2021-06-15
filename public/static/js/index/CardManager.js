@@ -1,22 +1,22 @@
 const CardManager = (() => {
 
-    let popularMoviesAndTv;
+    let items;
     const invalidItemStatuses = ['Rumored', 'Planned', 'In Production', 'Post Production', 'Canceled'];
 
     const updateCardsWithFilters = async (filters) => {
         clearInterval(cardInterval);
         $('.card-container').children('.card').not('.first').remove();
         const newItems = await ItemFetch.fetchItems(filters);
-        popularMoviesAndTv = newItems;
+        items = newItems;
         const cards = $('.card-container').children();
-        if(cards.length < 10 && popularMoviesAndTv){
+        if(cards.length < 10 && items){
             for(let i = 0; i < 10 - cards.length; i++){
                 addCard();
             }
         }
         
         cardInterval = setInterval(checkAndRepopulate, 3000);
-    }
+    };
 
     const addCardToMatches = async (item) => {
         $('#matchesCount').text(++matches);
@@ -25,27 +25,24 @@ const CardManager = (() => {
         card.css('position', 'relative');
         card.attr('id', `match-${item.id}`);
         $('.match-container').prepend(card);
-        $('.tab').append()
-        // $('#match-notification').show()
         const match_notif = $('#match-notification');
         match_notif.show();
         setTimeout(() => {
             match_notif.fadeOut(300);
         }, 3000);   
-    }
+    };
 
     const addCard = () => {
-        if (popularMoviesAndTv[0]) { 
-            //if item(movie/tv show) is valid then insert card to DOM and init hammer.js eventhandlers
-            if(isValidItem(popularMoviesAndTv[0])){
-                let item = popularMoviesAndTv[0];
+        if (items[0]) { 
+            if(isValidItem(items[0])){
+                let item = items[0];
                 let card = CardBuilder.buildItemCard(item);
                 initHammer(...card, item);
                 $('.card-container').prepend(card);
-                popularMoviesAndTv.shift();
+                items.shift();
             }
         }
-    }
+    };
 
     const isValidItem = (item) => {
         if (item.status in invalidItemStatuses) { 
@@ -56,18 +53,18 @@ const CardManager = (() => {
             return false;
         } 
         return true;
-    }
+    };
 
     const checkAndRepopulate = async() => {
         if(document.hasFocus){
-            if(popularMoviesAndTv && popularMoviesAndTv.length < 1){
+            if(items && items.length < 1){
                 Filtering.paginate();
                 console.log(Filtering.getFilters().page);
                 const newItems = await ItemFetch.fetchItems(Filtering.getFilters());
-                popularMoviesAndTv = newItems;
+                items = newItems;
             }
             const cards = $('.card-container').children();
-            if(cards.length < 10 && popularMoviesAndTv){
+            if(cards.length < 10 && items){
                 for(let i = 0; i < 10 - cards.length; i++){
                     addCard();
                 }
@@ -110,7 +107,7 @@ const CardManager = (() => {
         Filtering.initFilters();
         const result = await ItemFetch.fetchInitialItems();
         const initialItems = result;
-        popularMoviesAndTv = initialItems;
+        items = initialItems;
         for (let i = 0; i < 10; i++) {
             addCard();
         }
@@ -118,6 +115,6 @@ const CardManager = (() => {
 
     return {
         addCard, addCardToMatches, updateCardsWithFilters
-    }
+    };
 
 })();

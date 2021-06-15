@@ -17,7 +17,7 @@ const fetchMovies = async (options) => {
     } catch (error) {
         console.error(error);
     }
-}
+};
 
 const fetchTv = async (options) => {
     try {
@@ -25,14 +25,13 @@ const fetchTv = async (options) => {
         const tvList = await Promise.all(tvResponse.results.map(async (result) => {
             const tvDetails = await moviedb.tvInfo({ id: result.id, append_to_response: 'watch/providers,videos'});
             tvDetails['media_type'] = 'tv';
-            tvDetails['original_title'] = tvDetails.original_name;
             return tvDetails;
         }));
         return tvList;
     } catch (error) {
         console.error(error);
     }
-}
+};
 
 const fetchProviders = async (watch_region) => {
     const base_url = 'https://api.themoviedb.org/3/watch/providers';
@@ -60,7 +59,7 @@ const itemDetails = async (id, media_type) => {
     } catch (error) {
         console.log('nothing');
     }
-}
+};
 
 const buildFilterOptions = (filter = {}) => {
     const { 
@@ -92,7 +91,7 @@ const buildFilterOptions = (filter = {}) => {
         sort_by
     };
     return { movieOptions, tvOptions };
-}
+};
 
 const mixAndSortItems = async (items, sort_by) => {
     if (sort_by.includes('.desc')) {
@@ -125,7 +124,7 @@ const cacheResponse = (watch_region, data) => {
         time: Date.now(),
         data: data
     }
-}
+};
 
 cacheResponse('DK', fetchInitialItems('DK'));
 
@@ -190,4 +189,4 @@ router.get('/:media_type/:id', async (req, res, next) => {
 
 module.exports = {
     router
-}
+};

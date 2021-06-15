@@ -90,7 +90,6 @@ nav {
 
 .nav-item {
     color: var(--color-font-default);
-    /* padding: 0 1rem; */
     transition: .2s ease-in-out;
     text-decoration: none;
     display: flex;
@@ -258,7 +257,6 @@ main {
 }
 
 .grid-row.title.background {
-    /* min-height: 175px; */
     background: var(--gradient-lightbottom-to-darktop);
     grid-area: 1 / 1 / span 1 / span 3;
     border-radius: 0 0 40% 40%;
@@ -326,7 +324,6 @@ main {
 
 .filterBtn:hover {
     background: rgba(255, 224, 198, 0.24);
-    
 }
 
 .modal {
@@ -663,7 +660,6 @@ main {
     background-color: rgba(255, 255, 255, 0.28);
 }
 
-
 .card.first {
     background: var(--gradient-filur-reverse)
 }
@@ -859,7 +855,6 @@ main {
     max-height: 3.5rem;
     font-size: 0.8rem;
 }
-
 
 #media-preferences {
     display: grid;

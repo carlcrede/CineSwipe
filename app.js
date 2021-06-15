@@ -1,7 +1,5 @@
-// load environment vars
 require('dotenv').config();
 
-// create express app
 const express = require('express');
 const app = express();
 app.use(express.json())
@@ -10,7 +8,6 @@ app.use(express.urlencoded({extended: true}));
 const cors = require('cors');
 app.use(cors({ origin: 'http://cineswipe.herokuapp.com'}));
 
-// tring gzip compression for performance
 const compression = require('compression');
 app.use(compression());
 
@@ -35,24 +32,19 @@ app.use(helmet({
 }));
 
 // serve static files from /public folder
-// trying cache-control for performance
-//enable caching in production 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(__dirname + '/public/static', { maxAge: 1000 * 60 * 60 * 2 }));
 } else {
     app.use(express.static(__dirname + '/public/static'));
 };
 
-// create http server
 const http = require('http').createServer(app);
 const { Server } = require('socket.io');
 const PORT = process.env.PORT || 8080;
 
-// mount socket.io to server
 const io = new Server(http);
 require('./util/socketHandler')(io);
 
-// use express-session with specified settings
 const session = require('express-session');
 app.use(session({
     name: 'sid',
@@ -65,7 +57,7 @@ app.use(session({
     }
 }));
 
-// fs module for server-side rendering
+// server-side rendering HTML
 const pages = require('./util/ssr');
 
 // routing
@@ -74,7 +66,7 @@ const authRoute = require('./routes/auth/auth');
 const sessionRoute = require('./routes/session');
 const userRoute = require('./routes/user');
 const errorRoute = require('./routes/error');
-app.use("/items", moviedbRoute.router)
+app.use("/items", moviedbRoute.router);
 app.use(
     authRoute.router, 
     userRoute.router,
@@ -94,7 +86,6 @@ app.get('/:id', (req, res, next) => {
     };
 });
 
-// error page
 app.get('/*', (req, res) => {
     res.status(404).send(pages[404]);
 });

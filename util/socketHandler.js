@@ -6,7 +6,7 @@ module.exports = (io) => {
             socket.on('joinroom', (roomId) => {
                 if(!roomId){
                     const new_room = crypto.randomBytes(6).toString('hex');
-                    likedMovies[new_room] = {}
+                    likedMovies[new_room] = {};
                     socket.join(new_room);
                     socket.emit('session', new_room);
                 } else {

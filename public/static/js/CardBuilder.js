@@ -20,7 +20,6 @@ const CardBuilder = (() => {
             card.append(itemData.buttons); 
         }
         if (!swipecard) {
-            // collect data about watch providers, and display aditional data on match-card.
             itemData['providerDetails'] = buildProviderDetails(item);
             card.append(itemData.providerDetails);
         }
@@ -29,7 +28,7 @@ const CardBuilder = (() => {
             card.css({'background-image': `linear-gradient(1deg, rgba(62,54,54,0.98) 31%, rgba(255,255,255,0) 80%), url('${img_url}w780${item.backdrop_path}')`});
         }
         return card;
-    }
+    };
 
     const buildItemData = (item) => {
         const data = {
@@ -44,7 +43,7 @@ const CardBuilder = (() => {
             overview: buildOverview(item)
         };
         return data;
-    }
+    };
 
     const buildProviderDetails = (item) => {
         const { watch_region } = Filtering.getFilters();
@@ -78,12 +77,12 @@ const CardBuilder = (() => {
         } else {
             return '<div class="card-provider-details">No providers offer this movie/tv</div>';
         }
-    }
+    };
 
     const buildTitle = (item) => {
         const title = (item.media_type == 'movie') ? item.title : item.name;
         return `<div class="card-title"><h2>${title}</h2></div>`;
-    }
+    };
 
     const buildRuntime = (item) => {
         if (!item.runtime) {
@@ -91,7 +90,7 @@ const CardBuilder = (() => {
         }
         const runtime = convertTime(item.runtime);
         return `<a>${runtime}</a>`;
-    }
+    };
 
     const buildEpisodesOrSeasons = (item) => {
         if (!item.number_of_episodes && !item.number_of_episodes) {
@@ -101,7 +100,7 @@ const CardBuilder = (() => {
         const episodes = item.number_of_episodes;
         const episodesOrSeasons = seasons > 1 ? seasons + ' Seasons' : episodes + ' Episodes';
         return `<a>${episodesOrSeasons}</a>`;
-    }
+    };
 
     const buildRelease = (item) => {
         if (item.media_type == 'movie' && item.release_date) {
@@ -116,28 +115,28 @@ const CardBuilder = (() => {
             return `<a>${first_aired}</a>`;
         }
         return '';
-    }
+    };
 
     const buildOverview = (item) => {
         if (!item.overview) {
             return '<div class="card-overview"></div>';
         }
         return `<div class="card-overview">${item.overview}</div>`;
-    }
+    };
 
     const buildVoteAvg = (item) => {
         if (item.vote_average) {
             return `<div class="card-rating"><img loading="lazy" src="${tmdb_logo}"/><i class="fas fa-star"></i> ${item.vote_average} <small>/ 10</small></div>`;
         }
         return '';
-    }
+    };
 
     const convertTime = (time) => {
         const hours = Math.floor(time / 60);
         const minutes = time % 60;
         const runtime = (hours) ? `${hours} h ${minutes} min` : `${minutes} min`;
         return runtime;
-    }
+    };
 
     const buildTrailer = (item) => {
         let trailerDiv = $(`<div class="card-trailer"></div>`);
@@ -155,7 +154,7 @@ const CardBuilder = (() => {
             }
         }
         return trailerDiv;
-    }
+    };
 
     const buildGenres = (item) => {
         if (!item.genres.length) {
@@ -167,7 +166,7 @@ const CardBuilder = (() => {
             genresDiv.append(`<a>, ${item.genres[1].name}</a>`);
         }
         return genresDiv;
-    }
+    };
 
     const buildButtons = (item) => {
         let btnDiv = $(`<div class="card-buttons"></div>`);
@@ -186,10 +185,10 @@ const CardBuilder = (() => {
                 parent.css('pointer-events', 'none');
 
                 if (ev.target.id == 'dislikeBtn') {
-                    parent.css('transition', 'all .4s ease-in-out');
+                    parent.css('transition', 'all 1s ease');
                     parent.css('transform', 'translate3d(-2000px, 0, 0)');
                 } else {
-                    parent.css('transition', 'all .4s ease-in-out');
+                    parent.css('transition', 'all 1s ease');
                     parent.css('transform', 'translate3d(2000px, 0, 0)');
                     Socket.clientLikedItem(item);
                 }
@@ -200,7 +199,7 @@ const CardBuilder = (() => {
             });
         });
         return btnDiv;
-    }
+    };
 
     // watch providers per country filtering should maybe be done server-side
     const getDistrinctProviders = (item, watch_region) => {

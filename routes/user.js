@@ -33,18 +33,17 @@ router.post('/likes', async(req, res) => {
     const user = req.session.userId;
     try {
         if(user){
-            const filter = { user: user }; //what to find a document with the username
-            const update = { "$addToSet": { likes: [{id: like, media_type: media_type, genres: genres}]}}; //what to update in that document
+            const filter = { user: user };
+            const update = { "$addToSet": { likes: [{id: like, media_type: media_type, genres: genres}]}};
             const doc = await Preferences.findOneAndUpdate(filter, update, {
                 new: true, 
-                upsert: true //insert/create user document if filter fails 
+                upsert: true
             });
             return res.send({doc});
         } else {
             return res.send({});
         }
     } catch (error) {
-        // console.log(error);
         res.status(500).send('Internal Server error occured');
     }
 });

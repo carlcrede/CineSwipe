@@ -5,7 +5,7 @@ const Filtering = (() => {
         watch_monetization_types: [],
         watch_region: 'DK',
         sort_by: 'vote_count.desc',
-    }
+    };
 
     let localProviders = {};
 
@@ -13,15 +13,15 @@ const Filtering = (() => {
 
     const getFilters = () => {
         return filters;
-    }
+    };
 
     const setFilters = (changes) => {
         filters = { ...filters, ...changes};
-    }
+    };
 
     const paginate = () => {
         filters.page++;
-    }
+    };
 
     const initGenres = (distinctGenres, movieGenres, tvGenres) => {
         $('#genrelist').append('<div id="allGenres" class="all active">All</div>');
@@ -42,7 +42,7 @@ const Filtering = (() => {
                 $('#genrelist').append(`<label for="${value.id}" data-type="movie">${value.name}</label><input id="${value.id}" type="checkbox" data-name="${value.name}" name="movie_genres" value="${value.id}" data-type="movie" hidden>`);
             }
         });
-    }
+    };
 
     const initProviders = (distinctProviders, movieProviders, tvProviders) => {
         $('#providerlist').append('<div id="allProviders" class="all active">All</div>');
@@ -73,7 +73,7 @@ const Filtering = (() => {
                 );
             }
         });
-    }
+    };
 
     const getDistinctGenres = (movieGenres, tvGenres) => {
         const seen = new Set();
@@ -83,7 +83,7 @@ const Filtering = (() => {
             return !duplicate;
         });
         return genres;
-    }
+    };
 
     const getDistinctProviders = (movieProviders, tvProviders) => {
         const seen = new Set();
@@ -93,7 +93,7 @@ const Filtering = (() => {
             return !duplicate;
         });
         return genres;
-    }
+    };
     
     const initFilters = async () => {
         
@@ -134,7 +134,7 @@ const Filtering = (() => {
             Socket.clientUpdatedFilters(filters, document.getElementById('filtersModal').innerHTML);
             $('body').toggleClass('noscroll');
         });
-    }
+    };
 
     const addProviderFormSubmitListener = async () => {
         $('#providersForm').on('submit', async(event) => {
@@ -160,7 +160,7 @@ const Filtering = (() => {
             Socket.clientUpdatedFilters(filters, document.getElementById('filtersModal').innerHTML);
             $('body').toggleClass('noscroll');
         });
-    }
+    };
 
     const showLoading = (enabled) => {
         if(enabled){
@@ -179,7 +179,7 @@ const Filtering = (() => {
         addFilterFormSubmitListener();
         addProviderFormSubmitListener();
 
-        $('#sort_by').change(({target}) => {
+        $('#sort_by').on('change', ({target}) => {
             const options = target.options;
             options[0].defaultSelected = false;
             options[1].defaultSelected = false;
@@ -195,7 +195,7 @@ const Filtering = (() => {
         $('#closeFilterBtn').toggleClass('no-click', bool);
         $('#contentFilters').toggleClass('no-click', bool);
         $('#providerFilters').toggleClass('no-click', bool);
-    }
+    };
 
     const addMediaListener = async() => {
         $('#media label').on('click', (event) => {
@@ -240,7 +240,7 @@ const Filtering = (() => {
                 };
             });
         });
-    }
+    };
     
     $('#contentFilterBtn').on('click', () => {
         disablePointerEvents(false);

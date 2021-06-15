@@ -26,7 +26,7 @@ const displayCopyToast = () => {
             </div>
         </div>`
     );
-}
+};
 
 const displaySignupToast = () => {
     toastr.options = {
@@ -60,7 +60,7 @@ const displaySignupToast = () => {
             </div>
         </div>`
     );
-}
+};
 
 const displayLoginToast = () => {
     toastr.options = {
@@ -97,7 +97,7 @@ const displayLoginToast = () => {
             </div>
         </div>`
     );
-}
+};
 
 const displayFiltersUpdatedToast = () => {
     toastr.options = {
@@ -128,4 +128,4 @@ const displayFiltersUpdatedToast = () => {
             </div>
         </div>`
     );
-}
+};
