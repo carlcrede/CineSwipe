@@ -178,6 +178,17 @@ const Filtering = (() => {
         addFormInputListeners();
         addFilterFormSubmitListener();
         addProviderFormSubmitListener();
+
+        $('#sort_by').change(({target}) => {
+            const options = target.options;
+            options[0].defaultSelected = false;
+            options[1].defaultSelected = false;
+            options[2].defaultSelected = false;
+            options[3].defaultSelected = false;
+            
+            options[target.selectedIndex].defaultSelected = true;
+            options.selectedIndex = options.selectedIndex;
+        });
     };
 
     const disablePointerEvents = (bool) => {
@@ -243,17 +254,6 @@ const Filtering = (() => {
         $('body').toggleClass('noscroll');
         $('#providerFilters').show();
         $('#filtersModal').show();
-    });
-
-    $('#sort_by').change(({target}) => {
-        const options = target.options;
-        options[0].defaultSelected = false;
-        options[1].defaultSelected = false;
-        options[2].defaultSelected = false;
-        options[3].defaultSelected = false;
-        
-        options[target.selectedIndex].defaultSelected = true;
-        options.selectedIndex = options.selectedIndex;
     });
     
     const addFilterCloseBtnListener = async() => {
