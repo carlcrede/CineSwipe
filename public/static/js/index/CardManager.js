@@ -107,6 +107,7 @@ const CardManager = (() => {
     })();
 
     (async function initCards(){
+        Filtering.initFilters();
         const result = await ItemFetch.fetchInitialItems();
         const initialItems = result;
         popularMoviesAndTv = initialItems;

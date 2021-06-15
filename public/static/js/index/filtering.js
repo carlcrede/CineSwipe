@@ -95,7 +95,10 @@ const Filtering = (() => {
         return genres;
     }
     
-    (async function initFilters () {
+    const initFilters = async () => {
+        
+        const { countryCode } = await ItemFetch.fetchIpData();
+        setFilters({watch_region: countryCode});
         
         const movieGenres = await ItemFetch.fetchGenres('movie');
         const tvGenres = await ItemFetch.fetchGenres('tv');
@@ -108,9 +111,7 @@ const Filtering = (() => {
         
         initFilterClickHandlers();
         
-        const { countryCode } = await ItemFetch.fetchIpData();
-        setFilters({watch_region: countryCode});
-    })();
+    };
 
     const addFilterFormSubmitListener = async () => {
         $('#filtersForm').on('submit', async(event) => {
@@ -263,6 +264,6 @@ const Filtering = (() => {
         });
     };
 
-    return { getFilters, setFilters, paginate, initFilterClickHandlers };
+    return { getFilters, setFilters, paginate, initFilterClickHandlers, initFilters };
 
 })();
