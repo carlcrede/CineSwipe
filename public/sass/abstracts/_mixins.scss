@@ -1,0 +1,7 @@
+@mixin for-phone-only {
+    @media screen and (max-width: 540px){ @content; }
+}
+
+@mixin for-desktop-small {
+    @media screen and (max-width: 1031px){ @content; }
+}

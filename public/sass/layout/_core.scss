@@ -1,0 +1,70 @@
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: color.$white-alpha-12;
+}
+
+::-webkit-scrollbar-thumb {
+    background: color.$white-alpha-24;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: color.$white-alpha-36;
+}
+
+body {
+    background: color.$dark-background;
+    font-family: font.$main;
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow: hidden scroll;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: color.$font-default;
+    display: flex;
+    flex-direction: column;
+    min-height: 140vh;
+}
+
+input, select, textarea, button{
+    font-family: font.$main;
+}
+
+.noscroll {
+    overflow-y: hidden;
+}
+
+body::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+}
+
+.no-click {
+    pointer-events: none;
+}
+
+@include mixin.for-phone-only {
+    p {
+        font-size: .95rem;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    h2 {
+        font-size: 1rem;
+        margin: 0.5em 0 0.5em 0;
+    }
+
+    h3 {
+        font-size: .9em;
+        margin: 0.5em 0 0.5em 0;
+    }
+}

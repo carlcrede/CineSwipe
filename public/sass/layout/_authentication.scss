@@ -1,0 +1,55 @@
+.form-container {
+    display: grid;
+    text-align: center;
+    padding-top: 5rem;
+
+    @include mixin.for-phone-only {
+        padding-top: 0;
+        justify-content: unset;
+    }
+
+    .failed-attempt {
+        opacity: 0;
+        color: rgb(215, 35, 35);
+
+        &.show {
+            opacity: 1;
+            transition: opacity 0.1s ease-in-out;
+        }
+    }
+
+    .form-group {
+        display: grid;
+        text-align: center;
+        padding: 1rem 5rem 0 5rem;
+
+        @include mixin.for-phone-only {
+            padding: 1rem 0 0 0;
+        }
+
+        .error-label {
+            opacity: 0;
+            text-align: left;
+            color: rgb(215, 35, 35);
+            font-size: .8rem;
+        }
+
+        input{
+            border-radius: 0.5rem;
+            padding: 0.7rem;
+            font-size: 1em;
+        }
+
+        .submit-button {
+            justify-self: center;
+            width: 15rem;
+        }
+    }
+}
+
+
+
+
+
+
+

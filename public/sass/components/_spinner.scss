@@ -1,0 +1,19 @@
+.spinner-container {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    opacity: 0;
+    width: 30px;
+
+    &.enabled {
+        opacity: 1;
+        animation: spinner .6s linear infinite;
+    }
+}
+
+@keyframes spinner {
+    to {transform: rotate(360deg);}
+}
