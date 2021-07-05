@@ -127,9 +127,9 @@ const Filtering = (() => {
             filter.sort_by = data.get('sort_by');
 
             // if chosen genre(s) only exists for one media type, only fetch that media type
-            if (!filter.movie_genres.length) {
+            if (!filter.movie_genres.length && filter.tv_genres.length) {
                 filter.media = ['tv'];
-            } else if (!filter.tv_genres.length) {
+            } else if (!filter.tv_genres.length && filter.movie_genres.length) {
                 filter.media = ['movie'];
             }
 
@@ -156,9 +156,9 @@ const Filtering = (() => {
                 newfilters.providers = data.getAll('providers');
                 newfilters.movie_providers = data.getAll('movie_providers');
 
-                if (!newfilters.tv_providers.length) {
+                if (!newfilters.tv_providers.length && newfilters.movie_providers.length) {
                     filters.media = ['movie'];
-                } else if (!newfilters.movie_providers.length) {
+                } else if (!newfilters.movie_providers.length && newfilters.tv_providers.length) {
                     filters.media = ['tv'];
                 }
 

@@ -63,9 +63,8 @@ const CardManager = (() => {
                 items = newItems;
             }
             if (!items.length) {
-                console.log('out of items that match the filters in the current region. ');
+                console.log('out of items that match the filters in the current region.');
                 clearInterval(cardInterval);
-                
             }
             const cards = $('.card-container').children();
             if(cards.length < 10 && items){
