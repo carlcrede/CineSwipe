@@ -59,9 +59,13 @@ const CardManager = (() => {
         if(document.hasFocus){
             if(items && items.length < 1){
                 Filtering.paginate();
-                console.log(Filtering.getFilters().page);
                 const newItems = await ItemFetch.fetchItems(Filtering.getFilters());
                 items = newItems;
+            }
+            if (!items.length) {
+                console.log('out of items that match the filters in the current region. ');
+                clearInterval(cardInterval);
+                
             }
             const cards = $('.card-container').children();
             if(cards.length < 10 && items){

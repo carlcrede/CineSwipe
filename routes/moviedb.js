@@ -95,7 +95,7 @@ const buildFilterOptions = (filter = {}) => {
 
 const mixAndSortItems = async (items, sort_by) => {
     if (sort_by.includes('.desc')) {
-    items.sort((a, b) => b[sort_by] - a[sort_by]);
+        items.sort((a, b) => b[sort_by] - a[sort_by]);
     } else {
         items.sort((a, b) => a[sort_by] - b[sort_by]);
     }

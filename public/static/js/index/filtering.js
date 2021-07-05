@@ -125,6 +125,14 @@ const Filtering = (() => {
             filter.tv_genres = data.getAll('tv_genres');
             filter.genres = data.getAll('genres');
             filter.sort_by = data.get('sort_by');
+
+            // if chosen genre(s) only exists for one media type, only fetch that media type
+            if (!filter.movie_genres.length) {
+                filter.media = ['tv'];
+            } else if (!filter.tv_genres.length) {
+                filter.media = ['movie'];
+            }
+
             filters = {...filters, ...filter};
             filters.page = 1;
             await CardManager.updateCardsWithFilters(filters);
@@ -147,6 +155,13 @@ const Filtering = (() => {
                 newfilters.tv_providers = data.getAll('tv_providers');
                 newfilters.providers = data.getAll('providers');
                 newfilters.movie_providers = data.getAll('movie_providers');
+
+                if (!newfilters.tv_providers.length) {
+                    filters.media = ['movie'];
+                } else if (!newfilters.movie_providers.length) {
+                    filters.media = ['tv'];
+                }
+
                 filters = {...filters, ...newfilters};
             } else {
                 filters = {...filters, ...localProviders};
