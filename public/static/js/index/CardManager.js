@@ -1,6 +1,6 @@
 const CardManager = (() => {
 
-    let items;
+    let items = [];
     const invalidItemStatuses = ['Rumored', 'Planned', 'In Production', 'Post Production', 'Canceled'];
 
     const updateCardsWithFilters = async (filters) => {
@@ -57,10 +57,12 @@ const CardManager = (() => {
 
     const checkAndRepopulate = async() => {
         if(document.hasFocus){
-            if(items && items.length < 1){
+            if(items && items.length < 10){
+                clearInterval(cardInterval);
                 Filtering.paginate();
                 const newItems = await ItemFetch.fetchItems(Filtering.getFilters());
                 items = newItems;
+                cardInterval = setInterval(checkAndRepopulate, 3000);
             }
             if (!items.length) {
                 console.log('out of items that match the filters in the current region.');
@@ -74,8 +76,6 @@ const CardManager = (() => {
             }
         }
     };
- 
-    let cardInterval = setInterval(checkAndRepopulate, 3000);
 
     (function insertFirstCard() {
         const firstCard = $('<div class="card first"></div>');
@@ -115,6 +115,8 @@ const CardManager = (() => {
             addCard();
         }
     })();
+
+    let cardInterval = setInterval(checkAndRepopulate, 3000);
 
     return {
         addCard, addCardToMatches, updateCardsWithFilters

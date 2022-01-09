@@ -1,7 +1,7 @@
 const ItemFetch = (() => {
 
     const fetchIpData = async () => {
-        const response = await fetch('https://api.db-ip.com/v2/free/self');
+        const response = await fetch('/items/ipinfo');
         const ipdata = await response.json();
         return ipdata;
     };
