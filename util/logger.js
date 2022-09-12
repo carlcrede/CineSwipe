@@ -26,9 +26,7 @@ const logger = (req, res, next) => {
     let status = res.statusCode;
     const start = process.hrtime();
     const durationInMilliseconds = getActualRequestDurationInMilliseconds(start);
-    let log = `[${chalk.blue(formatted_date)}]
-        ${method}:${url} ${status} 
-        ${chalk.red(durationInMilliseconds.toLocaleString() + "ms")}`;
+    let log = `[${chalk.blue(formatted_date)}] ${method}:${url} ${status} ${chalk.red(durationInMilliseconds.toLocaleString() + "ms")}`;
     console.log(log);
     next();
 };

@@ -156,7 +156,8 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/discover/movies', async (req, res, next) => {
-    const response = await getDiscoverMovies();
+    const options = req.query;
+    const response = await getDiscoverMovies(options);
     res.send(response);
 });
 
