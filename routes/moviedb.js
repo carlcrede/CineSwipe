@@ -20,6 +20,15 @@ const fetchMovies = async (options) => {
     }
 };
 
+const getDiscoverMovies = async (options = {}) => {
+    try {
+        const discoverMovieResponse = await moviedb.discoverMovie(options);
+        return discoverMovieResponse;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 const fetchTv = async (options) => {
     try {
         const tvResponse = await moviedb.discoverTv(options);
@@ -146,6 +155,11 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/discover/movies', async (req, res, next) => {
+    const response = await getDiscoverMovies();
+    res.send(response);
+});
+
 router.get('/initial/:watch_region', async (req, res, next) => {
     const watch_region = req.params.watch_region;
     try {
@@ -192,6 +206,10 @@ router.get('/ipinfo', async (req, res, next) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const response = await fetch(`https://api.db-ip.com/v2/free/${ip}`);
     const ipinfo = await response.json();
+    if (ipinfo.countryCode == 'ZZ') {
+        ipinfo.countryCode = 'DK';
+    }
+    console.log(ipinfo)
     res.send(ipinfo);
 });
 

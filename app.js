@@ -1,12 +1,14 @@
 require('dotenv').config();
 
+const logger = require('./util/logger');
 const express = require('express');
 const app = express();
+app.use(logger);
 app.use(express.json())
 app.use(express.urlencoded({extended: true}));
 
 const cors = require('cors');
-app.use(cors({ origin: 'http://cineswipe.herokuapp.com'}));
+app.use(cors({ origin: ['http://cineswipe.herokuapp.com', 'http://localhost:3000']}));
 
 const compression = require('compression');
 app.use(compression());
@@ -36,7 +38,7 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static(__dirname + '/public/static', { maxAge: 1000 * 60 * 60 * 2 }));
 } else {
     app.use(express.static(__dirname + '/public/static'));
-};
+}
 
 const http = require('http').createServer(app);
 const { Server } = require('socket.io');
