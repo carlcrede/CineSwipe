@@ -8,12 +8,13 @@ const router = require('express').Router();
 const fetchMovies = async (options) => {
     try {
         const moviesResponse = await moviedb.discoverMovie(options);
-        const moviesList = await Promise.all(moviesResponse.results.map(async (result) => {
+        // was able to skip the initial variable, since Promise.all returns the resolved promises
+        return Promise.all(moviesResponse.results.map(async (result) => {
             const movieDetails = await moviedb.movieInfo({ id: result.id, append_to_response: 'watch/providers,videos'});
             movieDetails['media_type'] = 'movie';
             return movieDetails;
         }));
-        return moviesList;
+        //return moviesList;
     } catch (error) {
         console.error(error);
     }
