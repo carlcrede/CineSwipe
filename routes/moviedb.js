@@ -29,6 +29,15 @@ const getDiscoverMovies = async (options = {}) => {
     }
 };
 
+const getDiscoverTv = async (options = {}) => {
+    try {
+        const discoverTvResponse = await moviedb.discoverTv(options);
+        return discoverTvResponse;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 const fetchTv = async (options) => {
     try {
         const tvResponse = await moviedb.discoverTv(options);
@@ -158,6 +167,12 @@ router.get('/', async (req, res) => {
 router.get('/discover/movies', async (req, res, next) => {
     const options = req.query;
     const response = await getDiscoverMovies(options);
+    res.send(response);
+});
+
+router.get('/discover/tv', async (req, res, next) => {
+    const options = req.query;
+    const response = await getDiscoverTv(options);
     res.send(response);
 });
 
