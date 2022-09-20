@@ -166,13 +166,15 @@ router.get('/', async (req, res) => {
 
 router.get('/discover/movies', async (req, res, next) => {
     const options = req.query;
-    const response = await getDiscoverMovies(options);
+    //const response = await getDiscoverMovies(options);
+    const response = await fetchMovies(options);
     res.send(response);
 });
 
 router.get('/discover/tv', async (req, res, next) => {
     const options = req.query;
-    const response = await getDiscoverTv(options);
+    const response = await fetchTv(options);
+    //const response = await getDiscoverTv(options);
     res.send(response);
 });
 
