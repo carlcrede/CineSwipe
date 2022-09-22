@@ -164,17 +164,29 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/discover/movies', async (req, res, next) => {
+router.get('/discover/movies', async (req, res) => {
     const options = req.query;
     //const response = await getDiscoverMovies(options);
     const response = await fetchMovies(options);
     res.send(response);
 });
 
-router.get('/discover/tv', async (req, res, next) => {
+router.get('/discover/tv', async (req, res) => {
     const options = req.query;
     const response = await fetchTv(options);
     //const response = await getDiscoverTv(options);
+    res.send(response);
+});
+
+router.get('/tv/:id', async (req, res) => {
+    const { id } = req.params;
+    const response = await moviedb.tvInfo({ id });
+    res.send(response);
+});
+
+router.get('/movie/:id', async (req, res) => {
+    const { id } = req.params;
+    const response = await moviedb.movieInfo({ id });
     res.send(response);
 });
 
