@@ -44,7 +44,7 @@ router.post('/auth/register', checkSchema(register), async (req, res, next) => {
     if (!errors.isEmpty()) {
         req.session.errors = errors;
         res.status(401);
-        return res.send(errors);
+        return res.send({err: errors, msg: "Please try to register again using different values"});
     }
     try {
         const email = req.body.email;
@@ -57,7 +57,7 @@ router.post('/auth/register', checkSchema(register), async (req, res, next) => {
             password: hashedPwd
         });
         res.status(200);
-        return res.send({});
+        return res.send({msg: "Successfully registered!"});
     } catch (error) {
         res.status(500).send(`Internal server error`);
     }
