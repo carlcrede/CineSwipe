@@ -113,10 +113,11 @@ const buildFilterOptions = (filter = {}) => {
 };
 
 const mixAndSortItems = async (items, sort_by) => {
+    const sort_key = sort_by.split('.')[0];
     if (sort_by.includes('.desc')) {
-        items.sort((a, b) => b[sort_by] - a[sort_by]);
+        items.sort((a, b) => b[sort_key] - a[sort_key]);
     } else {
-        items.sort((a, b) => a[sort_by] - b[sort_by]);
+        items.sort((a, b) => a[sort_key] - b[sort_key]);
     }
     return items;
 };
@@ -161,6 +162,24 @@ router.get('/', async (req, res) => {
     } else {
         const tv = await fetchTv(tvOptions);
         res.send(tv);
+    }
+});
+
+router.get('/discover', async (req, res) => {
+    const { filters } = req.query;
+    const parsedFilters = JSON.parse(filters);
+    if (!parsedFilters.media.movie) {
+        const response = await fetchTv(parsedFilters);
+        res.send(response);
+    } else if (!parsedFilters.media.tv) {
+        const response = await fetchMovies(parsedFilters);
+        res.send(response);
+    } else {
+        const movies = await fetchMovies(parsedFilters);
+        const tv = await fetchTv(parsedFilters);
+        console.log(movies.length, tv.length)
+        const data = await mixAndSortItems([...movies, ...tv], parsedFilters.sort_by);
+        res.send(data);
     }
 });
 
