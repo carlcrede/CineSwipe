@@ -1,10 +1,10 @@
 const router = require('express').Router();
-
+const jwt = require('jsonwebtoken');
 //server side rendering
 const pages = require('../../util/ssr');
 
 //express-validator for form validation
-const { checkSchema, validationResult } = require('express-validator');
+const {checkSchema, validationResult} = require('express-validator');
 
 //javascript objects/schemas to be used with express-validator
 const {register} = require('./validation-schema');
@@ -23,7 +23,7 @@ router.get('/register', (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-    if(req.session.userId){
+    if (req.session.userId) {
         res.redirect('/');
     } else {
         res.send(pages.login);
@@ -31,13 +31,13 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/auth/logout', (req, res) => {
-    if(req.session.userId){
+    if (req.session.userId) {
         req.session.destroy();
     }
     res.redirect('/');
 });
 
-router.post('/auth/register', checkSchema(register), async (req, res, next) => {
+router.post('/auth/register', checkSchema(register), async (req, res) => {
     //if express-validator validationResult contains any errors then form data is invalid
     //see -> validation-schema for details
     const errors = validationResult(req);
@@ -51,13 +51,24 @@ router.post('/auth/register', checkSchema(register), async (req, res, next) => {
         const username = req.body.username;
         const plainTextPassword = req.body.password;
         const hashedPwd = await bcrypt.hash(plainTextPassword, saltRounds);
+        const token = jwt.sign({id: username}, process.env.JWT_SECRET, {
+            expiresIn: process.env.JWT_EXPIRES_IN,
+        });
+
         const insertResult = await Credentials.create({
             email: email,
             username: username,
             password: hashedPwd
         });
-        res.status(200);
-        return res.send({msg: "Successfully registered!"});
+
+        return res.status(201).json({
+            status: 'successfully registered',
+            token,
+            data: {
+                insertResult,
+            },
+        });
+
     } catch (error) {
         res.status(500).send(`Internal server error`);
     }
@@ -65,16 +76,19 @@ router.post('/auth/register', checkSchema(register), async (req, res, next) => {
 
 router.post('/auth/login', async (req, res) => {
     try {
-        const foundByUsername = await Credentials.findOne({ username: req.body.user}); //search database for a 
-        const foundByEmail = await Credentials.findOne({ email: req.body.user});
+        const foundByUsername = await Credentials.findOne({username: req.body.user}); //search database for a
+        const foundByEmail = await Credentials.findOne({email: req.body.user});
         const foundUser = (foundByUsername) ? foundByUsername : foundByEmail; //ternary operation to find user by email if not found by username;
-        if (foundUser) { 
+        if (foundUser) {
             const compared = await bcrypt.compare(req.body.password, foundUser.password);
             if (compared) {
-                req.session.loggedIn = true;
-                req.session.userId = req.body.user;
-                res.status(200);
-                return res.send({msg: 'Authenticated'});
+                const token = jwt.sign({id: foundUser._id}, process.env.JWT_SECRET, {
+                    expiresIn: process.env.JWT_EXPIRES_IN,
+                });
+                return res.status(200).json({
+                    status: 'Authenticated',
+                    token,
+                });
             }
         }
         res.status(401);

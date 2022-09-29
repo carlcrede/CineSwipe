@@ -28,6 +28,7 @@
     "express-session": "^1.17.2",
     "express-validator": "^6.11.1",
     "helmet": "^4.6.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.10",
     "moviedb-promise": "^3.1.9",
     "node-fetch": "^2.6.1",
