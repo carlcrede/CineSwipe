@@ -62,7 +62,7 @@ router.post('/auth/register', checkSchema(register), async (req, res) => {
         });
 
         return res.status(201).json({
-            status: 'successfully registered',
+            message: 'successfully registered, redirecting to log in...',
             token,
             data: {
                 insertResult,
@@ -86,7 +86,7 @@ router.post('/auth/login', async (req, res) => {
                     expiresIn: process.env.JWT_EXPIRES_IN,
                 });
                 return res.status(200).json({
-                    status: 'Authenticated',
+                    message: 'Authenticated',
                     token,
                 });
             }
