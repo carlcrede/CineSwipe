@@ -169,16 +169,15 @@ router.get('/discover', async (req, res) => {
     const { filters } = req.query;
     const parsedFilters = JSON.parse(filters);
     if (!parsedFilters.media.movie) {
-        const response = await fetchTv(parsedFilters);
-        res.send(response);
+        const response = await getDiscoverTv(parsedFilters);
+        res.send(response.results);
     } else if (!parsedFilters.media.tv) {
-        const response = await fetchMovies(parsedFilters);
-        res.send(response);
+        const response = await getDiscoverMovies(parsedFilters);
+        res.send(response.results);
     } else {
-        const movies = await fetchMovies(parsedFilters);
-        const tv = await fetchTv(parsedFilters);
-        console.log(movies.length, tv.length)
-        const data = await mixAndSortItems([...movies, ...tv], parsedFilters.sort_by);
+        const movies = await getDiscoverMovies(parsedFilters);
+        const tv = await getDiscoverTv(parsedFilters);
+        const data = await mixAndSortItems([...movies.results, ...tv.results], parsedFilters.sort_by);
         res.send(data);
     }
 });
