@@ -3,12 +3,13 @@ require('dotenv').config();
 const logger = require('./util/logger');
 const express = require('express');
 const app = express();
+
 app.use(logger);
 app.use(express.json())
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 const cors = require('cors');
-app.use(cors({ origin: ['http://cineswipe.herokuapp.com', 'http://localhost:3000']}));
+app.use(cors({ origin: ['http://cineswipe.herokuapp.com', 'http://localhost:3000'] }));
 
 const compression = require('compression');
 app.use(compression());
@@ -21,17 +22,17 @@ app.use('/auth/*', rateLimit.auth);
 
 // include helmet for some security
 const helmet = require('helmet');
-app.use(helmet({ 
-    contentSecurityPolicy: { 
-        useDefaults: true, 
-        directives: { 
-            'script-src': ["'self'", 'code.jquery.com', 'cdnjs.cloudflare.com'], 
+/* app.use(helmet({
+    contentSecurityPolicy: {
+        useDefaults: true,
+        directives: {
+            'script-src': ["'self'", 'code.jquery.com', 'cdnjs.cloudflare.com', 'https://apollo-server-landing-page.cdn.apollographql.com'],
             'style-src': ["'self'", 'cdnjs.cloudflare.com', "'unsafe-inline'", 'code.jquery.com', 'fonts.googleapis.com'],
             'img-src': ["'self'", 'data:', 'www.themoviedb.org', 'image.tmdb.org'],
-            'connect-src': ["'self'" ,'api.db-ip.com/v2/free/self']
+            'connect-src': ["'self'", 'api.db-ip.com/v2/free/self']
         },
     },
-}));
+})); */
 
 // serve static files from /public folder
 if (process.env.NODE_ENV === 'production') {
@@ -53,7 +54,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { 
+    cookie: {
         sameSite: 'strict',
         secure: false
     }
@@ -70,7 +71,7 @@ const userRoute = require('./routes/user');
 const errorRoute = require('./routes/error');
 app.use("/items", moviedbRoute.router);
 app.use(
-    authRoute.router, 
+    authRoute.router,
     userRoute.router,
     sessionRoute.router,
     errorRoute.router
@@ -81,20 +82,40 @@ app.get('/', (req, res) => {
 });
 
 app.get('/:id', (req, res, next) => {
-    if(io.sockets.adapter.rooms.has(req.params.id)){
+    if (io.sockets.adapter.rooms.has(req.params.id)) {
         res.send(pages.index);
     } else {
         next();
-    };
+    }
 });
 
-app.get('/*', (req, res) => {
+/* app.get('/*', (req, res) => {
     res.status(404).send(pages[404]);
-});
+}); */
+
 
 const server = http.listen(PORT, (error) => {
     if (error) {
         throw error;
     }
-    console.log('Server running on port', server.address().port);    
+    console.log('Server running on port', server.address().port);
 });
+
+const { ApolloServerPluginLandingPageLocalDefault } = require('@apollo/server/plugin/landingPage/default');
+const { ApolloServerPluginDrainHttpServer } = require('@apollo/server/plugin/drainHttpServer');
+const { ApolloServer } = require('apollo-server-express');
+const { typeDefs, resolvers } = require('./gqlSchema');
+
+const createGraphQLServer = async () => {
+    const graphqlServer = new ApolloServer({ 
+        typeDefs, 
+        resolvers, 
+        plugins: [
+            ApolloServerPluginLandingPageLocalDefault(),
+            ApolloServerPluginDrainHttpServer({httpServer: http}),
+        ]
+    });
+    await graphqlServer.start();
+    graphqlServer.applyMiddleware({ app, path: '/graphql' });
+}
+createGraphQLServer().then();

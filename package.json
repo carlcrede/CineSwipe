@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/carlcrede/cineswipe#readme",
   "dependencies": {
+    "@apollo/server": "^4.0.0",
+    "apollo-server-express": "^3.10.3",
     "bcrypt": "^5.0.1",
     "chalk": "^4.1.0",
     "compression": "^1.7.4",
@@ -27,6 +29,7 @@
     "express-rate-limit": "^5.2.6",
     "express-session": "^1.17.2",
     "express-validator": "^6.11.1",
+    "graphql": "^16.6.0",
     "helmet": "^4.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.10",
