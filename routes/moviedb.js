@@ -20,6 +20,15 @@ const fetchMovies = async (options) => {
     }
 };
 
+const search = async (options = {}) => {
+    try {
+        const searchResponse = await moviedb.searchMulti(options);
+        return searchResponse;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 const getDiscoverMovies = async (options = {}) => {
     try {
         const discoverMovieResponse = await moviedb.discoverMovie(options);
@@ -165,6 +174,12 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/search', async (req, res) => {
+    const { query } = req.query;
+    const searchResults = await search({ query });
+    res.send(searchResults);
+});
+
 router.get('/discover', async (req, res) => {
     const { filters } = req.query;
     const parsedFilters = JSON.parse(filters);
@@ -243,14 +258,14 @@ router.get('/providers', async (req, res, next) => {
     }
 });
 
-router.get('/:media_type/:id', async (req, res, next) => {
+router.get('/:media_type/:id', async (req, res) => {
     const media_type = req.params.media_type;
     const id = req.params.id;
     const item = await itemDetails(id, media_type);
     res.send(item);
 });
 
-router.get('/ipinfo', async (req, res, next) => {
+router.get('/ipinfo', async (req, res) => {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const response = await fetch(`https://api.db-ip.com/v2/free/${ip}`);
     const ipinfo = await response.json();
