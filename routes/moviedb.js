@@ -174,6 +174,13 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/:media_type/:id', async (req, res) => {
+    const media_type = req.params.media_type;
+    const id = req.params.id;
+    const item = await itemDetails(id, media_type);
+    res.send(item);
+});
+
 router.get('/search', async (req, res) => {
     const { query } = req.query;
     const searchResults = await search({ query });
@@ -195,6 +202,28 @@ router.get('/discover', async (req, res) => {
         const data = await mixAndSortItems([...movies.results, ...tv.results], parsedFilters.sort_by);
         res.send(data);
     }
+});
+
+router.get('/providers', async (req, res, next) => {
+    const { watch_region } = req.query;
+    try{
+        const { movieProviders, tvProviders } = await fetchProviders(watch_region);
+        res.send({movieProviders, tvProviders});
+    } catch (error) {
+        console.error(error);
+        next();
+    }
+});
+
+router.get('/ipinfo', async (req, res) => {
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const response = await fetch(`https://api.db-ip.com/v2/free/${ip}`);
+    const ipinfo = await response.json();
+    if (ipinfo.countryCode == 'ZZ') {
+        ipinfo.countryCode = 'DK';
+    }
+    console.log(ipinfo)
+    res.send(ipinfo);
 });
 
 router.get('/discover/movies', async (req, res) => {
@@ -245,35 +274,6 @@ router.get('/genres/:media_type', async (req, res, next) => {
         console.error(error);
         next();
     }
-});
-
-router.get('/providers', async (req, res, next) => {
-    const { watch_region } = req.query;
-    try{
-        const { movieProviders, tvProviders } = await fetchProviders(watch_region);
-        res.send({movieProviders, tvProviders});
-    } catch (error) {
-        console.error(error);
-        next();
-    }
-});
-
-router.get('/:media_type/:id', async (req, res) => {
-    const media_type = req.params.media_type;
-    const id = req.params.id;
-    const item = await itemDetails(id, media_type);
-    res.send(item);
-});
-
-router.get('/ipinfo', async (req, res) => {
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    const response = await fetch(`https://api.db-ip.com/v2/free/${ip}`);
-    const ipinfo = await response.json();
-    if (ipinfo.countryCode == 'ZZ') {
-        ipinfo.countryCode = 'DK';
-    }
-    console.log(ipinfo)
-    res.send(ipinfo);
 });
 
 module.exports = {
