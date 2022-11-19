@@ -77,10 +77,10 @@ const itemDetails = async (id, media_type) => {
     try {
         let details;
         if (media_type == 'movie') {
-            details = await moviedb.movieInfo({ id: id, append_to_response: 'watch/providers,videos' });
+            details = await moviedb.movieInfo({ id: id, append_to_response: 'watch/providers,videos,credits' });
             details['media_type'] = 'movie';
         } else {
-            details = await moviedb.tvInfo({ id: id, append_to_response: 'watch/providers,videos' });
+            details = await moviedb.tvInfo({ id: id, append_to_response: 'watch/providers,videos,credits' });
             details['media_type'] = 'tv';
         }
         return details;
