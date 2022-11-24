@@ -19,6 +19,37 @@ const fetchMovies = async (options) => {
         console.error(error);
     }
 };
+// TODO: these two
+const fetchTrendingMovies = async (options) => {
+    try {
+        const moviesResponse = await moviedb.trending(options);
+        console.log(moviesResponse)
+        // was able to skip the initial variable, since Promise.all returns the resolved promises
+        return Promise.all(moviesResponse.results.map(async (result) => {
+            const movieDetails = await moviedb.movieInfo({ id: result.id});
+            movieDetails['media_type'] = 'movie';
+            return movieDetails;
+        }));
+        //return moviesList;
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const fetchTrendingTv = async (options) => {
+    try {
+        const TvsResponse = await moviedb.trending(options);
+        // was able to skip the initial variable, since Promise.all returns the resolved promises
+        return Promise.all(TvsResponse.results.map(async (result) => {
+            const tvDetails = await moviedb.tvInfo({ id: result.id});
+            tvDetails['media_type'] = 'tv';
+            return tvDetails;
+        }));
+        //return moviesList;
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 const search = async (options = {}) => {
     try {
@@ -239,6 +270,20 @@ router.get('/discover/tv', async (req, res) => {
     //const response = await getDiscoverTv(options);
     res.send(response);
 });
+// TODO: these two
+router.get('/trending/movie/day', async (req, res) => {
+    const options = req.query;
+    const response = await fetchTrendingMovies(options);
+    console.log(response)
+    res.send(response);
+});
+
+router.get('/trending/tv/day', async (req, res) => {
+    const options = req.query;
+    const response = await fetchTrendingTv(options);
+    console.log(response)
+    res.send(response);
+});
 
 router.get('/tv/:id', async (req, res) => {
     const { id } = req.params;
@@ -257,7 +302,7 @@ router.get('/initial/:watch_region', async (req, res, next) => {
     try {
         if(!cache.initialitems[watch_region] || Date.now() - cache.initialitems[watch_region].time > 60 * 1000){
             cacheResponse(watch_region, fetchInitialItems(watch_region));
-        };
+        }
         res.send(await cache.initialitems[watch_region].data);
     } catch (error) {
         console.error(error);
