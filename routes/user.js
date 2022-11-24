@@ -1,31 +1,14 @@
 const router = require('express').Router();
-const jwt = require('jsonwebtoken');
 const Users = require('../db/model/credentials.js');
 const Preferences = require('../db/model/preferences.js');
+const authenticateToken = require('../middleware/auth.js');
 
-const pages = require('../util/ssr');
-
-router.get('/me', async (req, res) => {
-    const token = req.headers.authorization.split(' ')[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    if (decoded.id) {
-        const user = await Users.findById(decoded.id, {password: 0});
-        if (user) {
-            res.send(user);
-        } else {
-            res.status(404).send('User not found');
-        }
+router.get('/me', authenticateToken, async (req, res) => {
+    const user = await Users.findById(req.userId, {password: 0});
+    if (user) {
+        res.send(user);
     } else {
-        res.status(401).send('Unauthorized');
-    }
-});
-
-router.get('/user/:id/preferences', (req, res, next) => {
-    if (req.session.userId) {
-        res.send(pages.preferences);
-    } else {
-        next();
+        res.status(404).send('User not found');
     }
 });
 
@@ -63,10 +46,6 @@ router.post('/likes', async(req, res) => {
     } catch (error) {
         res.status(500).send('Internal Server error occured');
     }
-});
-
-router.get("/user/*", (req, res) => {
-    res.send(pages.requestlogin);
 });
 
 module.exports = {

@@ -1,7 +1,5 @@
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
-//server side rendering
-const pages = require('../../util/ssr');
 
 //express-validator for form validation
 const {checkSchema, validationResult} = require('express-validator');
@@ -18,17 +16,6 @@ const saltRounds = Number(process.env.BCRYPT_SALTROUNDS);
 
 /* ______________________________________________________________________________ */
 //routes
-router.get('/register', (req, res) => {
-    res.send(pages.register);
-});
-
-router.get('/login', (req, res) => {
-    if (req.session.userId) {
-        res.redirect('/');
-    } else {
-        res.send(pages.login);
-    }
-});
 
 router.get('/auth/logout', (req, res) => {
     if (req.session.userId) {

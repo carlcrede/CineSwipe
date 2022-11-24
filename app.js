@@ -1,8 +1,10 @@
 require('dotenv').config();
+require('./db/db-connection');
 
-const logger = require('./util/logger');
+const logger = require('./middleware/logger');
 const express = require('express');
 const app = express();
+
 app.use(logger);
 app.use(express.json())
 app.use(express.urlencoded({extended: true}));
@@ -12,8 +14,6 @@ app.use(cors({ origin: ['http://cineswipe.herokuapp.com', 'http://localhost:3000
 
 const compression = require('compression');
 app.use(compression());
-
-const db = require('./db/db-connection');
 
 // use custom rate-limit
 const rateLimit = require('./util/rate-limit');
@@ -42,7 +42,6 @@ if (process.env.NODE_ENV === 'production') {
 
 const http = require('http').createServer(app);
 const { Server } = require('socket.io');
-const PORT = process.env.PORT || 8080;
 
 const io = new Server(http);
 require('./util/socketHandler')(io);
@@ -59,39 +58,22 @@ app.use(session({
     }
 }));
 
-// server-side rendering HTML
-const pages = require('./util/ssr');
-
 // routing
-const moviedbRoute = require('./routes/moviedb');
+const moviedbRoute = require('./routes/moviedb.router');
 const authRoute = require('./routes/auth/auth');
 const sessionRoute = require('./routes/session');
 const userRoute = require('./routes/user');
-const errorRoute = require('./routes/error');
+const ipInfoRoute = require('./routes/ipInfo.router');
+
 app.use("/items", moviedbRoute.router);
 app.use(
     authRoute.router, 
     userRoute.router,
     sessionRoute.router,
-    errorRoute.router
+    ipInfoRoute.router,
 );
 
-app.get('/', (req, res) => {
-    res.send(pages.index);
-});
-
-app.get('/:id', (req, res, next) => {
-    if(io.sockets.adapter.rooms.has(req.params.id)){
-        res.send(pages.index);
-    } else {
-        next();
-    };
-});
-
-app.get('/*', (req, res) => {
-    res.status(404).send(pages[404]);
-});
-
+const PORT = process.env.PORT || 8080;
 const server = http.listen(PORT, (error) => {
     if (error) {
         throw error;
