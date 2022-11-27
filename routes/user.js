@@ -4,7 +4,7 @@ const Preferences = require('../db/model/preferences.js');
 const authenticateToken = require('../middleware/auth.js');
 
 router.get('/me', authenticateToken, async (req, res) => {
-    const user = await Users.findById(req.userId, {password: 0});
+    const user = await Users.findById(req.userId, { password: 0 });
     if (user) {
         res.send(user);
     } else {
@@ -12,11 +12,33 @@ router.get('/me', authenticateToken, async (req, res) => {
     }
 });
 
-router.get('/likes', async(req, res) => {
+router.put('/me', authenticateToken, async (req, res) => {
+    const body = req.body;
+    console.log(body);
+    if (!body.email || !body.username) {
+        return res.status(400).send('Invalid request');
+    }
+    // check if user with email or username already exists
+    const userHasEmail = await Users.findOne({ email: body.email, _id: { $ne: req.userId } });
+    const userHasUsername = await Users.findOne({ username: body.username, _id: { $ne: req.userId }});
+
+    if (userHasEmail) {
+        res.status(400).send('Email already exists');
+    } else if (userHasUsername) {
+        res.status(400).send('Username already exists');
+    } else {
+        // update user
+        const x = await Users.findByIdAndUpdate(req.userId, body, { new: true });
+        res.send(x);
+    }
+
+});
+
+router.get('/likes', async (req, res) => {
     const user = req.session.userId;
     try {
-        if(user){
-            const foundUser = await Preferences.findOne({user: user});
+        if (user) {
+            const foundUser = await Preferences.findOne({ user: user });
             const userLikes = foundUser.likes;
             res.send(userLikes);
         }
@@ -26,20 +48,20 @@ router.get('/likes', async(req, res) => {
     }
 });
 
-router.post('/likes', async(req, res) => {
+router.post('/likes', async (req, res) => {
     const like = req.body.like.id;
     const media_type = req.body.like.media_type;
     const genres = req.body.like.genres;
     const user = req.session.userId;
     try {
-        if(user){
+        if (user) {
             const filter = { user: user };
-            const update = { "$addToSet": { likes: [{id: like, media_type: media_type, genres: genres}]}};
+            const update = { "$addToSet": { likes: [{ id: like, media_type: media_type, genres: genres }] } };
             const doc = await Preferences.findOneAndUpdate(filter, update, {
-                new: true, 
+                new: true,
                 upsert: true
             });
-            return res.send({doc});
+            return res.send({ doc });
         } else {
             return res.send({});
         }
