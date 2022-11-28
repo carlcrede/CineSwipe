@@ -17,6 +17,7 @@ const credentialsSchema = new mongoose.Schema({
         type: String,
         default: 'https://cineswipe.s3.eu-central-1.amazonaws.com/157-1578186_user-profile-default-image-png-clipart%5B1%5D.png'
     },
+    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'favorite' }]
 });
 
 module.exports = mongoose.model('credentials', credentialsSchema);

@@ -23,11 +23,13 @@ const logger = (req, res, next) => {
         current_datetime.getSeconds();
     let method = req.method;
     let url = req.url;
-    let status = res.statusCode;
     const start = process.hrtime();
     const durationInMilliseconds = getActualRequestDurationInMilliseconds(start);
-    let log = `[${chalk.blue(formatted_date)}] ${method}:${url} ${status} ${chalk.red(durationInMilliseconds.toLocaleString() + "ms")}`;
-    console.log(log);
+    res.on("finish", function() {
+        const status = chalk.yellow(this.statusCode);
+        let log = `[${chalk.blue(formatted_date)}]: ${method}:${url} ${status} ${chalk.red(durationInMilliseconds.toLocaleString() + "ms")}`;
+        console.log(log);
+    });
     next();
 };
 
