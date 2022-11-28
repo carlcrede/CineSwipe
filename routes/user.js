@@ -2,6 +2,8 @@ const router = require('express').Router();
 const Users = require('../db/model/credentials.js');
 const Preferences = require('../db/model/preferences.js');
 const authenticateToken = require('../middleware/auth.js');
+const upload = require('../util/multer.js').single('profilePicture');
+const multer = require('multer');
 
 router.get('/me', authenticateToken, async (req, res) => {
     const user = await Users.findById(req.userId, { password: 0 });
@@ -14,7 +16,6 @@ router.get('/me', authenticateToken, async (req, res) => {
 
 router.put('/me', authenticateToken, async (req, res) => {
     const body = req.body;
-    console.log(body);
     if (!body.email || !body.username) {
         return res.status(400).send('Invalid request');
     }
@@ -31,8 +32,23 @@ router.put('/me', authenticateToken, async (req, res) => {
         const x = await Users.findByIdAndUpdate(req.userId, body, { new: true });
         res.send(x);
     }
-
 });
+
+router.put('/me/profile-picture', authenticateToken, async (req, res) => {
+    upload(req, res, async (err) => {
+        if (err) {
+            if (err instanceof multer.MulterError) {
+                res.status(500).send('Multer error');
+            } else {
+                res.status(400).send('Invalid file type, only JPEG and PNG is allowed!');
+            }
+        } else {
+            const user = await Users.findByIdAndUpdate(req.userId, { profilePicture: req.file.location }, { new: true });
+            res.send(user);
+        }
+    });
+});
+
 
 router.get('/likes', async (req, res) => {
     const user = req.session.userId;
