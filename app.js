@@ -5,19 +5,22 @@ const Sentry = require('@sentry/browser')
 const logger = require('./middleware/logger');
 const express = require('express');
 const app = express();
-
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('./swagger_output.json')
 app.use(logger);
+
 app.use(express.json())
 app.use(express.urlencoded({extended: true}));
-
 const cors = require('cors');
+
 app.use(cors({ origin: ['http://cineswipe.herokuapp.com', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://localhost:5173']}));
-
 const compression = require('compression');
-app.use(compression());
 
+app.use(compression());
 // use custom rate-limit
+
 const rateLimit = require('./util/rate-limit');
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 app.use('/auth/*', rateLimit.auth);
 Sentry.init({
     dsn: "https://fc1d89d003414e8f893986da34640018@o4504253791862784.ingest.sentry.io/4504253797105665",

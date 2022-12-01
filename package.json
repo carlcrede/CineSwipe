@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "pm2-runtime start ecosystem.config.js --env production",
-    "dev": "cross-env NODE_ENV=development nodemon app.js"
+    "dev": "cross-env NODE_ENV=development nodemon app.js",
+    "swagger-autogen": "node swagger.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   "dependencies": {
     "@sentry/browser": "^7.22.0",
     "@sentry/tracing": "^7.22.0",
+    "and": "^0.0.3",
     "bcrypt": "^5.0.1",
     "chalk": "^4.1.0",
     "compression": "^1.7.4",
@@ -37,7 +39,12 @@
     "multer-s3": "^3.0.1",
     "node-fetch": "^2.6.1",
     "pm2": "^5.0.4",
-    "socket.io": "^4.1.0"
+    "socket.io": "^4.1.0",
+    "swagger-autogen": "^2.22.0",
+    "swagger-jsdoc": "^6.2.5",
+    "swagger-typescript": "^6.4.0",
+    "swagger-typescript-api": "^12.0.2",
+    "swagger-ui-express": "^4.6.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
