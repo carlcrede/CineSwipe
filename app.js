@@ -65,6 +65,11 @@ const sessionRoute = require('./routes/session');
 const userRoute = require('./routes/user');
 const ipInfoRoute = require('./routes/ipInfo.router');
 
+// health check
+app.get('/healthcheck', (req, res) => {
+    res.status(200).send('CineSwipe API is up and running!');
+});
+
 app.use("/items", moviedbRoute.router);
 app.use(
     authRoute.router, 
