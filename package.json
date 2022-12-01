@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/carlcrede/cineswipe#readme",
   "dependencies": {
+    "@sentry/browser": "^7.22.0",
+    "@sentry/tracing": "^7.22.0",
     "bcrypt": "^5.0.1",
     "chalk": "^4.1.0",
     "compression": "^1.7.4",
