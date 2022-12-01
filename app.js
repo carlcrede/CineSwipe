@@ -11,7 +11,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}));
 
 const cors = require('cors');
-app.use(cors({ origin: ['http://cineswipe.herokuapp.com', 'https://fullstack-frontend-w3yo.onrender.com/', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://localhost:5173']}));
+app.use(cors({ origin: ['http://cineswipe.herokuapp.com', 'https://fullstack-frontend-w3yo.onrender.com', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://localhost:5173']}));
 
 const compression = require('compression');
 app.use(compression());
