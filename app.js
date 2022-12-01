@@ -1,6 +1,7 @@
 require('dotenv').config();
 require('./db/db-connection');
-
+const { BrowserTracing } = require('@sentry/tracing')
+const Sentry = require('@sentry/browser')
 const logger = require('./middleware/logger');
 const express = require('express');
 const app = express();
@@ -18,6 +19,15 @@ app.use(compression());
 // use custom rate-limit
 const rateLimit = require('./util/rate-limit');
 app.use('/auth/*', rateLimit.auth);
+Sentry.init({
+    dsn: "https://fc1d89d003414e8f893986da34640018@o4504253791862784.ingest.sentry.io/4504253797105665",
+    integrations: [new BrowserTracing()],
+
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    // We recommend adjusting this value in production
+    tracesSampleRate: 1.0,
+});
 
 // include helmet for some security
 const helmet = require('helmet');
