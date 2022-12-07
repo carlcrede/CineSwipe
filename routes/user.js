@@ -22,6 +22,11 @@ router.put('/me', authenticateToken, async (req, res) => {
     if (!body.email || !body.username) {
         return res.status(400).send('Invalid request');
     }
+    // validate email
+    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    if (!emailRegex.test(body.email)) {
+        return res.status(400).send('Invalid email');
+    }
     // check if user with email or username already exists
     const userHasEmail = await Users.findOne({ email: body.email, _id: { $ne: req.userId } });
     const userHasUsername = await Users.findOne({ username: body.username, _id: { $ne: req.userId } });
@@ -88,13 +93,10 @@ router.post('/me/favorites', authenticateToken, async (req, res) => {
 });
 
 // delete favorite / un-favorite
-router.delete('/me/favorites/:id', authenticateToken, async (req, res) => {
-    const favorite = await Favorites.findById(req.params.id);
+router.delete('/me/favorites/:movieDbId', authenticateToken, async (req, res) => {
+    const favorite = await Favorites.findOne({ movieDbId: req.params.movieDbId, user: req.userId });
     if (!favorite) {
         return res.status(404).send('Favorite not found');
-    }
-    if (favorite.user.toString() !== req.userId) {
-        return res.status(401).send('Unauthorized');
     }
     await favorite.remove();
     res.send(favorite);
