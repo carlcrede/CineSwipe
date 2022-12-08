@@ -2,10 +2,10 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "REST API",
-    "description": ""
+    "title": "CineSwipe API",
+    "description": "CineSwipe REST API"
   },
-  "host": "localhost:3000",
+  "host": "localhost:8080",
   "basePath": "/",
   "schemes": [
     "http"
@@ -13,7 +13,11 @@
   "paths": {
     "/{media_type}/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Movie DB API"
+        ],
+        "summary": "Get detailed info",
+        "description": "Returns a detailed info about a movie or a TV series",
         "parameters": [
           {
             "name": "media_type",
@@ -37,7 +41,11 @@
     },
     "/search": {
       "get": {
-        "description": "",
+        "tags": [
+          "Movie DB API"
+        ],
+        "summary": "Search movies and series",
+        "description": "Returns search results of movies and series",
         "parameters": [
           {
             "name": "query",
@@ -54,7 +62,11 @@
     },
     "/discover": {
       "get": {
-        "description": "",
+        "tags": [
+          "Movie DB API"
+        ],
+        "summary": "Discover TV series and movies",
+        "description": "Returns a list of popular TV series and movies",
         "parameters": [
           {
             "name": "filters",
@@ -71,7 +83,11 @@
     },
     "/discover/movies": {
       "get": {
-        "description": "",
+        "tags": [
+          "Movie DB API"
+        ],
+        "summary": "Discover movies",
+        "description": "Returns a list of popular movies",
         "parameters": [],
         "responses": {
           "200": {
@@ -82,7 +98,11 @@
     },
     "/discover/tv": {
       "get": {
-        "description": "",
+        "tags": [
+          "Movie DB API"
+        ],
+        "summary": "Discover TV series",
+        "description": "Returns a list of popular TV series",
         "parameters": [],
         "responses": {
           "200": {
@@ -93,7 +113,11 @@
     },
     "/trending/{media_type}/{time_window}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Movie DB API"
+        ],
+        "summary": "Get trending",
+        "description": "Returns a list of trending movies and series",
         "parameters": [
           {
             "name": "media_type",
@@ -117,7 +141,11 @@
     },
     "/me": {
       "get": {
-        "description": "",
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user info",
+        "description": "Returns an information about the user",
         "parameters": [
           {
             "name": "authorization",
@@ -141,7 +169,11 @@
         }
       },
       "put": {
-        "description": "",
+        "tags": [
+          "User"
+        ],
+        "summary": "Edit user info",
+        "description": "Edits the information about the user",
         "parameters": [
           {
             "name": "authorization",
@@ -182,7 +214,11 @@
     },
     "/me/profile-picture": {
       "put": {
-        "description": "",
+        "tags": [
+          "User"
+        ],
+        "summary": "Get profile picture",
+        "description": "Returns a user's profile picture",
         "parameters": [
           {
             "name": "authorization",
@@ -211,7 +247,11 @@
     },
     "/me/favorites": {
       "post": {
-        "description": "",
+        "tags": [
+          "User"
+        ],
+        "summary": "Add an item to the favorites",
+        "description": "Adds an item to the favorites",
         "parameters": [
           {
             "name": "authorization",
@@ -228,6 +268,12 @@
                   "example": "any"
                 },
                 "media_type": {
+                  "example": "any"
+                },
+                "title": {
+                  "example": "any"
+                },
+                "poster_path": {
                   "example": "any"
                 }
               }
@@ -256,7 +302,11 @@
         }
       },
       "get": {
-        "description": "",
+        "tags": [
+          "User"
+        ],
+        "summary": "Get favorites for user",
+        "description": "Returns a list of liked movies and series",
         "parameters": [
           {
             "name": "authorization",
@@ -280,12 +330,16 @@
         }
       }
     },
-    "/me/favorites/{id}": {
+    "/me/favorites/{movieDbId}": {
       "delete": {
-        "description": "",
+        "tags": [
+          "User"
+        ],
+        "summary": "Delete a movie/series from favorite",
+        "description": "Deletes an item from favorites list",
         "parameters": [
           {
-            "name": "id",
+            "name": "movieDbId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -314,7 +368,11 @@
     },
     "/likes": {
       "get": {
-        "description": "",
+        "tags": [
+          "Favorites"
+        ],
+        "summary": "Get all liked movies and series",
+        "description": "Returns a list of liked movies and series",
         "parameters": [],
         "responses": {
           "200": {
@@ -326,7 +384,11 @@
         }
       },
       "post": {
-        "description": "",
+        "tags": [
+          "Favorites"
+        ],
+        "summary": "Add a movie/serie to liked",
+        "description": "Adds a movie/serie to user's liked",
         "parameters": [
           {
             "name": "body",
@@ -353,14 +415,22 @@
     },
     "/auth/logout": {
       "get": {
-        "description": "",
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "User log out endpoint",
+        "description": "Used to log out a user from the application",
         "parameters": [],
         "responses": {}
       }
     },
     "/auth/register": {
       "post": {
-        "description": "",
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "User registration endpoint",
+        "description": "Used to register a user to the application",
         "parameters": [
           {
             "name": "body",
@@ -399,7 +469,11 @@
     },
     "/auth/login": {
       "post": {
-        "description": "",
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "User log in endpoint",
+        "description": "Used to log in a user to the application",
         "parameters": [
           {
             "name": "body",
@@ -432,7 +506,11 @@
     },
     "/ipinfo": {
       "get": {
-        "description": "",
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Get the information about user's location",
+        "description": "Returns a user's location according to his IP ",
         "parameters": [
           {
             "name": "x-forwarded-for",
@@ -449,7 +527,11 @@
     },
     "/session/userid": {
       "get": {
-        "description": "",
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Get user id",
+        "description": "Returns a user identifier",
         "parameters": [],
         "responses": {
           "200": {
