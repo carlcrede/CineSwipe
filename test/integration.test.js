@@ -1,26 +1,18 @@
-import { MongoClient } from 'mongodb';
-
-let client: MongoClient;
-
-beforeAll(async () => {
-    // Connect to the MongoDB server
-    client = await MongoClient.connect('mongodb://localhost:27017/my-database');
-});
-
-// Get the 'users' collection
-const users = client.db('my-database').collection('users');
+const Credentials = require('../db/model/credentials')
 
 // Insert a user document
-await users.insertOne({ name: 'John Doe', email: 'johndoe@example.com' });
+Credentials.create({ username: 'John Doe', email: 'johndoe@example.com', password: "hashedPw" });
 
 // Get the user that was just inserted
-const user = await users.findOne({ name: 'John Doe' });
+const user = Credentials.findOne({ username: 'John Doe' });
 
 // Use Jest's expect() and toEqual() methods to assert that the user
 // has the expected properties
-expect(user).toEqual({ name: 'John Doe', email: 'johndoe@example.com' });
+expect(user.username).toEqual('John Doe');
 
 afterAll(async () => {
     // Close the connection to the MongoDB server
-    await client.close();
+    Credentials.deleteOne({username: 'John Doe'})
+    const user = Credentials.findOne({ username: 'John Doe' });
+    expect(user).toEqual(null);
 });
