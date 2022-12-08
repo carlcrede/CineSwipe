@@ -5,7 +5,7 @@ const getActualRequestDurationInMilliseconds = start => {
     const NS_TO_MS = 1e6; // convert to milliseconds
     const diff = process.hrtime(start);
     return (diff[0] * NS_PER_SEC + diff[1]) / NS_TO_MS;
-  };
+};
 
 const logger = (req, res, next) => {
     let current_datetime = new Date();
@@ -25,7 +25,7 @@ const logger = (req, res, next) => {
     let url = req.url;
     const start = process.hrtime();
     const durationInMilliseconds = getActualRequestDurationInMilliseconds(start);
-    res.on("finish", function() {
+    res.on("finish", function () {
         const status = chalk.yellow(this.statusCode);
         let log = `[${chalk.blue(formatted_date)}]: ${method}:${url} ${status} ${chalk.red(durationInMilliseconds.toLocaleString() + "ms")}`;
         console.log(log);
@@ -33,4 +33,7 @@ const logger = (req, res, next) => {
     next();
 };
 
-module.exports = logger;
+module.exports = {
+    logger,
+    getActualRequestDurationInMilliseconds
+ }

@@ -7,7 +7,7 @@ const express = require('express');
 const app = express();
 const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger_output.json')
-app.use(logger);
+app.use(logger.logger);
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}));
@@ -45,6 +45,7 @@ app.use(helmet({
         },
     },
 }));
+app.use(helmet.xssFilter)
 
 // serve static files from /public folder
 if (process.env.NODE_ENV === 'production') {
