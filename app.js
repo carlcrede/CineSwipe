@@ -45,7 +45,7 @@ app.use(helmet({
         },
     },
 }));
-app.use(helmet.xssFilter)
+//app.use(helmet.xssFilter)
 
 // serve static files from /public folder
 if (process.env.NODE_ENV === 'production') {
