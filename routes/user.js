@@ -37,7 +37,7 @@ router.put('/me', authenticateToken, async (req, res) => {
         res.status(400).send('Username already exists');
     } else {
         // update user
-        const x = await Users.findByIdAndUpdate(req.userId, body, { new: true });
+        const x = await Users.findByIdAndUpdate(req.userId, body, { new: true }).populate('favorites');
         res.send(x);
     }
 });
@@ -52,7 +52,7 @@ router.put('/me/profile-picture', authenticateToken, async (req, res) => {
                 res.status(400).send('Invalid file type, only JPEG and PNG is allowed!');
             }
         } else {
-            const user = await Users.findByIdAndUpdate(req.userId, { profilePicture: req.file.location }, { new: true });
+            const user = await Users.findByIdAndUpdate(req.userId, { profilePicture: req.file.location }, { new: true }).populate('favorites');
             res.send(user);
         }
     });
