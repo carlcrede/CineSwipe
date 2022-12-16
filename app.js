@@ -4,8 +4,8 @@ require('./db/db-connection');
 const logger = require('./middleware/logger');
 const express = require('express');
 const app = express();
-const swaggerUi = require('swagger-ui-express')
-const swaggerFile = require('./swagger_output.json')
+/* const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('./swagger_output.json'); */
 app.use(logger.logger);
 
 app.use(express.json())
@@ -19,7 +19,7 @@ app.use(compression());
 // use custom rate-limit
 
 const rateLimit = require('./util/rate-limit');
-app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+//app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 app.use('/auth/*', rateLimit.auth);
 
 // include helmet for some security
