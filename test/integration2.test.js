@@ -1,4 +1,5 @@
 const { MongoClient, ObjectId } = require('mongodb')
+require('dotenv').config();
 
 describe('DB', () => {
     let connection;

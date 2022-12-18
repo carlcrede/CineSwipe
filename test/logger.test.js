@@ -20,7 +20,7 @@ it.each([
 
             // Finally, we'll use Jest's expect() and toBeCloseTo() methods to assert
             // that the duration is approximately the expected duration
-            expect(duration).toBeCloseTo(expectedDuration, 0);
+            expect(duration).toBeLessThan(expectedDuration+100);
         }, delay);
     }
 );
