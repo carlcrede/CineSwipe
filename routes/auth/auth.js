@@ -37,7 +37,7 @@ router.get('/auth/logout', (req, res) => {
     res.redirect('/');
 });
 
-router.post('/auth/register', checkSchema(register), async (req, res, next) => {
+router.post('/auth/register', checkSchema(register), async (req, res) => {
     //if express-validator validationResult contains any errors then form data is invalid
     //see -> validation-schema for details
     const errors = validationResult(req);
@@ -51,7 +51,7 @@ router.post('/auth/register', checkSchema(register), async (req, res, next) => {
         const username = req.body.username;
         const plainTextPassword = req.body.password;
         const hashedPwd = await bcrypt.hash(plainTextPassword, saltRounds);
-        const insertResult = await Credentials.create({
+        await Credentials.create({
             email: email,
             username: username,
             password: hashedPwd
