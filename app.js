@@ -19,7 +19,7 @@ app.use(
 const compression = require("compression");
 app.use(compression());
 
-const db = require("./db/db-connection");
+require("./db/db-connection");
 
 // use custom rate-limit
 const rateLimit = require("./util/rate-limit");
